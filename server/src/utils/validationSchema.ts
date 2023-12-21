@@ -7,7 +7,7 @@ export const CreateUserSchema = yup.object().shape({
     .required("Name is missing!")
     .min(3, "Name is too short!")
     .max(20, "Name is too long!"),
-  email: yup.string().required("Email is missing!").email("Invalid email id!"),
+  email: yup.string().required("Email is missing!").email("Invalid email !"),
   password: yup
     .string()
     .trim()
