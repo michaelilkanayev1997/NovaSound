@@ -1,7 +1,6 @@
-// interface (typescript)
-
 import { Model, model, ObjectId, Schema } from "mongoose";
 
+// interface (typescript)
 interface UserDocument {
   name: string;
   email: string;
