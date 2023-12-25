@@ -5,7 +5,7 @@ import crypto from "crypto";
 import { CreateUser, VerifyEmailRequest } from "#/@types/user";
 import User from "#/models/user";
 import { generateToken } from "#/utils/helper";
-import { sendVerificationMail } from "#/utils/mail";
+import { sendForgetPasswordLink, sendVerificationMail } from "#/utils/mail";
 import EmailVerificationToken from "#/models/emailVerificationToken";
 import PasswordResetToken from "#/models/passwordResetToken";
 import { PASSWORD_RESET_LINK } from "#/utils/variables";
@@ -94,6 +94,8 @@ export const generateForgetPasswordLink: RequestHandler = async (req, res) => {
 
   const token = crypto.randomBytes(36).toString("hex");
 
+  await PasswordResetToken.findOneAndDelete({ owner: user._id });
+
   await PasswordResetToken.create({
     owner: user._id,
     token,
@@ -101,5 +103,7 @@ export const generateForgetPasswordLink: RequestHandler = async (req, res) => {
 
   const resetLink = `${PASSWORD_RESET_LINK}?token=${token}&userId=${user._id}`;
 
-  return res.json({ resetLink });
+  sendForgetPasswordLink({ email, link: resetLink });
+
+  return res.json({ message: "Check your registered mail." });
 };
