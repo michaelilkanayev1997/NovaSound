@@ -5,7 +5,11 @@ import crypto from "crypto";
 import { CreateUser, VerifyEmailRequest } from "#/@types/user";
 import User from "#/models/user";
 import { generateToken } from "#/utils/helper";
-import { sendForgetPasswordLink, sendVerificationMail } from "#/utils/mail";
+import {
+  sendForgetPasswordLink,
+  sendPassResetSuccessEmail,
+  sendVerificationMail,
+} from "#/utils/mail";
 import EmailVerificationToken from "#/models/emailVerificationToken";
 import PasswordResetToken from "#/models/passwordResetToken";
 import { PASSWORD_RESET_LINK } from "#/utils/variables";
@@ -108,20 +112,30 @@ export const generateForgetPasswordLink: RequestHandler = async (req, res) => {
   return res.json({ message: "Check your registered mail." });
 };
 
-export const isValidPassResetToken: RequestHandler = async (req, res) => {
-  const { token, userId } = req.body;
+export const grantValid: RequestHandler = async (req, res) => {
+  return res.json({ valid: true });
+};
 
-  const resetToken = await PasswordResetToken.findOne({ owner: userId });
-  if (!resetToken)
+export const updatePassword: RequestHandler = async (req, res) => {
+  const { password, userId } = req.body;
+
+  const user = await User.findById(userId);
+  if (!user) return res.status(403).json({ error: "Unauthorized access!" });
+
+  const matched = await user.comparePassword(password);
+  if (matched)
     return res
-      .status(403)
-      .json({ error: "Unauthorized access,invalid token!" });
+      .status(422)
+      .json({ error: "The new password must be different!" });
 
-  const matched = await resetToken.compareToken(token);
-  if (!matched)
-    return res
-      .status(403)
-      .json({ error: "Unauthorized access,invalid token!" });
+  user.password = password;
+  await user.save();
 
-  return res.json({ message: "Your token is valid." });
+  await PasswordResetToken.findOneAndDelete({ owner: user._id });
+
+  // send the success email notification
+
+  sendPassResetSuccessEmail(user.name, user.email);
+
+  return res.json({ message: "Password updated successfully!" });
 };
