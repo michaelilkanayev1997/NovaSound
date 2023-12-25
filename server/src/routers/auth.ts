@@ -5,13 +5,14 @@ import {
   sendReVerificationToken,
   verifyEmail,
   generateForgetPasswordLink,
-  isValidPassResetToken,
+  grantValid,
 } from "#/controllers/user";
 import { validate } from "#/middleware/validator";
 import {
   CreateUserSchema,
   TokenAndIdValidation,
 } from "#/utils/validationSchema";
+import { isValidPassResetToken } from "#/middleware/auth";
 
 const router = Router();
 
@@ -22,7 +23,8 @@ router.post("/forget-password", generateForgetPasswordLink);
 router.post(
   "/verify-pass-reset-token",
   validate(TokenAndIdValidation),
-  isValidPassResetToken
+  isValidPassResetToken,
+  grantValid
 );
 
 export default router;
