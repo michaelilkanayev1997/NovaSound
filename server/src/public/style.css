@@ -16,11 +16,11 @@ body {
 }
 
 #error {
-  background-color: rgb(250, 42, 42);
+  background-color: #ff4d4d; /* Light red for error */
 }
 
 #success {
-  background-color: rgb(17, 232, 17);
+  background-color: #2ecc71; /* Green for success */
 }
 
 #container {
