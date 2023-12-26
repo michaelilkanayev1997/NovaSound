@@ -1,78 +1,79 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f4f4;
 }
 
-.notification-container {
-  padding: 10px;
-  text-align: center;
-  color: white;
-  margin-bottom: 20px;
-}
-
-#loader {
-  text-align: center;
-}
-
-#error {
-  background-color: #ff4d4d; /* Light red for error */
-}
-
-#success {
-  background-color: #2ecc71; /* Green for success */
+h1#loader {
+  display: none;
 }
 
 #container {
-  width: 500px;
+  width: 400px;
   margin: 50px auto;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
   background-color: #fff;
 }
 
-#container h2 {
+h2 {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  color: #333;
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 label {
   display: block;
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
+  color: #555;
 }
 
-input[type="email"],
-input[type="password"],
-input[type="text"] {
+input[type="password"] {
   display: block;
-  width: 100%;
-  padding: 10px;
+  width: calc(100% - 20px);
+  padding: 12px;
   border-radius: 5px;
   border: 1px solid #ccc;
   box-sizing: border-box;
+  font-size: 16px;
 }
 
 button[type="submit"] {
   display: block;
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   border-radius: 5px;
   border: none;
-  background-color: #1e90ff;
+  background-color: #3498db;
   color: #fff;
   cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
 }
 
 button[type="submit"]:hover {
-  background-color: #0077b3;
+  background-color: #2980b9;
 }
 
-.busy {
-  opacity: 0.5;
+.notification-container {
+  padding: 12px;
+  text-align: center;
+  color: white;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
+#error {
+  background-color: #e74c3c; /* Light red for error */
+}
+
+#success {
+  background-color: #27ae60; /* Green for success */
 }
