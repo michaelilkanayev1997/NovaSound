@@ -8,6 +8,7 @@ import {
   grantValid,
   updatePassword,
   signIn,
+  updateProfile,
 } from "#/controllers/user";
 import { validate } from "#/middleware/validator";
 import {
@@ -41,9 +42,6 @@ router.post("/sign-in", validate(SignInValidationSchema), signIn);
 router.get("/is-auth", mustAuth, (req, res) => {
   res.json({ profile: req.user });
 });
-router.post("/update-profile", fileParser, (req: RequestWithFiles, res) => {
-  console.log(req.files);
-  res.json({ of: true });
-});
+router.post("/update-profile", mustAuth, fileParser, updateProfile);
 
 export default router;
