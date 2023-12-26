@@ -17,6 +17,7 @@ import {
   UpdatePasswordSchema,
 } from "#/utils/validationSchema";
 import { isValidPassResetToken, mustAuth } from "#/middleware/auth";
+import fileParser, { RequestWithFiles } from "#/middleware/fileParser";
 
 const router = Router();
 
@@ -40,36 +41,9 @@ router.post("/sign-in", validate(SignInValidationSchema), signIn);
 router.get("/is-auth", mustAuth, (req, res) => {
   res.json({ profile: req.user });
 });
-
-import formidable from "formidable";
-import path from "path";
-import fs from "fs";
-
-router.post("/update-profile", async (req, res) => {
-  if (!req.headers["content-type"]?.startsWith("multipart/form-data"))
-    return res.status(422).json({ error: "Only accepts multipart/form-data" });
-
-  const dir = path.join(__dirname, "../public/profiles");
-
-  try {
-    await fs.readdirSync(dir); // Cheack if dir exists
-  } catch (error) {
-    await fs.mkdirSync(dir); //if there is no dir, create this dir
-  }
-
-  // handle the file upload
-  const form = formidable({
-    uploadDir: dir,
-    filename(name, ext, part, form) {
-      return Date.now() + "_" + part.originalFilename;
-    },
-  });
-  form.parse(req, (err, fields, files) => {
-    console.log("fields: ", fields);
-    console.log("files: ", files);
-
-    res.json({ uploaded: true });
-  });
+router.post("/update-profile", fileParser, (req: RequestWithFiles, res) => {
+  console.log(req.files);
+  res.json({ of: true });
 });
 
 export default router;
