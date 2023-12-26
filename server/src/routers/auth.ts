@@ -42,13 +42,28 @@ router.get("/is-auth", mustAuth, (req, res) => {
 });
 
 import formidable from "formidable";
+import path from "path";
+import fs from "fs";
 
-router.post("/update-profile", (req, res) => {
+router.post("/update-profile", async (req, res) => {
   if (!req.headers["content-type"]?.startsWith("multipart/form-data"))
     return res.status(422).json({ error: "Only accepts multipart/form-data" });
 
+  const dir = path.join(__dirname, "../public/profiles");
+
+  try {
+    await fs.readdirSync(dir); // Cheack if dir exists
+  } catch (error) {
+    await fs.mkdirSync(dir); //if there is no dir, create this dir
+  }
+
   // handle the file upload
-  const form = formidable();
+  const form = formidable({
+    uploadDir: dir,
+    filename(name, ext, part, form) {
+      return Date.now() + "_" + part.originalFilename;
+    },
+  });
   form.parse(req, (err, fields, files) => {
     console.log("fields: ", fields);
     console.log("files: ", files);
