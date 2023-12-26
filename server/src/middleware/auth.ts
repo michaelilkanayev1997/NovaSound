@@ -3,7 +3,6 @@ import { JwtPayload, verify } from "jsonwebtoken";
 
 import passwordResetToken from "#/models/passwordResetToken";
 import { JWT_SECRET } from "#/utils/variables";
-
 import User from "#/models/user";
 
 export const isValidPassResetToken: RequestHandler = async (req, res, next) => {

@@ -7,7 +7,7 @@ interface UserDocument {
   email: string;
   password: string;
   verified: boolean;
-  avatar?: { url: String; publicId: string };
+  avatar?: { url: string; publicId: string };
   tokens: string[];
   favorites: ObjectId[];
   followers: ObjectId[];
