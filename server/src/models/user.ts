@@ -2,7 +2,8 @@ import { compare, hash } from "bcrypt";
 import { Model, model, ObjectId, Schema } from "mongoose";
 
 // interface (typescript)
-interface UserDocument {
+export interface UserDocument {
+  _id: ObjectId;
   name: string;
   email: string;
   password: string;
