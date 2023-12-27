@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 import { CreateUser, VerifyEmailRequest } from "#/@types/user";
 import User from "#/models/user";
-import { generateToken } from "#/utils/helper";
+import { formatProfile, generateToken } from "#/utils/helper";
 import {
   sendForgetPasswordLink,
   sendPassResetSuccessEmail,
@@ -219,5 +219,9 @@ export const updateProfile: RequestHandler = async (
   }
   await user.save();
 
-  res.json({ avatar: user.avatar });
+  res.json({ profile: formatProfile(user) });
+};
+
+export const sendProfile: RequestHandler = (req, res) => {
+  res.json({ profile: req.user });
 };

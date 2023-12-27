@@ -8,7 +8,7 @@ import {
   grantValid,
   updatePassword,
   signIn,
-  updateProfile,
+  updateProfile,sendProfile
 } from "#/controllers/user";
 import { validate } from "#/middleware/validator";
 import {
@@ -18,7 +18,7 @@ import {
   UpdatePasswordSchema,
 } from "#/utils/validationSchema";
 import { isValidPassResetToken, mustAuth } from "#/middleware/auth";
-import fileParser, { RequestWithFiles } from "#/middleware/fileParser";
+import fileParser from "#/middleware/fileParser";
 
 const router = Router();
 
@@ -39,9 +39,7 @@ router.post(
   updatePassword
 );
 router.post("/sign-in", validate(SignInValidationSchema), signIn);
-router.get("/is-auth", mustAuth, (req, res) => {
-  res.json({ profile: req.user });
-});
+router.get("/is-auth", mustAuth, sendProfile]);
 router.post("/update-profile", mustAuth, fileParser, updateProfile);
 
 export default router;
