@@ -1,11 +1,10 @@
 import { Request } from "express";
-import { Types } from "mongoose";
 
 declare global {
   namespace Express {
     interface Request {
       user: {
-        id: Types.ObjectId;
+        id: any;
         name: string;
         email: string;
         verified: boolean;
@@ -13,6 +12,7 @@ declare global {
         followers: number;
         followings: number;
       };
+      token: string;
     }
   }
 }
