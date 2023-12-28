@@ -8,8 +8,10 @@ import {
   grantValid,
   updatePassword,
   signIn,
-  updateProfile,sendProfile
-} from "#/controllers/user";
+  updateProfile,
+  sendProfile,
+  logOut,
+} from "#/controllers/auth";
 import { validate } from "#/middleware/validator";
 import {
   CreateUserSchema,
@@ -39,7 +41,8 @@ router.post(
   updatePassword
 );
 router.post("/sign-in", validate(SignInValidationSchema), signIn);
-router.get("/is-auth", mustAuth, sendProfile]);
+router.get("/is-auth", mustAuth, sendProfile);
 router.post("/update-profile", mustAuth, fileParser, updateProfile);
+router.post("/log-out", mustAuth, logOut);
 
 export default router;
