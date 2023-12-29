@@ -14,13 +14,13 @@ const playlistSchema = new Schema<PlaylistDocument>(
       required: true,
     },
     owner: {
-      type: String,
+      type: Schema.Types.ObjectId,
       required: true,
       ref: "User",
     },
     items: [
       {
-        type: String,
+        type: Schema.Types.ObjectId,
         required: true,
         ref: "Audio",
       },
