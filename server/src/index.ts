@@ -7,11 +7,16 @@ import audioRouter from "./routers/audio";
 import favoriteRouter from "./routers/favorite";
 import playlistRouter from "./routers/playlist";
 
+// create a server
 const app = express();
 
-// register middleware
+/******** register middleware ********/
+
+// this will parse post request coming from fetch.post() method
 app.use(express.json());
+// this will parse post request coming from html form
 app.use(express.urlencoded({ extended: false }));
+// this is the static folder
 app.use(express.static("src/public"));
 
 app.use("/auth", authRouter);
