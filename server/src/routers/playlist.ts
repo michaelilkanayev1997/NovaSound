@@ -3,6 +3,7 @@ import {
   updatePlaylist,
   removePlaylist,
   getPlaylistByProfile,
+  getAudios,
 } from "#/controllers/playlist";
 import { isVerified, mustAuth } from "#/middleware/auth";
 import { validate } from "#/middleware/validator";
@@ -29,5 +30,6 @@ router.patch(
 );
 router.delete("/", mustAuth, removePlaylist);
 router.get("/by-profile", mustAuth, getPlaylistByProfile);
+router.get("/:playlistId", mustAuth, getAudios);
 
 export default router;
