@@ -1,6 +1,6 @@
 import { Model, model, models, ObjectId, Schema } from "mongoose";
 
-type historyType = { audio: ObjectId; progress: number; date: Date };
+export type historyType = { audio: ObjectId; progress: number; date: Date };
 
 interface HistoryDocument {
   owner: ObjectId;
