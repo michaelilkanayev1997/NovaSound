@@ -1,8 +1,8 @@
 import { RequestHandler } from "express";
-import { isValidObjectId } from "mongoose";
+import { ObjectId, isValidObjectId } from "mongoose";
 import User from "#/models/user";
 import { paginationQuery } from "#/@types/misc";
-import Audio from "#/models/audio";
+import Audio, { AudioDocument } from "#/models/audio";
 
 export const updateFollower: RequestHandler = async (req, res) => {
   const { profileId } = req.params;
@@ -82,6 +82,35 @@ export const getUploads: RequestHandler = async (req, res) => {
       poster: item.poster?.url,
       date: item.createdAt,
       owner: { name: req.user.name, id: req.user.id },
+    };
+  });
+
+  res.json({ audios });
+};
+
+export const getPublicUploads: RequestHandler = async (req, res) => {
+  const { limit = "20", pageNo = "0" } = req.query as paginationQuery;
+  const { profileId } = req.params;
+
+  // Check if profileId is a valid object id
+  if (!isValidObjectId(profileId))
+    return res.status(422).json({ error: "Invalid profile id!" });
+
+  const data = await Audio.find({ owner: profileId })
+    .skip(parseInt(limit) * parseInt(pageNo))
+    .limit(parseInt(limit))
+    .sort("-createdAt")
+    .populate<AudioDocument<{ name: string; _id: ObjectId }>>("owner");
+
+  const audios = data.map((item) => {
+    return {
+      id: item._id,
+      title: item.title,
+      about: item.about,
+      file: item.file.url,
+      poster: item.poster?.url,
+      date: item.createdAt,
+      owner: { name: item.owner.name, id: item.owner._id },
     };
   });
 
