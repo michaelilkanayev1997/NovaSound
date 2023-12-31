@@ -6,7 +6,8 @@ export const updateFollower: RequestHandler = async (req, res) => {
   const { profileId } = req.params;
   let status: "added" | "removed";
 
-  if (!isValidObjectId(profileId))
+  // Check if profileId is a valid object id OR profileId is now the authenticated user
+  if (!isValidObjectId(profileId) || profileId === req.user.id.toString())
     return res.status(422).json({ error: "Invalid profile id!" });
 
   const profile = await User.findById(profileId);
