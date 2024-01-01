@@ -62,3 +62,23 @@ export const updateHistory: RequestHandler = async (req, res) => {
 
   res.json({ success: true });
 };
+
+export const removeHistory: RequestHandler = async (req, res) => {
+  const removeAll = req.query.all === "yes";
+
+  if (removeAll) {
+    // remove all the history
+    await History.findOneAndDelete({ owner: req.user.id });
+    return res.json({ success: true });
+  }
+
+  // remove specific history
+  const histories = req.query.histories as string;
+  const ids = JSON.parse(histories) as string[];
+  await History.findOneAndUpdate(
+    { owner: req.user.id },
+    { $pull: { all: { _id: ids } } }
+  );
+
+  res.json({ success: true });
+};
