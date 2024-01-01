@@ -181,11 +181,10 @@ export const getRecommendedByProfile: RequestHandler = async (req, res) => {
     // then we want to send by the profile
 
     // fetch users previous history
-    const histories = await getUsersPreviousHistory(req);
+    const category = await getUsersPreviousHistory(req);
 
-    const categories = histories.category;
-    if (categories.length) {
-      matchOptions = { $match: { category: { $in: categories } } };
+    if (category.length) {
+      matchOptions = { $match: { category: { $in: category } } };
     }
   }
 
