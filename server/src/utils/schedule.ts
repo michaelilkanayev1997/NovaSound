@@ -6,17 +6,19 @@ import Audio from "#/models/audio";
 /* The five fields in the cron syntax represent (in order) minutes, 
 hours, day of the month, month, and day of the week*/
 
+// Test : 2 seconds -> */2 * * * * *
+
 const generatePlaylist = async () => {
   const result = await Audio.aggregate([
     { $sort: { likes: -1 } },
+    {
+      $sample: { size: 20 },
+    },
     {
       $group: {
         _id: "$category",
         audios: { $push: "$$ROOT._id" },
       },
-    },
-    {
-      $limit: 20,
     },
   ]);
 
@@ -29,7 +31,7 @@ const generatePlaylist = async () => {
   });
 };
 
-cron.schedule("0 0 * * *", async () => {
+cron.schedule("0 0 0 * * *", async () => {
   // Run every 24 hrs
   await generatePlaylist();
 });
