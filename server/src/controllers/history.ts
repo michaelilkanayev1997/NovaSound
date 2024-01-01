@@ -33,12 +33,12 @@ export const updateHistory: RequestHandler = async (req, res) => {
     { $match: { owner: req.user.id } },
     { $unwind: "$all" },
     { $match: { "all.date": { $gte: startOfDay, $lt: endOfDay } } },
-    { $project: { _id: 0, audio: "$all.audio" } },
+    { $project: { _id: 0, audioId: "$all.audio" } },
   ]);
 
-  const sameDayHistory = histories.find((item) => {
-    if (item.audio.toString() === audio) return item;
-  });
+  const sameDayHistory = histories.find(
+    ({ audioId }) => audioId.toString() === audio
+  );
 
   if (sameDayHistory) {
     await History.findOneAndUpdate(
