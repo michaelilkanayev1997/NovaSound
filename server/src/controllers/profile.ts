@@ -83,6 +83,7 @@ export const getUploads: RequestHandler = async (req, res) => {
       title: item.title,
       about: item.about,
       file: item.file.url,
+      category: item.category,
       poster: item.poster?.url,
       date: item.createdAt,
       owner: { name: req.user.name, id: req.user.id },

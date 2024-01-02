@@ -34,6 +34,6 @@ router.get(
   mustAuth,
   getPrivatePlaylistAudios
 );
-router.get("/is-following/:profileId", getIsFollowing);
+router.get("/is-following/:profileId", mustAuth, getIsFollowing);
 
 export default router;
