@@ -327,3 +327,50 @@ export const getFollowersProfile: RequestHandler = async (req, res) => {
 
   res.json({ followers: result.followers });
 };
+
+export const getFollowingsProfile: RequestHandler = async (req, res) => {
+  const { limit = "20", pageNo = "0" } = req.query as paginationQuery;
+
+  const [result] = await User.aggregate([
+    { $match: { _id: req.user.id } },
+    {
+      $project: {
+        followings: {
+          $slice: [
+            "$followings",
+            parseInt(pageNo) * parseInt(limit),
+            parseInt(limit),
+          ],
+        },
+      },
+    },
+    { $unwind: "$followings" },
+    {
+      $lookup: {
+        from: "users",
+        localField: "followings",
+        foreignField: "_id",
+        as: "userInfo",
+      },
+    },
+    { $unwind: "$userInfo" },
+    {
+      $group: {
+        _id: null,
+        followings: {
+          $push: {
+            id: "$userInfo._id",
+            name: "$userInfo.name",
+            avatar: "$userInfo.avatar.url",
+          },
+        },
+      },
+    },
+  ]);
+
+  if (!result) {
+    return result.json({ followings: [] });
+  }
+
+  res.json({ followings: result.followings });
+};
