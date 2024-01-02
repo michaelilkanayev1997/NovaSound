@@ -10,6 +10,8 @@ import {
   getFollowingsProfile,
   getFollowersProfilePublic,
   getPlaylistAudios,
+  getPrivatePlaylistAudios,
+  getIsFollowing,
 } from "#/controllers/profile";
 import { isAuth, mustAuth } from "#/middleware/auth";
 import { Router } from "express";
@@ -27,5 +29,11 @@ router.get("/followers", mustAuth, getFollowersProfile);
 router.get("/followers/:profileId", mustAuth, getFollowersProfilePublic);
 router.get("/followings", mustAuth, getFollowingsProfile);
 router.get("/playlist-audios/:playlistId", getPlaylistAudios);
+router.get(
+  "/private-playlist-audios/:playlistId",
+  mustAuth,
+  getPrivatePlaylistAudios
+);
+router.get("/is-following/:profileId", mustAuth, getIsFollowing);
 
 export default router;
