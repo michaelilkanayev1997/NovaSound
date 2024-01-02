@@ -11,6 +11,7 @@ import {
   getFollowersProfilePublic,
   getPlaylistAudios,
   getPrivatePlaylistAudios,
+  getIsFollowing,
 } from "#/controllers/profile";
 import { isAuth, mustAuth } from "#/middleware/auth";
 import { Router } from "express";
@@ -33,5 +34,6 @@ router.get(
   mustAuth,
   getPrivatePlaylistAudios
 );
+router.get("/is-following/:profileId", getIsFollowing);
 
 export default router;

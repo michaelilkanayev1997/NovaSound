@@ -601,3 +601,14 @@ export const getPrivatePlaylistAudios: RequestHandler = async (req, res) => {
 
   res.json({ list: playlistResult });
 };
+
+export const getIsFollowing: RequestHandler = async (req, res) => {
+  const { profileId } = req.params;
+
+  if (!isValidObjectId(profileId))
+    return res.status(422).json({ error: "Invalid profile id!" });
+
+  const user = await User.findOne({ _id: profileId, followers: req.user.id });
+
+  res.json({ status: user ? true : false });
+};
