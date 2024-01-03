@@ -34,6 +34,7 @@ const AuthInputField: FC<Props> = props => {
     value,
     onChange,
   } = props;
+
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={styles.labelContainer}>

@@ -8,7 +8,6 @@ const AppInput: FC<Props> = props => {
   return (
     <TextInput
       {...props}
-      placeholder="Name"
       placeholderTextColor={colors.INACTIVE_CONTRAST}
       style={[styles.input, props.style]}
     />
