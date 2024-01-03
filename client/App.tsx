@@ -1,10 +1,11 @@
-import {Text, View} from 'react-native';
+import {SafeAreaView} from 'react-native';
+import Test from './src/components/Test';
 
 const App = () => {
   return (
-    <View>
-      <Text>Hello World !</Text>
-    </View>
+    <SafeAreaView>
+      <Test name="john" />
+    </SafeAreaView>
   );
 };
 
