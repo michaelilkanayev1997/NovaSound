@@ -1,15 +1,10 @@
-import AuthInputField from '@components/AuthInputField';
+import AuthInputField from '@components/form/AuthInputField';
+import Form from '@components/form';
 import colors from '@utils/colors';
-import {Formik} from 'formik';
-import {FC, useState} from 'react';
-import {
-  Button,
-  GestureResponderEvent,
-  SafeAreaView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import {FC} from 'react';
+import {SafeAreaView, StyleSheet, View} from 'react-native';
 import * as yup from 'yup';
+import SubmitBtn from '@components/form/SubmitBtn';
 
 const signupSchema = yup.object({
   name: yup
@@ -42,58 +37,40 @@ const initialValues = {
 };
 
 const SignUp: FC<Props> = props => {
-  const [userInfo, setUserInfo] = useState({
-    name: '',
-    email: '',
-    password: '',
-  });
-
   return (
     <SafeAreaView style={styles.container}>
-      <Formik
+      <Form
         onSubmit={values => {
           console.log(values);
         }}
         initialValues={initialValues}
         validationSchema={signupSchema}>
-        {({handleSubmit, handleChange, errors, values}) => {
-          return (
-            <View style={styles.formContainer}>
-              <AuthInputField
-                placeholder="Name"
-                label="Enter Your Name"
-                containerStyle={styles.marginBottom}
-                onChange={handleChange('name')}
-                value={values.name}
-                errorMsg={errors.name}
-              />
-              <AuthInputField
-                placeholder="Email"
-                label="Enter Your Email"
-                keyboardType="email-address"
-                autoCapitalize="none"
-                containerStyle={styles.marginBottom}
-                onChange={handleChange('email')}
-                value={values.email}
-                errorMsg={errors.email}
-              />
-              <AuthInputField
-                placeholder="Password"
-                label="Enter Your Password"
-                autoCapitalize="none"
-                secureTextEntry
-                onChange={handleChange('password')}
-                value={values.password}
-                errorMsg={errors.password}
-              />
-              <Button
-                onPress={handleSubmit as (e?: GestureResponderEvent) => void}
-                title="Sign up"
-              />
-            </View>
-          );
-        }}
-      </Formik>
+        <View style={styles.formContainer}>
+          <AuthInputField
+            name="name"
+            placeholder="Name"
+            label="Enter Your Name"
+            containerStyle={styles.marginBottom}
+          />
+          <AuthInputField
+            name="email"
+            placeholder="Enter"
+            label="Enter Your Email"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            containerStyle={styles.marginBottom}
+          />
+          <AuthInputField
+            name="password"
+            placeholder="Password"
+            label="Enter Your Password"
+            autoCapitalize="none"
+            secureTextEntry
+            containerStyle={styles.marginBottom}
+          />
+          <SubmitBtn title="Sign up" />
+        </View>
+      </Form>
     </SafeAreaView>
   );
 };
