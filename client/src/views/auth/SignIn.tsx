@@ -55,6 +55,8 @@ const SignIn: FC<Props> = props => {
     actions: FormikHelpers<SignInUserInfo>,
   ) => {
     try {
+      actions.setSubmitting(true); // Activate busy for loader
+
       const {data} = await client.post('/auth/sign-in', {
         ...values,
       });
@@ -63,6 +65,8 @@ const SignIn: FC<Props> = props => {
     } catch (error) {
       console.log('Sign in error: ', error);
     }
+
+    actions.setSubmitting(false); // Deactivate busy for loader
   };
 
   // Splash screen Timer on Start Up
