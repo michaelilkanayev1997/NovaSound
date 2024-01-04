@@ -9,7 +9,11 @@ const Stack = createNativeStackNavigator<AuthStackParamList>();
 
 const AuthNavigator = () => {
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+        animation: 'slide_from_right',
+      }}>
       <Stack.Screen name="SignIn" component={SignIn} />
       <Stack.Screen name="SignUp" component={SignUp} />
       <Stack.Screen name="LostPassword" component={LostPassword} />
