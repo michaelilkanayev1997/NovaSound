@@ -6,9 +6,10 @@ import Loader from './Loader';
 interface Props {
   title: string;
   onPress?(): void;
+  busy?: boolean;
 }
 
-const AppButton: FC<Props> = ({title, onPress}) => {
+const AppButton: FC<Props> = ({title, busy, onPress}) => {
   return (
     <Pressable
       onPress={onPress}
@@ -16,8 +17,7 @@ const AppButton: FC<Props> = ({title, onPress}) => {
         styles.container,
         {backgroundColor: pressed ? colors.THIRD : colors.SECONDARY},
       ]}>
-      {/* <Text style={styles.title}>{title}</Text> */}
-      <Loader />
+      {!busy ? <Text style={styles.title}>{title}</Text> : <Loader />}
     </Pressable>
   );
 };

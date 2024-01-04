@@ -12,8 +12,6 @@ import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.react.flipper.ReactNativeFlipper
 import com.facebook.soloader.SoLoader
 
-import com.corbt.keepawake.KCKeepAwakePackage;
-
 class MainApplication : Application(), ReactApplication {
 
   override val reactNativeHost: ReactNativeHost =
@@ -22,7 +20,7 @@ class MainApplication : Application(), ReactApplication {
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
 
-          packages.add(KCKeepAwakePackage()) // Add KCKeepAwakePackage 
+    
           
           return PackageList(this).packages
         }

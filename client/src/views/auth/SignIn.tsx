@@ -12,7 +12,6 @@ import {AuthStackParamList} from 'src/@types/navigation';
 import {FormikHelpers} from 'formik';
 import client from 'src/api/client';
 import GlobalLoading from '../../components/GlobalLoading';
-import KeepAwake from 'react-native-keep-awake';
 
 const signinSchema = yup.object({
   email: yup
@@ -77,7 +76,6 @@ const SignIn: FC<Props> = props => {
 
   return (
     <>
-      <KeepAwake />
       {isLoading ? (
         <GlobalLoading />
       ) : (
