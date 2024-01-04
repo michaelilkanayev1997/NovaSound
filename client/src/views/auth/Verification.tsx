@@ -1,5 +1,5 @@
-import {FC} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {FC, useRef, useState} from 'react';
+import {StyleSheet, TextInput, View} from 'react-native';
 import AppLink from '@ui/AppLink';
 import AuthFormContainer from '@components/AuthFormContainer';
 import OTPField from '@ui/OTPField';
@@ -10,11 +10,15 @@ interface Props {}
 const otpFields = new Array(6).fill('');
 
 const Verification: FC<Props> = props => {
+  const [otp, setOtp] = useState([...otpFields]);
+
+  const inputRef = useRef<TextInput>(null);
+
   return (
     <AuthFormContainer heading="Please look at your email.">
       <View style={styles.inputContainer}>
         {otpFields.map((_, index) => {
-          return <OTPField key={index} placeholder="x" />;
+          return <OTPField ref={inputRef} key={index} placeholder="*" />;
         })}
       </View>
 
