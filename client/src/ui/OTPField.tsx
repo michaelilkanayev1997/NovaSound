@@ -13,8 +13,6 @@ const OTPField = forwardRef<TextInput, Props>((props, ref) => {
       ref={ref}
       style={[styles.input, props.style]}
       placeholderTextColor={colors.INACTIVE_CONTRAST}
-      keyboardType="numeric"
-      maxLength={1}
     />
   );
 });

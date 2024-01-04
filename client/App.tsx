@@ -9,7 +9,7 @@ I18nManager.allowRTL(false);
 I18nManager.forceRTL(false);
 
 const App = () => {
-  return <Verification />;
+  return <SignUp />;
 };
 
 export default App;

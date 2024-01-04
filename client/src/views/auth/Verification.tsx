@@ -1,5 +1,5 @@
 import {FC, useEffect, useRef, useState} from 'react';
-import {StyleSheet, TextInput, View} from 'react-native';
+import {Keyboard, StyleSheet, TextInput, View} from 'react-native';
 import AppLink from '@ui/AppLink';
 import AuthFormContainer from '@components/AuthFormContainer';
 import OTPField from '@ui/OTPField';
@@ -48,6 +48,8 @@ const Verification: FC<Props> = props => {
               onKeyPress={({nativeEvent}) => {
                 handleChange(nativeEvent.key, index);
               }}
+              keyboardType="numeric"
+              maxLength={1}
             />
           );
         })}
