@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
   },
   title: {
-    color: colors.CONTRAST,
+    color: colors.INACTIVE_CONTRAST,
     fontSize: 18,
   },
 });

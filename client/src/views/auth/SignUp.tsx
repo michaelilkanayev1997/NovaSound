@@ -2,11 +2,20 @@ import AuthInputField from '@components/form/AuthInputField';
 import Form from '@components/form';
 import colors from '@utils/colors';
 import {FC, useState} from 'react';
-import {SafeAreaView, StyleSheet, View} from 'react-native';
+import {
+  Dimensions,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import * as yup from 'yup';
 import SubmitBtn from '@components/form/SubmitBtn';
 import PasswordVisibilityIcon from '@ui/PasswordVisibilityIcon';
 import AppLink from '@ui/AppLink';
+
+const {width: screenWidth} = Dimensions.get('window');
 
 const signupSchema = yup.object({
   name: yup
@@ -47,6 +56,22 @@ const SignUp: FC<Props> = props => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.logoContainer}>
+        <Image
+          source={require('../../assets/logo.png')}
+          style={styles.logo}
+          resizeMode="contain"
+        />
+        <Text
+          style={{
+            color: colors.SECONDARY,
+            fontSize: 16,
+            fontWeight: 'bold',
+            paddingVertical: 15,
+          }}>
+          Let's get started by creating your account.
+        </Text>
+      </View>
       <Form
         onSubmit={values => {
           console.log(values);
@@ -97,7 +122,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  logoContainer: {
+    flex: 0.3,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
+  logo: {
+    width: screenWidth * 0.9, // Use a percentage of the screen width
+  },
   formContainer: {
+    flex: 0.7,
     width: '100%',
     paddingHorizontal: 15, // padding in the x direction (left and the right)
   },
