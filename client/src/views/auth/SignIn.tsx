@@ -8,12 +8,7 @@ import PasswordVisibilityIcon from '@ui/PasswordVisibilityIcon';
 import AppLink from '@ui/AppLink';
 import AuthFormContainer from '@components/AuthFormContainer';
 
-const signupSchema = yup.object({
-  name: yup
-    .string()
-    .trim('Name is missing!')
-    .min(3, 'Invalid name!')
-    .required('Name is required!'),
+const signinSchema = yup.object({
   email: yup
     .string()
     .trim('Email is missing!')
@@ -23,22 +18,17 @@ const signupSchema = yup.object({
     .string()
     .trim('Password is missing!')
     .min(8, 'Password is too short!')
-    .matches(
-      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#\$%\^&\*])[a-zA-Z\d!@#\$%\^&\*]+$/,
-      'Password is too simple!',
-    )
     .required('Password is required!'),
 });
 
 interface Props {}
 
 const initialValues = {
-  name: '',
   email: '',
   password: '',
 };
 
-const SignUp: FC<Props> = props => {
+const SignIn: FC<Props> = props => {
   const [secureEntry, setSecureEntry] = useState(true);
 
   const togglePasswordView = () => {
@@ -51,15 +41,9 @@ const SignUp: FC<Props> = props => {
         console.log(values);
       }}
       initialValues={initialValues}
-      validationSchema={signupSchema}>
-      <AuthFormContainer subHeading="Let's get started by creating your account.">
+      validationSchema={signinSchema}>
+      <AuthFormContainer heading="Welcome back.">
         <View style={styles.formContainer}>
-          <AuthInputField
-            name="name"
-            placeholder="Name"
-            label="Enter Your Name"
-            containerStyle={styles.marginBottom}
-          />
           <AuthInputField
             name="email"
             placeholder="Enter"
@@ -78,11 +62,11 @@ const SignUp: FC<Props> = props => {
             rightIcon={<PasswordVisibilityIcon privateIcon={secureEntry} />}
             onRightIconPress={togglePasswordView}
           />
-          <SubmitBtn title="Sign up" />
+          <SubmitBtn title="Sign in" />
 
           <View style={styles.linkContainer}>
             <AppLink title="Forgot Password" />
-            <AppLink title="Sign In" />
+            <AppLink title="Sign Up" />
           </View>
         </View>
       </AuthFormContainer>
@@ -92,7 +76,7 @@ const SignUp: FC<Props> = props => {
 
 const styles = StyleSheet.create({
   formContainer: {
-    flex: 0.8,
+    flex: 0.55,
     width: '100%',
   },
   marginBottom: {
@@ -107,4 +91,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignUp;
+export default SignIn;
