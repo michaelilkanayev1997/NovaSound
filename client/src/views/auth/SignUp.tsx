@@ -6,6 +6,7 @@ import {SafeAreaView, StyleSheet, View} from 'react-native';
 import * as yup from 'yup';
 import SubmitBtn from '@components/form/SubmitBtn';
 import PasswordVisibilityIcon from '@ui/PasswordVisibilityIcon';
+import AppLink from '@ui/AppLink';
 
 const signupSchema = yup.object({
   name: yup
@@ -78,6 +79,11 @@ const SignUp: FC<Props> = props => {
             onRightIconPress={togglePasswordView}
           />
           <SubmitBtn title="Sign up" />
+
+          <View style={styles.linkContainer}>
+            <AppLink title="Forgot Password" />
+            <AppLink title="Sign In" />
+          </View>
         </View>
       </Form>
     </SafeAreaView>
@@ -97,6 +103,13 @@ const styles = StyleSheet.create({
   },
   marginBottom: {
     marginBottom: 20,
+  },
+  linkContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 20,
+    paddingHorizontal: 8,
   },
 });
 
