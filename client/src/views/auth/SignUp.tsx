@@ -62,16 +62,19 @@ const SignUp: FC<Props> = props => {
           style={styles.logo}
           resizeMode="contain"
         />
+      </View>
+      <View style={styles.titleContainer}>
         <Text
           style={{
             color: colors.SECONDARY,
             fontSize: 16,
             fontWeight: 'bold',
-            paddingVertical: 15,
+            paddingVertical: 5,
           }}>
           Let's get started by creating your account.
         </Text>
       </View>
+
       <Form
         onSubmit={values => {
           console.log(values);
@@ -123,16 +126,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   logoContainer: {
-    flex: 0.3,
+    flex: 0.2,
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
   },
   logo: {
+    height: 60,
     width: screenWidth * 0.9, // Use a percentage of the screen width
   },
+  titleContainer: {
+    flex: 0.1,
+  },
   formContainer: {
-    flex: 0.7,
+    flex: 0.8,
     width: '100%',
     paddingHorizontal: 15, // padding in the x direction (left and the right)
   },
