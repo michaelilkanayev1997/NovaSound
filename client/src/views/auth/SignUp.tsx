@@ -10,7 +10,7 @@ import AuthFormContainer from '@components/AuthFormContainer';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {AuthStackParamList} from 'src/@types/navigation';
 import {FormikHelpers} from 'formik';
-import axios from 'axios';
+import client from 'src/api/client';
 
 const signupSchema = yup.object({
   name: yup
@@ -61,13 +61,11 @@ const SignUp: FC<Props> = props => {
     actions: FormikHelpers<NewUser>,
   ) => {
     try {
-      const response = await axios.post(
-        'http://192.168.56.1:8000/auth/create',
-        {
-          ...values,
-        },
-      );
-      console.log(response);
+      const {data} = await client.post('/auth/create', {
+        ...values,
+      });
+
+      navigation.navigate('Verification', {userInfo: data.user});
     } catch (error) {
       console.log('Sign up error: ', error);
     }
