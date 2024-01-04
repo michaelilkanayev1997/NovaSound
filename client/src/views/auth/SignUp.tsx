@@ -4,6 +4,7 @@ import colors from '@utils/colors';
 import {FC, useState} from 'react';
 import {
   Dimensions,
+  I18nManager,
   Image,
   SafeAreaView,
   StyleSheet,
@@ -14,6 +15,10 @@ import * as yup from 'yup';
 import SubmitBtn from '@components/form/SubmitBtn';
 import PasswordVisibilityIcon from '@ui/PasswordVisibilityIcon';
 import AppLink from '@ui/AppLink';
+
+// Force LTR text direction
+I18nManager.allowRTL(false);
+I18nManager.forceRTL(false);
 
 const {width: screenWidth} = Dimensions.get('window');
 
