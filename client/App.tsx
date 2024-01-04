@@ -1,3 +1,4 @@
+import LostPassword from '@views/auth/LostPassword';
 import SignIn from '@views/auth/SignIn';
 import SignUp from '@views/auth/SignUp';
 import {I18nManager} from 'react-native';
@@ -7,7 +8,7 @@ I18nManager.allowRTL(false);
 I18nManager.forceRTL(false);
 
 const App = () => {
-  return <SignIn />;
+  return <LostPassword />;
 };
 
 export default App;

@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     width: screenWidth * 0.9, // Use a percentage of the screen width
   },
   titleContainer: {
-    flex: 0.1,
+    flex: 0.15,
   },
 });
 
