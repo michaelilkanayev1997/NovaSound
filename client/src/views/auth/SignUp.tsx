@@ -7,9 +7,10 @@ import SubmitBtn from '@components/form/SubmitBtn';
 import PasswordVisibilityIcon from '@ui/PasswordVisibilityIcon';
 import AppLink from '@ui/AppLink';
 import AuthFormContainer from '@components/AuthFormContainer';
-import {SignIn} from '@views/auth/SignIn';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {AuthStackParamList} from 'src/@types/navigation';
+import {FormikHelpers} from 'formik';
+import axios from 'axios';
 
 const signupSchema = yup.object({
   name: yup
@@ -35,6 +36,12 @@ const signupSchema = yup.object({
 
 interface Props {}
 
+interface NewUser {
+  name: string;
+  email: string;
+  password: string;
+}
+
 const initialValues = {
   name: '',
   email: '',
@@ -49,11 +56,26 @@ const SignUp: FC<Props> = props => {
     setSecureEntry(!secureEntry);
   };
 
+  const handleSubmit = async (
+    values: NewUser,
+    actions: FormikHelpers<NewUser>,
+  ) => {
+    try {
+      const response = await axios.post(
+        'http://192.168.56.1:8000/auth/create',
+        {
+          ...values,
+        },
+      );
+      console.log(response);
+    } catch (error) {
+      console.log('Sign up error: ', error);
+    }
+  };
+
   return (
     <Form
-      onSubmit={values => {
-        console.log(values);
-      }}
+      onSubmit={handleSubmit}
       initialValues={initialValues}
       validationSchema={signupSchema}>
       <AuthFormContainer subHeading="Let's get started by creating your account.">
