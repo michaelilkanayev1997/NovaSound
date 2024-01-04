@@ -1,26 +1,12 @@
 import AuthInputField from '@components/form/AuthInputField';
 import Form from '@components/form';
-import colors from '@utils/colors';
 import {FC, useState} from 'react';
-import {
-  Dimensions,
-  I18nManager,
-  Image,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import * as yup from 'yup';
 import SubmitBtn from '@components/form/SubmitBtn';
 import PasswordVisibilityIcon from '@ui/PasswordVisibilityIcon';
 import AppLink from '@ui/AppLink';
-
-// Force LTR text direction
-I18nManager.allowRTL(false);
-I18nManager.forceRTL(false);
-
-const {width: screenWidth} = Dimensions.get('window');
+import AuthFormContainer from '@components/AuthFormContainer';
 
 const signupSchema = yup.object({
   name: yup
@@ -60,32 +46,13 @@ const SignUp: FC<Props> = props => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.logoContainer}>
-        <Image
-          source={require('../../assets/logo.png')}
-          style={styles.logo}
-          resizeMode="contain"
-        />
-      </View>
-      <View style={styles.titleContainer}>
-        <Text
-          style={{
-            color: colors.SECONDARY,
-            fontSize: 16,
-            fontWeight: 'bold',
-            paddingVertical: 5,
-          }}>
-          Let's get started by creating your account.
-        </Text>
-      </View>
-
-      <Form
-        onSubmit={values => {
-          console.log(values);
-        }}
-        initialValues={initialValues}
-        validationSchema={signupSchema}>
+    <Form
+      onSubmit={values => {
+        console.log(values);
+      }}
+      initialValues={initialValues}
+      validationSchema={signupSchema}>
+      <AuthFormContainer subHeading="Let's get started by creating your account.">
         <View style={styles.formContainer}>
           <AuthInputField
             name="name"
@@ -118,35 +85,15 @@ const SignUp: FC<Props> = props => {
             <AppLink title="Sign In" />
           </View>
         </View>
-      </Form>
-    </SafeAreaView>
+      </AuthFormContainer>
+    </Form>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.PRIMARY,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  logoContainer: {
-    flex: 0.2,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-  },
-  logo: {
-    height: 60,
-    width: screenWidth * 0.9, // Use a percentage of the screen width
-  },
-  titleContainer: {
-    flex: 0.1,
-  },
   formContainer: {
     flex: 0.8,
     width: '100%',
-    paddingHorizontal: 15, // padding in the x direction (left and the right)
   },
   marginBottom: {
     marginBottom: 20,
