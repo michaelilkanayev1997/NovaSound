@@ -1,6 +1,6 @@
 import AuthInputField from '@components/form/AuthInputField';
 import Form from '@components/form';
-import {FC, useState} from 'react';
+import {FC, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import * as yup from 'yup';
 import SubmitBtn from '@components/form/SubmitBtn';
@@ -11,6 +11,8 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {AuthStackParamList} from 'src/@types/navigation';
 import {FormikHelpers} from 'formik';
 import client from 'src/api/client';
+import GlobalLoading from '../../components/GlobalLoading';
+import KeepAwake from 'react-native-keep-awake';
 
 const signinSchema = yup.object({
   email: yup
@@ -43,6 +45,8 @@ const SignIn: FC<Props> = props => {
   const [secureEntry, setSecureEntry] = useState(true);
   const navigation = useNavigation<NavigationProp<AuthStackParamList>>();
 
+  const [isLoading, setIsLoading] = useState(true);
+
   const togglePasswordView = () => {
     setSecureEntry(!secureEntry);
   };
@@ -62,50 +66,66 @@ const SignIn: FC<Props> = props => {
     }
   };
 
-  return (
-    <Form
-      onSubmit={handleSubmit}
-      initialValues={initialValues}
-      validationSchema={signinSchema}>
-      <AuthFormContainer heading="Welcome back.">
-        <View style={styles.formContainer}>
-          <AuthInputField
-            name="email"
-            placeholder="Enter"
-            label="Enter Your Email"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            containerStyle={styles.marginBottom}
-          />
-          <AuthInputField
-            name="password"
-            placeholder="Password"
-            label="Enter Your Password"
-            autoCapitalize="none"
-            secureTextEntry={secureEntry}
-            containerStyle={styles.marginBottom}
-            rightIcon={<PasswordVisibilityIcon privateIcon={secureEntry} />}
-            onRightIconPress={togglePasswordView}
-          />
-          <SubmitBtn title="Sign in" />
+  // Splash screen Timer on Start Up
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2500);
 
-          <View style={styles.linkContainer}>
-            <AppLink
-              title="Forgot Password"
-              onPress={() => {
-                navigation.navigate('LostPassword');
-              }}
-            />
-            <AppLink
-              title="Sign Up"
-              onPress={() => {
-                navigation.navigate('SignUp');
-              }}
-            />
-          </View>
-        </View>
-      </AuthFormContainer>
-    </Form>
+    return () => clearTimeout(timer); // Clear the timeout on unmounting
+  }, []);
+
+  return (
+    <>
+      <KeepAwake />
+      {isLoading ? (
+        <GlobalLoading />
+      ) : (
+        <Form
+          onSubmit={handleSubmit}
+          initialValues={initialValues}
+          validationSchema={signinSchema}>
+          <AuthFormContainer heading="Welcome back.">
+            <View style={styles.formContainer}>
+              <AuthInputField
+                name="email"
+                placeholder="Enter"
+                label="Enter Your Email"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                containerStyle={styles.marginBottom}
+              />
+              <AuthInputField
+                name="password"
+                placeholder="Password"
+                label="Enter Your Password"
+                autoCapitalize="none"
+                secureTextEntry={secureEntry}
+                containerStyle={styles.marginBottom}
+                rightIcon={<PasswordVisibilityIcon privateIcon={secureEntry} />}
+                onRightIconPress={togglePasswordView}
+              />
+              <SubmitBtn title="Sign in" />
+
+              <View style={styles.linkContainer}>
+                <AppLink
+                  title="Forgot Password"
+                  onPress={() => {
+                    navigation.navigate('LostPassword');
+                  }}
+                />
+                <AppLink
+                  title="Sign Up"
+                  onPress={() => {
+                    navigation.navigate('SignUp');
+                  }}
+                />
+              </View>
+            </View>
+          </AuthFormContainer>
+        </Form>
+      )}
+    </>
   );
 };
 
