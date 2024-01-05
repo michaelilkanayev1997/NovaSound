@@ -12,7 +12,6 @@ import {AuthStackParamList} from 'src/@types/navigation';
 import {FormikHelpers} from 'formik';
 import client from 'src/api/client';
 import GlobalLoading from '../../components/GlobalLoading';
-import KeepAwake from 'react-native-keep-awake';
 
 const signinSchema = yup.object({
   email: yup
@@ -56,6 +55,8 @@ const SignIn: FC<Props> = props => {
     actions: FormikHelpers<SignInUserInfo>,
   ) => {
     try {
+      actions.setSubmitting(true); // Activate busy for loader
+
       const {data} = await client.post('/auth/sign-in', {
         ...values,
       });
@@ -64,6 +65,8 @@ const SignIn: FC<Props> = props => {
     } catch (error) {
       console.log('Sign in error: ', error);
     }
+
+    actions.setSubmitting(false); // Deactivate busy for loader
   };
 
   // Splash screen Timer on Start Up
@@ -77,7 +80,6 @@ const SignIn: FC<Props> = props => {
 
   return (
     <>
-      <KeepAwake />
       {isLoading ? (
         <GlobalLoading />
       ) : (

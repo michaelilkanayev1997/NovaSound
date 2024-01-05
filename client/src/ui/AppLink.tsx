@@ -5,9 +5,10 @@ import colors from '@utils/colors';
 interface Props {
   title: string;
   onPress?(): void;
+  active?: boolean;
 }
 
-const AppLink: React.FC<Props> = ({title, onPress}) => {
+const AppLink: React.FC<Props> = ({title, active = true, onPress}) => {
   const [isPressed, setIsPressed] = useState(false);
 
   const handlePressIn = () => {
@@ -20,10 +21,11 @@ const AppLink: React.FC<Props> = ({title, onPress}) => {
 
   return (
     <Pressable
-      onPress={onPress}
+      onPress={active ? onPress : null}
       onPressIn={handlePressIn}
-      onPressOut={handlePressOut}>
-      <Text style={[styles.title, isPressed && styles.titlePressed]}>
+      onPressOut={handlePressOut}
+      style={{opacity: active ? 1 : 0.4}}>
+      <Text style={[styles.title, active && isPressed && styles.titlePressed]}>
         {title}
       </Text>
     </Pressable>

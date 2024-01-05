@@ -111,7 +111,7 @@ dependencies {
     implementation("com.facebook.react:react-android")
     implementation("com.facebook.react:flipper-integration")
 
-    compile project(':react-native-keep-awake')
+   
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
