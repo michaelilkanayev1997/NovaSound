@@ -9,6 +9,7 @@ import {AuthStackParamList} from 'src/@types/navigation';
 import client from 'src/api/client';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import colors from '@utils/colors';
+import GradientBackground from '@components/GradientBackground';
 
 type Props = NativeStackScreenProps<AuthStackParamList, 'Verification'>;
 
@@ -101,37 +102,39 @@ const Verification: FC<Props> = ({route}) => {
   }, [canSendNewOtpRequest]);
 
   return (
-    <AuthFormContainer heading="Please look at your email.">
-      <View style={styles.inputContainer}>
-        {otpFields.map((_, index) => {
-          return (
-            <OTPField
-              ref={activeOtpIndex === index ? inputRef : null}
-              key={index}
-              placeholder="*"
-              onKeyPress={({nativeEvent}) => {
-                handleChange(nativeEvent.key, index);
-              }}
-              keyboardType="numeric"
-              maxLength={1}
-            />
-          );
-        })}
-      </View>
+    <GradientBackground>
+      <AuthFormContainer heading="Please look at your email.">
+        <View style={styles.inputContainer}>
+          {otpFields.map((_, index) => {
+            return (
+              <OTPField
+                ref={activeOtpIndex === index ? inputRef : null}
+                key={index}
+                placeholder="*"
+                onKeyPress={({nativeEvent}) => {
+                  handleChange(nativeEvent.key, index);
+                }}
+                keyboardType="numeric"
+                maxLength={1}
+              />
+            );
+          })}
+        </View>
 
-      <AppButton busy={submitting} title="Submit" onPress={handleSubmit} />
+        <AppButton busy={submitting} title="Submit" onPress={handleSubmit} />
 
-      <View style={styles.linkContainer}>
-        {countDown > 0 ? (
-          <Text style={styles.countDown}>{countDown} sec</Text>
-        ) : null}
-        <AppLink
-          active={canSendNewOtpRequest}
-          title="Re-send OTP"
-          onPress={requestForOTP}
-        />
-      </View>
-    </AuthFormContainer>
+        <View style={styles.linkContainer}>
+          {countDown > 0 ? (
+            <Text style={styles.countDown}>{countDown} sec</Text>
+          ) : null}
+          <AppLink
+            active={canSendNewOtpRequest}
+            title="Re-send OTP"
+            onPress={requestForOTP}
+          />
+        </View>
+      </AuthFormContainer>
+    </GradientBackground>
   );
 };
 

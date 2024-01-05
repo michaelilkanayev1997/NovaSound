@@ -1,7 +1,8 @@
 import colors from '@utils/colors';
-import {FC} from 'react';
-import {Pressable, StyleSheet, Text} from 'react-native';
+import {FC, useState} from 'react';
+import {Pressable, StyleSheet, Text, Vibration} from 'react-native';
 import Loader from './Loader';
+import LinearGradient from 'react-native-linear-gradient';
 
 interface Props {
   title: string;
@@ -10,15 +11,34 @@ interface Props {
 }
 
 const AppButton: FC<Props> = ({title, busy, onPress}) => {
+  const [isPressed, setIsPressed] = useState(false);
+
+  const handlePressIn = () => {
+    setIsPressed(true);
+    // Vibrate for 50ms when the link is pressed
+    Vibration.vibrate(50);
+  };
+
+  const handlePressOut = () => {
+    setIsPressed(false);
+  };
+
   return (
-    <Pressable
-      onPress={onPress}
-      style={({pressed}) => [
-        styles.container,
-        {backgroundColor: pressed ? colors.THIRD : colors.SECONDARY},
-      ]}>
-      {!busy ? <Text style={styles.title}>{title}</Text> : <Loader />}
-    </Pressable>
+    <LinearGradient
+      colors={
+        isPressed
+          ? ['#345678', '#6789ab', '#4c669f']
+          : ['#4c669f', '#3b5998', '#192f6a']
+      }
+      style={styles.linearGradient}>
+      <Pressable
+        onPress={onPress}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        style={[styles.container]}>
+        {!busy ? <Text style={styles.title}>{title}</Text> : <Loader />}
+      </Pressable>
+    </LinearGradient>
   );
 };
 
@@ -33,6 +53,9 @@ const styles = StyleSheet.create({
   title: {
     color: colors.INACTIVE_CONTRAST,
     fontSize: 18,
+  },
+  linearGradient: {
+    borderRadius: 25,
   },
 });
 

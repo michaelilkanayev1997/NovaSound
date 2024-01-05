@@ -11,6 +11,7 @@ const AuthNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{
+        headerTransparent: true,
         headerShown: false,
         animation: 'slide_from_right',
       }}>

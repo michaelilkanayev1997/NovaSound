@@ -10,6 +10,7 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {AuthStackParamList} from 'src/@types/navigation';
 import client from 'src/api/client';
 import {FormikHelpers} from 'formik';
+import GradientBackground from '@components/GradientBackground';
 
 const lostPasswordSchema = yup.object({
   email: yup
@@ -52,40 +53,42 @@ const LostPassword: FC<Props> = props => {
   };
 
   return (
-    <Form
-      onSubmit={handleSubmit}
-      initialValues={initialValues}
-      validationSchema={lostPasswordSchema}>
-      <AuthFormContainer heading="Forget Password!">
-        <View style={styles.formContainer}>
-          <AuthInputField
-            name="email"
-            placeholder="Enter"
-            label="Enter Your Email"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            containerStyle={styles.marginBottom}
-          />
-
-          <SubmitBtn title="Send link" />
-
-          <View style={styles.linkContainer}>
-            <AppLink
-              title="Sign in"
-              onPress={() => {
-                navigation.navigate('SignIn');
-              }}
+    <GradientBackground>
+      <Form
+        onSubmit={handleSubmit}
+        initialValues={initialValues}
+        validationSchema={lostPasswordSchema}>
+        <AuthFormContainer heading="Forget Password!">
+          <View style={styles.formContainer}>
+            <AuthInputField
+              name="email"
+              placeholder="Enter"
+              label="Enter Your Email"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              containerStyle={styles.marginBottom}
             />
-            <AppLink
-              title="Sign Up"
-              onPress={() => {
-                navigation.navigate('SignUp');
-              }}
-            />
+
+            <SubmitBtn title="Send link" />
+
+            <View style={styles.linkContainer}>
+              <AppLink
+                title="Sign in"
+                onPress={() => {
+                  navigation.navigate('SignIn');
+                }}
+              />
+              <AppLink
+                title="Sign Up"
+                onPress={() => {
+                  navigation.navigate('SignUp');
+                }}
+              />
+            </View>
           </View>
-        </View>
-      </AuthFormContainer>
-    </Form>
+        </AuthFormContainer>
+      </Form>
+    </GradientBackground>
   );
 };
 

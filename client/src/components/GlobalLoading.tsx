@@ -1,13 +1,15 @@
 import {FC} from 'react';
-import {View, StyleSheet, Image} from 'react-native';
+import {View, StyleSheet, Image, Dimensions} from 'react-native';
 import LottieView from 'lottie-react-native';
-import colors from '@utils/colors';
+import GradientBackground from './GradientBackground';
+
+const {width: screenWidth} = Dimensions.get('window');
 
 interface Props {}
 
 const GlobalLoading: FC<Props> = props => {
   return (
-    <View style={styles.cover}>
+    <GradientBackground>
       <View style={styles.animationWrapper}>
         <LottieView
           style={{flex: 1}}
@@ -26,7 +28,7 @@ const GlobalLoading: FC<Props> = props => {
           resizeMode="contain"
         />
       </View>
-    </View>
+    </GradientBackground>
   );
 };
 
@@ -34,13 +36,7 @@ const styles = StyleSheet.create({
   animationWrapper: {
     width: '100%',
     height: '100%',
-    padding: 7,
-  },
-  cover: {
-    backgroundColor: colors.PRIMARY,
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
+    padding: '3%',
   },
   logoContainer: {
     justifyContent: 'center',
@@ -50,7 +46,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   logo: {
-    width: 350, // Use a percentage of the screen width
+    width: screenWidth * 0.95,
   },
 });
 
