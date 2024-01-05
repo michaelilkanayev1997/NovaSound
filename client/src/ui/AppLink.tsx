@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {StyleSheet, Pressable, Text} from 'react-native';
+import {StyleSheet, Pressable, Text, Vibration} from 'react-native';
 import colors from '@utils/colors';
 
 interface Props {
@@ -13,6 +13,8 @@ const AppLink: React.FC<Props> = ({title, active = true, onPress}) => {
 
   const handlePressIn = () => {
     setIsPressed(true);
+    // Vibrate for 50ms when the link is pressed
+    Vibration.vibrate(50);
   };
 
   const handlePressOut = () => {

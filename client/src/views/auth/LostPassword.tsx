@@ -8,6 +8,8 @@ import AppLink from '@ui/AppLink';
 import AuthFormContainer from '@components/AuthFormContainer';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {AuthStackParamList} from 'src/@types/navigation';
+import client from 'src/api/client';
+import {FormikHelpers} from 'formik';
 
 const lostPasswordSchema = yup.object({
   email: yup
@@ -19,6 +21,10 @@ const lostPasswordSchema = yup.object({
 
 interface Props {}
 
+interface InitialValue {
+  email: string;
+}
+
 const initialValues = {
   email: '',
 };
@@ -26,11 +32,28 @@ const initialValues = {
 const LostPassword: FC<Props> = props => {
   const navigation = useNavigation<NavigationProp<AuthStackParamList>>();
 
+  const handleSubmit = async (
+    values: InitialValue,
+    actions: FormikHelpers<InitialValue>,
+  ) => {
+    try {
+      actions.setSubmitting(true); // Activate busy for loader
+
+      const {data} = await client.post('/auth/forget-password', {
+        ...values,
+      });
+
+      console.log(data);
+    } catch (error) {
+      console.log('Forget Password error: ', error);
+    }
+
+    actions.setSubmitting(false); // Deactivate busy for loader
+  };
+
   return (
     <Form
-      onSubmit={values => {
-        console.log(values);
-      }}
+      onSubmit={handleSubmit}
       initialValues={initialValues}
       validationSchema={lostPasswordSchema}>
       <AuthFormContainer heading="Forget Password!">
