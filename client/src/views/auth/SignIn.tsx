@@ -15,6 +15,7 @@ import GlobalLoading from '../../components/GlobalLoading';
 import GradientBackground from '@components/GradientBackground';
 import {updateLoggedInState, updateProfile} from 'src/store/auth';
 import {useDispatch} from 'react-redux';
+import {Keys, saveToAsyncStorage} from '@utils/asyncStorage';
 
 const signinSchema = yup.object({
   email: yup
@@ -64,6 +65,8 @@ const SignIn: FC<Props> = props => {
       const {data} = await client.post('/auth/sign-in', {
         ...values,
       });
+
+      await saveToAsyncStorage(Keys.AUTH_TOKEN, data.token);
 
       dispatch(updateProfile(data.profile));
       dispatch(updateLoggedInState(true));
