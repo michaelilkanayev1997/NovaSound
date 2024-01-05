@@ -32,7 +32,7 @@ const AuthFormContainer: FC<Props> = ({children, heading, subHeading}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.PRIMARY,
+    //backgroundColor: colors.PRIMARY,
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',

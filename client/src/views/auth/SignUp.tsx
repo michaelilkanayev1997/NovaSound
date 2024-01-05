@@ -11,6 +11,7 @@ import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {AuthStackParamList} from 'src/@types/navigation';
 import {FormikHelpers} from 'formik';
 import client from 'src/api/client';
+import GradientBackground from '@components/GradientBackground';
 
 const signupSchema = yup.object({
   name: yup
@@ -76,55 +77,57 @@ const SignUp: FC<Props> = props => {
   };
 
   return (
-    <Form
-      onSubmit={handleSubmit}
-      initialValues={initialValues}
-      validationSchema={signupSchema}>
-      <AuthFormContainer subHeading="Let's get started by creating your account.">
-        <View style={styles.formContainer}>
-          <AuthInputField
-            name="name"
-            placeholder="Name"
-            label="Enter Your Name"
-            containerStyle={styles.marginBottom}
-          />
-          <AuthInputField
-            name="email"
-            placeholder="Enter"
-            label="Enter Your Email"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            containerStyle={styles.marginBottom}
-          />
-          <AuthInputField
-            name="password"
-            placeholder="Password"
-            label="Enter Your Password"
-            autoCapitalize="none"
-            secureTextEntry={secureEntry}
-            containerStyle={styles.marginBottom}
-            rightIcon={<PasswordVisibilityIcon privateIcon={secureEntry} />}
-            onRightIconPress={togglePasswordView}
-          />
-          <SubmitBtn title="Sign up" />
+    <GradientBackground>
+      <Form
+        onSubmit={handleSubmit}
+        initialValues={initialValues}
+        validationSchema={signupSchema}>
+        <AuthFormContainer subHeading="Let's get started by creating your account.">
+          <View style={styles.formContainer}>
+            <AuthInputField
+              name="name"
+              placeholder="Name"
+              label="Enter Your Name"
+              containerStyle={styles.marginBottom}
+            />
+            <AuthInputField
+              name="email"
+              placeholder="Enter"
+              label="Enter Your Email"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              containerStyle={styles.marginBottom}
+            />
+            <AuthInputField
+              name="password"
+              placeholder="Password"
+              label="Enter Your Password"
+              autoCapitalize="none"
+              secureTextEntry={secureEntry}
+              containerStyle={styles.marginBottom}
+              rightIcon={<PasswordVisibilityIcon privateIcon={secureEntry} />}
+              onRightIconPress={togglePasswordView}
+            />
+            <SubmitBtn title="Sign up" />
 
-          <View style={styles.linkContainer}>
-            <AppLink
-              title="Forgot Password"
-              onPress={() => {
-                navigation.navigate('LostPassword');
-              }}
-            />
-            <AppLink
-              title="Sign In"
-              onPress={() => {
-                navigation.navigate('SignIn');
-              }}
-            />
+            <View style={styles.linkContainer}>
+              <AppLink
+                title="Forgot Password"
+                onPress={() => {
+                  navigation.navigate('LostPassword');
+                }}
+              />
+              <AppLink
+                title="Sign In"
+                onPress={() => {
+                  navigation.navigate('SignIn');
+                }}
+              />
+            </View>
           </View>
-        </View>
-      </AuthFormContainer>
-    </Form>
+        </AuthFormContainer>
+      </Form>
+    </GradientBackground>
   );
 };
 
