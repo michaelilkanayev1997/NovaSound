@@ -1,5 +1,5 @@
 import React, {ReactNode} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {ImageBackground, StyleSheet, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 interface GradientBackgroundProps {
@@ -11,7 +11,13 @@ const GradientBackground: React.FC<GradientBackgroundProps> = ({children}) => {
     <LinearGradient
       colors={['#C5D4E8', '#A9CCE3', '#192f6a']}
       style={styles.container}>
-      <View style={styles.childContainer}>{children}</View>
+      <ImageBackground
+        source={require('../assets/flag.webp')}
+        resizeMode="contain"
+        style={{flex: 1}}
+        imageStyle={{opacity: 0.08, top: '-35%'}}>
+        <View style={styles.childContainer}>{children}</View>
+      </ImageBackground>
     </LinearGradient>
   );
 };
