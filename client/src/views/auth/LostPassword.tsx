@@ -11,6 +11,9 @@ import {AuthStackParamList} from 'src/@types/navigation';
 import client from 'src/api/client';
 import {FormikHelpers} from 'formik';
 import GradientBackground from '@components/GradientBackground';
+import catchAsyncError from 'src/api/catchError';
+import {updateNotification} from 'src/store/notification';
+import {useDispatch} from 'react-redux';
 
 const lostPasswordSchema = yup.object({
   email: yup
@@ -32,6 +35,7 @@ const initialValues = {
 
 const LostPassword: FC<Props> = props => {
   const navigation = useNavigation<NavigationProp<AuthStackParamList>>();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (
     values: InitialValue,
@@ -46,7 +50,8 @@ const LostPassword: FC<Props> = props => {
 
       console.log(data);
     } catch (error) {
-      console.log('Forget Password error: ', error);
+      const errorMessage = catchAsyncError(error);
+      dispatch(updateNotification({message: errorMessage, type: 'error'}));
     }
 
     actions.setSubmitting(false); // Deactivate busy for loader

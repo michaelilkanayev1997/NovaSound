@@ -12,6 +12,9 @@ import {AuthStackParamList} from 'src/@types/navigation';
 import {FormikHelpers} from 'formik';
 import client from 'src/api/client';
 import GradientBackground from '@components/GradientBackground';
+import catchAsyncError from 'src/api/catchError';
+import {useDispatch} from 'react-redux';
+import {updateNotification} from 'src/store/notification';
 
 const signupSchema = yup.object({
   name: yup
@@ -52,6 +55,7 @@ const initialValues = {
 const SignUp: FC<Props> = props => {
   const [secureEntry, setSecureEntry] = useState(true);
   const navigation = useNavigation<NavigationProp<AuthStackParamList>>();
+  const dispatch = useDispatch();
 
   const togglePasswordView = () => {
     setSecureEntry(!secureEntry);
@@ -70,7 +74,8 @@ const SignUp: FC<Props> = props => {
 
       navigation.navigate('Verification', {userInfo: data.user});
     } catch (error) {
-      console.log('Sign up error: ', error);
+      const errorMessage = catchAsyncError(error);
+      dispatch(updateNotification({message: errorMessage, type: 'error'}));
     }
 
     actions.setSubmitting(false); // Deactivate busy for loader
