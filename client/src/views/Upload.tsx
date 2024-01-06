@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import {DocumentPickerResponse, types} from 'react-native-document-picker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as yup from 'yup';
 
 interface FormFields {
   title: string;
@@ -29,15 +30,31 @@ const defaultForm: FormFields = {
   about: '',
 };
 
+const audioInfoSchema = yup.object().shape({
+  title: yup.string().trim().required('Title is missing!'),
+  category: yup.string().oneOf(categories, 'Category is missing!'),
+  about: yup.string().trim().required('About is missing!'),
+  file: yup.object().shape({
+    uri: yup.string().required('Audio file is missing!'),
+    name: yup.string().required('Audio file is missing!'),
+    type: yup.string().required('Audio file is missing!'),
+    size: yup.number().required('Audio file is missing!'),
+  }),
+  poster: yup.object().shape({
+    uri: yup.string(),
+    name: yup.string(),
+    type: yup.string(),
+    size: yup.number(),
+  }),
+});
+
 interface Props {}
 
 const Upload: FC<Props> = props => {
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [audioInfo, setAudioInfo] = useState({...defaultForm});
 
-  const handleUpload = () => {
-    console.log(audioInfo);
-  };
+  const handleUpload = async () => {};
 
   return (
     <ScrollView style={styles.container}>
