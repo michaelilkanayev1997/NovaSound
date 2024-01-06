@@ -1,4 +1,5 @@
 import FileSelector from '@components/FileSelector';
+import AppButton from '@ui/AppButton';
 import colors from '@utils/colors';
 import {FC} from 'react';
 import {View, StyleSheet, TextInput, ScrollView} from 'react-native';
@@ -41,6 +42,7 @@ const Upload: FC<Props> = props => {
           numberOfLines={10}
           multiline
         />
+        <AppButton borderRadius={10} title="Submit" />
       </View>
     </ScrollView>
   );

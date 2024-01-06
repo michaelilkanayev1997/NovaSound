@@ -8,9 +8,10 @@ interface Props {
   title: string;
   onPress?(): void;
   busy?: boolean;
+  borderRadius?: number;
 }
 
-const AppButton: FC<Props> = ({title, busy, onPress}) => {
+const AppButton: FC<Props> = ({title, busy, onPress, borderRadius}) => {
   const [isPressed, setIsPressed] = useState(false);
 
   const handlePressIn = () => {
@@ -30,12 +31,12 @@ const AppButton: FC<Props> = ({title, busy, onPress}) => {
           ? ['#345678', '#6789ab', '#4c669f']
           : ['#4c669f', '#3b5998', '#192f6a']
       }
-      style={styles.linearGradient}>
+      style={{borderRadius: borderRadius || 25}}>
       <Pressable
         onPress={onPress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
-        style={[styles.container]}>
+        style={[styles.container, {borderRadius: borderRadius || 25}]}>
         {!busy ? <Text style={styles.title}>{title}</Text> : <Loader />}
       </Pressable>
     </LinearGradient>
@@ -48,14 +49,10 @@ const styles = StyleSheet.create({
     height: 45,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 25,
   },
   title: {
     color: colors.INACTIVE_CONTRAST,
     fontSize: 18,
-  },
-  linearGradient: {
-    borderRadius: 25,
   },
 });
 
