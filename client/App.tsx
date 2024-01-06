@@ -1,3 +1,4 @@
+import AppContainer from '@components/AppContainer';
 import {I18nManager} from 'react-native';
 import {Provider} from 'react-redux';
 import AppNavigator from 'src/navigation';
@@ -10,7 +11,9 @@ I18nManager.forceRTL(false);
 const App = () => {
   return (
     <Provider store={store}>
-      <AppNavigator />
+      <AppContainer>
+        <AppNavigator />
+      </AppContainer>
     </Provider>
   );
 };
