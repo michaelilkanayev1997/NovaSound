@@ -1,12 +1,16 @@
+import CategorySelector from '@components/CategorySelector';
 import FileSelector from '@components/FileSelector';
+import AppButton from '@ui/AppButton';
 import colors from '@utils/colors';
-import {FC} from 'react';
-import {View, StyleSheet, TextInput, ScrollView} from 'react-native';
+import {FC, useState} from 'react';
+import {View, StyleSheet, TextInput, ScrollView, Text} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface Props {}
 
 const Upload: FC<Props> = props => {
+  const [showCategoryModal, setShowCategoryModal] = useState(false);
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.fileSelectorContainer}>
@@ -41,6 +45,19 @@ const Upload: FC<Props> = props => {
           numberOfLines={10}
           multiline
         />
+
+        <CategorySelector
+          visible={showCategoryModal}
+          onRequestClose={() => setShowCategoryModal(false)}
+          title="Category"
+          data={['Business', 'Business', 'Business']}
+          renderItem={item => {
+            return <Text style={styles.category}>{item}</Text>;
+          }}
+          onSelect={item => console.log(item)}
+        />
+
+        <AppButton borderRadius={10} title="Submit" />
       </View>
     </ScrollView>
   );
@@ -65,6 +82,10 @@ const styles = StyleSheet.create({
     color: colors.CONTRAST,
     marginBottom: 20,
     textAlignVertical: 'top',
+  },
+  category: {
+    padding: 10,
+    color: colors.PRIMARY,
   },
 });
 
