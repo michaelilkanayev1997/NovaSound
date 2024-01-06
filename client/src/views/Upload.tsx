@@ -1,15 +1,24 @@
 import CategorySelector from '@components/CategorySelector';
 import FileSelector from '@components/FileSelector';
 import AppButton from '@ui/AppButton';
+import {categories} from '@utils/audioCategories';
 import colors from '@utils/colors';
 import {FC, useState} from 'react';
-import {View, StyleSheet, TextInput, ScrollView, Text} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TextInput,
+  ScrollView,
+  Text,
+  Pressable,
+} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface Props {}
 
 const Upload: FC<Props> = props => {
   const [showCategoryModal, setShowCategoryModal] = useState(false);
+  const [aduioInfo, setAduioInfo] = useState({category: ''});
 
   return (
     <ScrollView style={styles.container}>
@@ -39,6 +48,16 @@ const Upload: FC<Props> = props => {
 
       <View style={styles.formContainer}>
         <TextInput placeholder="Title" style={styles.input} />
+
+        <Pressable
+          onPress={() => {
+            setShowCategoryModal(true);
+          }}
+          style={styles.categorySelector}>
+          <Text style={styles.categorySelectorTitle}>Category</Text>
+          <Text style={styles.selectedCategory}>{aduioInfo.category}</Text>
+        </Pressable>
+
         <TextInput
           placeholder="About"
           style={styles.input}
@@ -50,12 +69,14 @@ const Upload: FC<Props> = props => {
           visible={showCategoryModal}
           onRequestClose={() => setShowCategoryModal(false)}
           title="Category"
-          data={['Business', 'Business', 'Business']}
+          data={categories}
           renderItem={item => {
             return <Text style={styles.category}>{item}</Text>;
           }}
-          onSelect={item => console.log(item)}
+          onSelect={item => setAduioInfo({category: item})}
         />
+
+        <View style={{marginBottom: 20}}></View>
 
         <AppButton borderRadius={10} title="Submit" />
       </View>
@@ -80,12 +101,25 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 18,
     color: colors.CONTRAST,
-    marginBottom: 20,
+
     textAlignVertical: 'top',
   },
   category: {
     padding: 10,
     color: colors.PRIMARY,
+  },
+  categorySelector: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 20,
+  },
+  categorySelectorTitle: {
+    color: colors.CONTRAST,
+  },
+  selectedCategory: {
+    color: colors.SECONDARY,
+    marginLeft: 5,
+    fontStyle: 'italic',
   },
 });
 
