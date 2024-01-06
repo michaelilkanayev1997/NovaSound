@@ -17,7 +17,10 @@ import {
 } from 'react-native';
 import {DocumentPickerResponse, types} from 'react-native-document-picker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useDispatch} from 'react-redux';
+import catchAsyncError from 'src/api/catchError';
 import client from 'src/api/client';
+import {updateNotification} from 'src/store/notification';
 import * as yup from 'yup';
 
 interface FormFields {
@@ -61,6 +64,8 @@ const Upload: FC<Props> = props => {
   const [audioInfo, setAudioInfo] = useState({...defaultForm});
   const [uploadProgress, setUploadProgress] = useState(0);
   const [busy, setBusy] = useState(false);
+
+  const dispatch = useDispatch();
 
   const handleUpload = async () => {
     setBusy(true);
@@ -115,9 +120,8 @@ const Upload: FC<Props> = props => {
 
       console.log('data: ', data);
     } catch (error) {
-      if (error instanceof yup.ValidationError)
-        console.log('Validation error: ', error.message);
-      else console.log(error.response.data);
+      const errorMessage = catchAsyncError(error);
+      dispatch(updateNotification({message: errorMessage, type: 'error'}));
     }
     setBusy(false);
   };

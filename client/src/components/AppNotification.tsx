@@ -41,11 +41,13 @@ const AppNotification: FC<Props> = props => {
       timeoutId = setTimeout(() => {
         height.value = withTiming(0, {duration: 150});
 
-        dispatch(updateNotification({message: '', type: 'error'}));
-      }, 3000);
+        dispatch(updateNotification({message: '', type}));
+      }, 2500);
     };
 
-    performAnimation();
+    if (message) {
+      performAnimation();
+    }
 
     return () => {
       if (timeoutId) {
