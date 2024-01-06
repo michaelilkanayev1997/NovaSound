@@ -5,13 +5,7 @@ import {TextInputProps, StyleSheet, TextInput} from 'react-native';
 interface Props extends TextInputProps {}
 
 const AppInput: FC<Props> = props => {
-  return (
-    <TextInput
-      {...props}
-      placeholderTextColor={colors.INACTIVE_CONTRAST}
-      style={[styles.input, props.style]}
-    />
-  );
+  return <TextInput {...props} style={[styles.input, props.style]} />;
 };
 
 const styles = StyleSheet.create({
