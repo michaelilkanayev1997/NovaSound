@@ -12,6 +12,7 @@ import {
   Text,
   Pressable,
 } from 'react-native';
+import {types} from 'react-native-document-picker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface Props {}
@@ -32,6 +33,10 @@ const Upload: FC<Props> = props => {
             />
           }
           btnTitle={'Select Poster'}
+          options={{type: [types.images]}}
+          onSelect={file => {
+            console.log(file);
+          }}
         />
         <FileSelector
           icon={
@@ -43,6 +48,10 @@ const Upload: FC<Props> = props => {
           }
           btnTitle={'Select Audio'}
           style={{marginLeft: 20}}
+          options={{type: [types.audio]}}
+          onSelect={file => {
+            console.log(file);
+          }}
         />
       </View>
 
