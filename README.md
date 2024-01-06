@@ -6,28 +6,30 @@
 
 ## Overview
 
----
+NovaSound is a MERN (MongoDB, Express, React, Node.js) stack, Audio Sharing App developed as a personal project with React Native CLI.
 
-## Features
+NovaSound emerged from a profound intention—to honor and memorialize the memory of the Nova party on 7.10.23. This initiative seeks to commemorate the lives lost tragically during the 7.10 massacre at the Nova party in Israel.
 
-- Cross-platform audio player
-- Seamless audio streaming
-- Playback controls and options
-- Intuitive user interface
+Throughout this project I delved into advanced concepts, enriching my expertise while intertwining modern technology with heartfelt remembrance. Beyond its core purpose, NovaSound represents the fusion of sophisticated audio sharing within a robust application, aspiring to immortalize the spirit of the party and honor the individuals whose presence was cherished but tragically cut short.
 
 ---
 
-## Technologies Used
-
-- React Native
-- Node.js
-- Express
-- MongoDB
-- TypeScript
-- Redux Toolkit
+| Technologies Used               | Features                        |
+|--------------------------------|---------------------------------|
+| React Native CLI                | Cross-platform audio player     |
+| Redux Toolkit                   | Seamless audio streaming        |
+| Node.js                         | Playback controls and options   |
+| Express                         | Intuitive user interface        |
+| MongoDB                         | Efficient data handling         |
+| TypeScript                      | Speed control for music         |
+| Mailtrap                        | Notifications                   |
+| React Query                     | Email Authentication            |
+| Android Studio                  | Email Verification              |
+| Aggregation                     | Audio file upload with poster   |
+| Cloudinary                      | Profile handling with           |
+| JSON Web Token (JWT)            | Profile picture file upload     |
 
 ---
-
 
 ## License
 
