@@ -12,6 +12,7 @@ export interface UserProfile {
 }
 
 interface AuthState {
+  notification: any;
   profile: UserProfile | null;
   loggedIn: boolean;
   busy: boolean;
@@ -44,14 +45,7 @@ export const {updateProfile, updateLoggedInState, updateBusyState} =
 
 export const getAuthState = createSelector(
   (state: RootState) => state,
-  authState => {
-    const {profile, loggedIn, busy} = authState;
-    return {
-      profile,
-      loggedIn,
-      busy,
-    };
-  },
+  ({auth}) => auth,
 );
 
 export default slice.reducer;
