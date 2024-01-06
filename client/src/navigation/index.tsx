@@ -1,4 +1,4 @@
-import {NavigationContainer} from '@react-navigation/native';
+import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import {FC, useEffect} from 'react';
 import AuthNavigator from './AuthNavigator';
 import {useDispatch, useSelector} from 'react-redux';
@@ -13,8 +13,18 @@ import {Keys, getFromAsyncStorage} from '@utils/asyncStorage';
 import client from 'src/api/client';
 import Loader from '@ui/Loader';
 import {View, StyleSheet} from 'react-native';
+import colors from '@utils/colors';
 
 interface Props {}
+
+const AppTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: colors.PRIMARY,
+    primary: colors.THIRD,
+  },
+};
 
 const AppNavigator: FC<Props> = props => {
   const {loggedIn, busy} = useSelector(getAuthState);
@@ -46,7 +56,7 @@ const AppNavigator: FC<Props> = props => {
   }, []);
 
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={AppTheme}>
       {busy ? (
         <View style={styles.loaderContainer}>
           <Loader />
