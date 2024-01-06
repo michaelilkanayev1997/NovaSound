@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     padding: '3%',
+    zIndex: 1,
   },
   logoContainer: {
     justifyContent: 'center',
@@ -44,6 +45,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     position: 'absolute',
+    zIndex: 2,
   },
   logo: {
     width: screenWidth * 0.95,
