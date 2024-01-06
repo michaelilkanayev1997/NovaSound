@@ -1,6 +1,7 @@
 import CategorySelector from '@components/CategorySelector';
 import FileSelector from '@components/FileSelector';
 import AppButton from '@ui/AppButton';
+import {Keys, getFromAsyncStorage} from '@utils/asyncStorage';
 import {categories} from '@utils/audioCategories';
 import colors from '@utils/colors';
 import {FC, useState} from 'react';
@@ -14,6 +15,7 @@ import {
 } from 'react-native';
 import {DocumentPickerResponse, types} from 'react-native-document-picker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import client from 'src/api/client';
 import * as yup from 'yup';
 
 interface FormFields {
@@ -54,7 +56,47 @@ const Upload: FC<Props> = props => {
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [audioInfo, setAudioInfo] = useState({...defaultForm});
 
-  const handleUpload = async () => {};
+  const handleUpload = async () => {
+    try {
+      // Validating the Fields before uploading
+      const finalData = await audioInfoSchema.validate(audioInfo);
+      console.log('finalData: ', finalData);
+      const formData = new FormData();
+
+      formData.append('title', finalData.title);
+      formData.append('about', finalData.about);
+      formData.append('category', finalData.category);
+      formData.append('file', {
+        name: finalData.file.name,
+        type: finalData.file.type,
+        uri: finalData.file.uri,
+      });
+      // Check if there is a Poster file
+      if (finalData.poster.uri)
+        formData.append('poster', {
+          name: finalData.poster.name,
+          type: finalData.poster.type,
+          uri: finalData.poster.uri,
+        });
+
+      const token = await getFromAsyncStorage(Keys.AUTH_TOKEN);
+
+      console.log('token: ', token);
+
+      const {data} = await client.post('/audio/create', formData, {
+        headers: {
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'multipart/form-data;',
+        },
+      });
+
+      console.log('data: ', data);
+    } catch (error) {
+      if (error instanceof yup.ValidationError)
+        console.log('Validation error: ', error.message);
+      else console.log(error.response.data);
+    }
+  };
 
   return (
     <ScrollView style={styles.container}>
