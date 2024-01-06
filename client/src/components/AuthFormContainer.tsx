@@ -32,7 +32,6 @@ const AuthFormContainer: FC<Props> = ({children, heading, subHeading}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    //backgroundColor: colors.PRIMARY,
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
@@ -42,7 +41,8 @@ const styles = StyleSheet.create({
     color: colors.SECONDARY,
     fontSize: 25,
     fontWeight: 'bold',
-    paddingVertical: 5,
+    paddingVertical: 30,
+    height: '300%',
   },
   subHeading: {
     color: colors.SECONDARY,
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   logo: {
-    height: 50,
+    height: '50%',
     width: screenWidth * 0.9, // Use a percentage of the screen width
   },
   titleContainer: {

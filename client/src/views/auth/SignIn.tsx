@@ -1,7 +1,7 @@
 import AuthInputField from '@components/form/AuthInputField';
 import Form from '@components/form';
 import {FC, useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {ImageBackground, StyleSheet, View} from 'react-native';
 import * as yup from 'yup';
 import SubmitBtn from '@components/form/SubmitBtn';
 import PasswordVisibilityIcon from '@ui/PasswordVisibilityIcon';
@@ -98,42 +98,54 @@ const SignIn: FC<Props> = props => {
             validationSchema={signinSchema}>
             <AuthFormContainer heading="Welcome back.">
               <View style={styles.formContainer}>
-                <AuthInputField
-                  name="email"
-                  placeholder="Enter"
-                  label="Enter Your Email"
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  containerStyle={styles.marginBottom}
-                />
-                <AuthInputField
-                  name="password"
-                  placeholder="Password"
-                  label="Enter Your Password"
-                  autoCapitalize="none"
-                  secureTextEntry={secureEntry}
-                  containerStyle={styles.marginBottom}
-                  rightIcon={
-                    <PasswordVisibilityIcon privateIcon={secureEntry} />
-                  }
-                  onRightIconPress={togglePasswordView}
-                />
-                <SubmitBtn title="Sign in" />
+                <ImageBackground
+                  source={require('../../assets/datelogo.png')}
+                  resizeMode="center"
+                  style={{
+                    flex: 1,
+                  }}
+                  imageStyle={{
+                    opacity: 0.99,
+                    top: '-35%',
+                    height: '10%',
+                  }}>
+                  <AuthInputField
+                    name="email"
+                    placeholder="Enter"
+                    label="Enter Your Email"
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    containerStyle={styles.marginBottom}
+                  />
+                  <AuthInputField
+                    name="password"
+                    placeholder="Password"
+                    label="Enter Your Password"
+                    autoCapitalize="none"
+                    secureTextEntry={secureEntry}
+                    containerStyle={styles.marginBottom}
+                    rightIcon={
+                      <PasswordVisibilityIcon privateIcon={secureEntry} />
+                    }
+                    onRightIconPress={togglePasswordView}
+                  />
+                  <SubmitBtn title="Sign in" />
 
-                <View style={styles.linkContainer}>
-                  <AppLink
-                    title="Forgot Password"
-                    onPress={() => {
-                      navigation.navigate('LostPassword');
-                    }}
-                  />
-                  <AppLink
-                    title="Sign Up"
-                    onPress={() => {
-                      navigation.navigate('SignUp');
-                    }}
-                  />
-                </View>
+                  <View style={styles.linkContainer}>
+                    <AppLink
+                      title="Forgot Password"
+                      onPress={() => {
+                        navigation.navigate('LostPassword');
+                      }}
+                    />
+                    <AppLink
+                      title="Sign Up"
+                      onPress={() => {
+                        navigation.navigate('SignUp');
+                      }}
+                    />
+                  </View>
+                </ImageBackground>
               </View>
             </AuthFormContainer>
           </Form>
