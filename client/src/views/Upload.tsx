@@ -12,14 +12,32 @@ import {
   Text,
   Pressable,
 } from 'react-native';
-import {types} from 'react-native-document-picker';
+import {DocumentPickerResponse, types} from 'react-native-document-picker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+interface FormFields {
+  title: string;
+  category: string;
+  about: string;
+  file?: DocumentPickerResponse;
+  poster?: DocumentPickerResponse;
+}
+
+const defaultForm: FormFields = {
+  title: '',
+  category: '',
+  about: '',
+};
 
 interface Props {}
 
 const Upload: FC<Props> = props => {
   const [showCategoryModal, setShowCategoryModal] = useState(false);
-  const [aduioInfo, setAduioInfo] = useState({category: ''});
+  const [audioInfo, setAudioInfo] = useState({...defaultForm});
+
+  const handleUpload = () => {
+    console.log(audioInfo);
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -34,8 +52,8 @@ const Upload: FC<Props> = props => {
           }
           btnTitle={'Select Poster'}
           options={{type: [types.images]}}
-          onSelect={file => {
-            console.log(file);
+          onSelect={poster => {
+            setAudioInfo({...audioInfo, poster});
           }}
         />
         <FileSelector
@@ -50,13 +68,19 @@ const Upload: FC<Props> = props => {
           style={{marginLeft: 20}}
           options={{type: [types.audio]}}
           onSelect={file => {
-            console.log(file);
+            setAudioInfo({...audioInfo, file});
           }}
         />
       </View>
 
       <View style={styles.formContainer}>
-        <TextInput placeholder="Title" style={styles.input} />
+        <TextInput
+          placeholder="Title"
+          style={styles.input}
+          onChangeText={text => {
+            setAudioInfo({...audioInfo, title: text});
+          }}
+        />
 
         <Pressable
           onPress={() => {
@@ -64,7 +88,7 @@ const Upload: FC<Props> = props => {
           }}
           style={styles.categorySelector}>
           <Text style={styles.categorySelectorTitle}>Category</Text>
-          <Text style={styles.selectedCategory}>{aduioInfo.category}</Text>
+          <Text style={styles.selectedCategory}>{audioInfo.category}</Text>
         </Pressable>
 
         <TextInput
@@ -72,6 +96,9 @@ const Upload: FC<Props> = props => {
           style={styles.input}
           numberOfLines={10}
           multiline
+          onChangeText={text => {
+            setAudioInfo({...audioInfo, about: text});
+          }}
         />
 
         <CategorySelector
@@ -82,12 +109,12 @@ const Upload: FC<Props> = props => {
           renderItem={item => {
             return <Text style={styles.category}>{item}</Text>;
           }}
-          onSelect={item => setAduioInfo({category: item})}
+          onSelect={item => setAudioInfo({...audioInfo, category: item})}
         />
 
         <View style={{marginBottom: 20}}></View>
 
-        <AppButton borderRadius={10} title="Submit" />
+        <AppButton borderRadius={10} title="Submit" onPress={handleUpload} />
       </View>
     </ScrollView>
   );
