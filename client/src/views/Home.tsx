@@ -1,4 +1,4 @@
-import {FC} from 'react';
+import {FC, useState} from 'react';
 import {View, StyleSheet, Text, Button} from 'react-native';
 import {useQuery} from 'react-query';
 import {useDispatch} from 'react-redux';
@@ -35,7 +35,7 @@ const Home: FC<Props> = props => {
           dispatch(
             updateNotification({
               message: 'Uploaded successfully !',
-              type: 'error',
+              type: 'info',
             }),
           );
         }}></Button>

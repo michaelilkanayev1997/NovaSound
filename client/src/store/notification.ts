@@ -1,7 +1,7 @@
 import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '.';
 
-type notificationType = 'error' | 'success';
+type notificationType = 'error' | 'success' | 'info';
 
 interface Notification {
   message: string;
