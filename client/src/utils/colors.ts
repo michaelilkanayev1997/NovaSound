@@ -3,9 +3,10 @@ const SECONDARY = '#202444';
 const THIRD = '#26305C';
 const CONTRAST = '#202444';
 const INACTIVE_CONTRAST = '#F4F4F4';
-const ERROR = '#FF0000';
-const SUCCESS = '#00CC66';
+const ERROR = '#db3125';
+const SUCCESS = '#26A81F';
 const OVERLAY = 'rgba(45, 35, 35, 0.5)';
+const Info = '#20639B';
 
 const colors = {
   PRIMARY,
@@ -16,6 +17,7 @@ const colors = {
   ERROR,
   SUCCESS,
   OVERLAY,
+  Info,
 };
 
 export default colors;

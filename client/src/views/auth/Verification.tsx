@@ -134,7 +134,14 @@ const Verification: FC<Props> = ({route}) => {
           })}
         </View>
 
-        <AppButton busy={submitting} title="Submit" onPress={handleSubmit} />
+        <View style={{width: '25%'}}>
+          <AppButton
+            busy={submitting}
+            title="Submit"
+            onPress={handleSubmit}
+            borderRadius={10}
+          />
+        </View>
 
         <View style={styles.linkContainer}>
           {countDown > 0 ? (

@@ -101,7 +101,6 @@ const Upload: FC<Props> = props => {
           'Content-Type': 'multipart/form-data;',
         },
         onUploadProgress(progressEvent) {
-          console.log(progressEvent.total);
           const uploaded = mapRange({
             inputMin: 0,
             inputMax: progressEvent.total || 1,
@@ -118,7 +117,12 @@ const Upload: FC<Props> = props => {
         },
       });
 
-      console.log('data: ', data);
+      dispatch(
+        updateNotification({
+          message: 'Uploaded successfully !',
+          type: 'success',
+        }),
+      );
     } catch (error) {
       const errorMessage = catchAsyncError(error);
       dispatch(updateNotification({message: errorMessage, type: 'error'}));
@@ -171,12 +175,17 @@ const Upload: FC<Props> = props => {
         />
 
         <Pressable
-          onPress={() => {
-            setShowCategoryModal(true);
-          }}
+          onPress={() => setShowCategoryModal(true)}
           style={styles.categorySelector}>
-          <Text style={styles.categorySelectorTitle}>Category</Text>
-          <Text style={styles.selectedCategory}>{audioInfo.category}</Text>
+          <Text style={styles.categorySelectorTitle}>Category :</Text>
+          <View style={styles.selectedCategoryContainer}>
+            <Text style={styles.selectedCategory}>{audioInfo.category}</Text>
+            <MaterialCommunityIcons
+              name="chevron-down"
+              color="black"
+              size={20}
+            />
+          </View>
         </Pressable>
 
         <TextInput
@@ -193,10 +202,14 @@ const Upload: FC<Props> = props => {
         <CategorySelector
           visible={showCategoryModal}
           onRequestClose={() => setShowCategoryModal(false)}
-          title="Category"
+          title="Category :"
           data={categories}
           renderItem={item => {
-            return <Text style={styles.category}>{item}</Text>;
+            return (
+              <View style={styles.categoryContainer}>
+                <Text style={styles.categoryText}>{item}</Text>
+              </View>
+            );
           }}
           onSelect={item => setAudioInfo({...audioInfo, category: item})}
         />
@@ -244,14 +257,32 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 20,
+    borderWidth: 2,
+    borderColor: colors.SECONDARY,
+    borderRadius: 7,
+    padding: 8,
   },
   categorySelectorTitle: {
     color: colors.CONTRAST,
+  },
+  selectedCategoryContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   selectedCategory: {
     color: colors.SECONDARY,
     marginLeft: 5,
     fontStyle: 'italic',
+  },
+  categoryContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 5,
+  },
+  categoryText: {
+    marginLeft: 10,
+    fontSize: 16,
+    color: colors.PRIMARY,
   },
 });
 
