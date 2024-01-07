@@ -1,5 +1,5 @@
 import AppContainer from '@components/AppContainer';
-//import {clearAsyncStorage} from '@utils/asyncStorage';
+// import {clearAsyncStorage} from '@utils/asyncStorage';
 import {I18nManager} from 'react-native';
 import {Provider} from 'react-redux';
 import AppNavigator from 'src/navigation';

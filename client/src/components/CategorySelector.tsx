@@ -43,7 +43,7 @@ const CategorySelector = <T extends any>({
         <View style={styles.modal}>
           <Text style={styles.title}>{title}</Text>
 
-          <ScrollView>
+          <ScrollView showsVerticalScrollIndicator={true}>
             {data.map((item, index) => {
               return (
                 <Pressable
@@ -52,13 +52,15 @@ const CategorySelector = <T extends any>({
                   style={styles.selectorContainer}>
                   {selectedIndex === index ? (
                     <MaterialComIcon
-                      name="radiobox-marked"
+                      name="checkbox-marked-outline"
                       color={colors.PRIMARY}
+                      size={24}
                     />
                   ) : (
                     <MaterialComIcon
-                      name="radiobox-blank"
+                      name="checkbox-blank-outline"
                       color={colors.PRIMARY}
+                      size={24}
                     />
                   )}
                   {renderItem(item)}
@@ -75,7 +77,7 @@ const CategorySelector = <T extends any>({
 const styles = StyleSheet.create({
   backdrop: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: colors.INACTIVE_CONTRAST,
+    backgroundColor: colors.OVERLAY,
     zIndex: -1,
   },
   modalContainer: {

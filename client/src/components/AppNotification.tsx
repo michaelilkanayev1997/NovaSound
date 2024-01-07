@@ -24,12 +24,12 @@ const AppNotification: FC<Props> = props => {
   });
 
   let backgroundColor = colors.ERROR;
-  let textColor = colors.CONTRAST;
+  let textColor = colors.INACTIVE_CONTRAST;
 
   switch (type) {
     case 'success':
       backgroundColor = colors.SUCCESS;
-      textColor = colors.PRIMARY;
+      textColor = 'black';
       break;
   }
 
@@ -42,7 +42,7 @@ const AppNotification: FC<Props> = props => {
         height.value = withTiming(0, {duration: 150});
 
         dispatch(updateNotification({message: '', type}));
-      }, 2500);
+      }, 3000);
     };
 
     if (message) {
