@@ -1,3 +1,4 @@
+import PulseAnimationContainer from '@ui/PulseAnimationContainer';
 import {FC, useState} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 import {useFetchLatestAudios} from 'src/hooks/query';
@@ -7,12 +8,12 @@ interface Props {}
 const Home: FC<Props> = props => {
   const {data, isLoading} = useFetchLatestAudios();
 
-  if (isLoading)
-    return (
-      <View style={styles.container}>
-        <Text style={{color: 'white', fontSize: 25}}>Loading</Text>
-      </View>
-    );
+  // if (isLoading)
+  return (
+    <PulseAnimationContainer>
+      <Text style={{color: 'black', fontSize: 25}}>Loading</Text>
+    </PulseAnimationContainer>
+  );
 
   return (
     <View style={styles.container}>
