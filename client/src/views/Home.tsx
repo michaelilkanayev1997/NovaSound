@@ -1,4 +1,5 @@
 import LatestUploads from '@components/LatestUploads';
+import RecommendedAudios from '@components/RecommendedAudios';
 import {FC} from 'react';
 import {View, StyleSheet} from 'react-native';
 
@@ -8,6 +9,7 @@ const Home: FC<Props> = props => {
   return (
     <View style={styles.container}>
       <LatestUploads />
+      <RecommendedAudios />
     </View>
   );
 };
