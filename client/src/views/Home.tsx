@@ -8,8 +8,22 @@ interface Props {}
 const Home: FC<Props> = props => {
   return (
     <View style={styles.container}>
-      <LatestUploads />
-      <RecommendedAudios />
+      <LatestUploads
+        onAudioPress={item => {
+          console.log(item);
+        }}
+        onAudioLongPress={item => {
+          console.log('long press');
+        }}
+      />
+      <RecommendedAudios
+        onAudioPress={item => {
+          console.log(item);
+        }}
+        onAudioLongPress={item => {
+          console.log('long press');
+        }}
+      />
     </View>
   );
 };
