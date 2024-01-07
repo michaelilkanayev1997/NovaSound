@@ -1,13 +1,7 @@
+import BasicModalContainer from '@ui/BasicModalContainer';
 import colors from '@utils/colors';
 import {useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  Modal,
-  Pressable,
-  Text,
-  ScrollView,
-} from 'react-native';
+import {StyleSheet, Pressable, Text, ScrollView} from 'react-native';
 import MaterialComIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface Props<T> {
@@ -36,64 +30,39 @@ const CategorySelector = <T extends any>({
   };
 
   return (
-    <Modal onRequestClose={onRequestClose} visible={visible} transparent>
-      <View style={styles.modalContainer}>
-        <Pressable onPress={onRequestClose} style={styles.backdrop} />
+    <BasicModalContainer visible={visible} onRequestClose={onRequestClose}>
+      <Text style={styles.title}>{title}</Text>
 
-        <View style={styles.modal}>
-          <Text style={styles.title}>{title}</Text>
-
-          <ScrollView showsVerticalScrollIndicator={true}>
-            {data.map((item, index) => {
-              return (
-                <Pressable
-                  onPress={() => handleSelect(item, index)}
-                  key={index}
-                  style={styles.selectorContainer}>
-                  {selectedIndex === index ? (
-                    <MaterialComIcon
-                      name="checkbox-marked-outline"
-                      color={colors.PRIMARY}
-                      size={24}
-                    />
-                  ) : (
-                    <MaterialComIcon
-                      name="checkbox-blank-outline"
-                      color={colors.PRIMARY}
-                      size={24}
-                    />
-                  )}
-                  {renderItem(item)}
-                </Pressable>
-              );
-            })}
-          </ScrollView>
-        </View>
-      </View>
-    </Modal>
+      <ScrollView showsVerticalScrollIndicator={true}>
+        {data.map((item, index) => {
+          return (
+            <Pressable
+              onPress={() => handleSelect(item, index)}
+              key={index}
+              style={styles.selectorContainer}>
+              {selectedIndex === index ? (
+                <MaterialComIcon
+                  name="checkbox-marked-outline"
+                  color={colors.PRIMARY}
+                  size={24}
+                />
+              ) : (
+                <MaterialComIcon
+                  name="checkbox-blank-outline"
+                  color={colors.PRIMARY}
+                  size={24}
+                />
+              )}
+              {renderItem(item)}
+            </Pressable>
+          );
+        })}
+      </ScrollView>
+    </BasicModalContainer>
   );
 };
 
 const styles = StyleSheet.create({
-  backdrop: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: colors.OVERLAY,
-    zIndex: -1,
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'transparet',
-    zIndex: 1,
-  },
-  modal: {
-    width: '90%',
-    maxHeight: '50%',
-    borderRadius: 10,
-    padding: 10,
-    backgroundColor: colors.CONTRAST,
-  },
   title: {
     fontSize: 18,
     fontWeight: '700',
