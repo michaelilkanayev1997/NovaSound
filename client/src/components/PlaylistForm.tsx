@@ -4,7 +4,7 @@ import {FC, useState} from 'react';
 import {View, StyleSheet, TextInput, Pressable, Text} from 'react-native';
 import MaterialComIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-interface PlaylistInfo {
+export interface PlaylistInfo {
   title: string;
   private: boolean;
 }

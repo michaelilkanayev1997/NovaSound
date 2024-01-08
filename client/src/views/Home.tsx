@@ -11,8 +11,7 @@ import {Keys, getFromAsyncStorage} from '@utils/asyncStorage';
 import {updateNotification} from 'src/store/notification';
 import catchAsyncError from 'src/api/catchError';
 import {useDispatch} from 'react-redux';
-import PlaylistModal from '@components/PlaylistModal';
-import PlaylistForm from '@components/PlaylistForm';
+import PlaylistForm, {PlaylistInfo} from '@components/PlaylistForm';
 import PlayListModal from '@components/PlaylistModal';
 
 interface Props {}
@@ -64,6 +63,32 @@ const Home: FC<Props> = props => {
   const handleOnAddToPlaylist = () => {
     setShowOptions(false);
     setShowPlaylistModal(true);
+  };
+
+  const handlePlaylistSubmit = async (value: PlaylistInfo) => {
+    if (!value.title.trim()) return;
+
+    try {
+      const token = await getFromAsyncStorage(Keys.AUTH_TOKEN);
+
+      const {data} = await client.post(
+        '/playlist/create',
+        {
+          resId: selectedAudio?.id,
+          title: value.title,
+          visibility: value.private ? 'private' : 'public',
+        },
+        {
+          headers: {
+            Authorization: 'Bearer ' + token,
+          },
+        },
+      );
+      console.log(data);
+    } catch (error) {
+      const errorMessage = catchAsyncError(error);
+      dispatch(updateNotification({message: errorMessage, type: 'error'}));
+    }
   };
 
   return (
@@ -128,9 +153,7 @@ const Home: FC<Props> = props => {
         onRequestClose={() => {
           setShowPlaylistForm(false);
         }}
-        onSubmit={value => {
-          console.log(value);
-        }}
+        onSubmit={handlePlaylistSubmit}
       />
     </View>
   );
