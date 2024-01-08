@@ -47,7 +47,7 @@ const PlayListModal: FC<Props> = ({
               key={item.id}
               icon={
                 <FontAwesomeIcon
-                  size={20}
+                  size={item.visibility === 'public' ? 18 : 20}
                   name={item.visibility === 'public' ? 'globe' : 'lock'}
                   color={colors.PRIMARY}
                 />
