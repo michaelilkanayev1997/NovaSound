@@ -13,12 +13,16 @@ import catchAsyncError from 'src/api/catchError';
 import {useDispatch} from 'react-redux';
 import PlaylistModal from '@components/PlaylistModal';
 import PlaylistForm from '@components/PlaylistForm';
+import PlayListModal from '@components/PlaylistModal';
 
 interface Props {}
 
 const Home: FC<Props> = props => {
   const [showOptions, setShowOptions] = useState(false);
   const [selectedAudio, setSelectedAudio] = useState<AudioData>();
+  const [showPlaylistModal, setShowPlaylistModal] = useState(false);
+  const [showPlaylistForm, setShowPlaylistForm] = useState(false);
+
   const dispatch = useDispatch();
 
   const handleOnFavPress = async () => {
@@ -57,6 +61,11 @@ const Home: FC<Props> = props => {
     setShowOptions(true);
   };
 
+  const handleOnAddToPlaylist = () => {
+    setShowOptions(false);
+    setShowPlaylistModal(true);
+  };
+
   return (
     <View style={styles.container}>
       <LatestUploads
@@ -80,6 +89,7 @@ const Home: FC<Props> = props => {
           {
             title: 'Add to playlist',
             icon: 'playlist-music',
+            onPress: handleOnAddToPlaylist,
           },
           {
             title: 'Add to favorites',
@@ -101,7 +111,24 @@ const Home: FC<Props> = props => {
         }}
       />
 
-      <PlaylistForm />
+      <PlayListModal
+        visible={showPlaylistModal}
+        onRequestClose={() => {
+          setShowPlaylistModal(false);
+        }}
+        list={[]}
+        onCreateNewPress={() => {
+          setShowPlaylistModal(false);
+          setShowPlaylistForm(true);
+        }}
+      />
+
+      <PlaylistForm
+        visible={showPlaylistForm}
+        onRequestClose={() => {
+          setShowPlaylistForm(false);
+        }}
+      />
     </View>
   );
 };
