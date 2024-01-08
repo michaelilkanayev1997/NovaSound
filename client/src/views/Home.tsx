@@ -5,7 +5,7 @@ import {FC, useState} from 'react';
 import {View, StyleSheet, Pressable, Text} from 'react-native';
 import MaterialComIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from '@utils/colors';
-import {AudioData} from 'src/@types/audio';
+import {AudioData, Playlist} from 'src/@types/audio';
 import client from 'src/api/client';
 import {Keys, getFromAsyncStorage} from '@utils/asyncStorage';
 import {updateNotification} from 'src/store/notification';
@@ -94,6 +94,36 @@ const Home: FC<Props> = props => {
     }
   };
 
+  const updatePlaylist = async (item: Playlist) => {
+    try {
+      const token = await getFromAsyncStorage(Keys.AUTH_TOKEN);
+
+      const {data} = await client.patch(
+        '/playlist',
+        {
+          id: item.id,
+          item: selectedAudio?.id,
+          title: item.title,
+          visibility: item.visibility,
+        },
+        {
+          headers: {
+            Authorization: 'Bearer ' + token,
+          },
+        },
+      );
+      setSelectedAudio(undefined);
+      setShowPlaylistModal(false);
+
+      dispatch(
+        updateNotification({message: 'New audio added.', type: 'success'}),
+      );
+    } catch (error) {
+      const errorMessage = catchAsyncError(error);
+      dispatch(updateNotification({message: errorMessage, type: 'error'}));
+    }
+  };
+
   return (
     <View style={styles.container}>
       <LatestUploads
@@ -149,6 +179,7 @@ const Home: FC<Props> = props => {
           setShowPlaylistModal(false);
           setShowPlaylistForm(true);
         }}
+        onPlaylistPress={updatePlaylist}
       />
 
       <PlaylistForm
