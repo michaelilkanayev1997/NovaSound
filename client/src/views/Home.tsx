@@ -6,7 +6,7 @@ import {View, StyleSheet, Pressable, Text} from 'react-native';
 import MaterialComIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from '@utils/colors';
 import {AudioData, Playlist} from 'src/@types/audio';
-import client from 'src/api/client';
+import {getClient} from 'src/api/client';
 import {Keys, getFromAsyncStorage} from '@utils/asyncStorage';
 import {updateNotification} from 'src/store/notification';
 import catchAsyncError from 'src/api/catchError';
@@ -32,15 +32,9 @@ const Home: FC<Props> = props => {
     // send request with the audio id that we want to add fav
 
     try {
-      const token = await getFromAsyncStorage(Keys.AUTH_TOKEN);
+      const client = await getClient();
 
-      const {data} = await client.post(
-        '/favorite?audioId=' + selectedAudio.id,
-        null,
-        {
-          headers: {Authorization: 'Bearer ' + token},
-        },
-      );
+      const {data} = await client.post('/favorite?audioId=' + selectedAudio.id);
       dispatch(
         updateNotification({
           message:
@@ -72,21 +66,13 @@ const Home: FC<Props> = props => {
     if (!value.title.trim()) return;
 
     try {
-      const token = await getFromAsyncStorage(Keys.AUTH_TOKEN);
+      const client = await getClient();
 
-      const {data} = await client.post(
-        '/playlist/create',
-        {
-          resId: selectedAudio?.id,
-          title: value.title,
-          visibility: value.private ? 'private' : 'public',
-        },
-        {
-          headers: {
-            Authorization: 'Bearer ' + token,
-          },
-        },
-      );
+      const {data} = await client.post('/playlist/create', {
+        resId: selectedAudio?.id,
+        title: value.title,
+        visibility: value.private ? 'private' : 'public',
+      });
       console.log(data);
     } catch (error) {
       const errorMessage = catchAsyncError(error);
@@ -96,22 +82,14 @@ const Home: FC<Props> = props => {
 
   const updatePlaylist = async (item: Playlist) => {
     try {
-      const token = await getFromAsyncStorage(Keys.AUTH_TOKEN);
+      const client = await getClient();
 
-      const {data} = await client.patch(
-        '/playlist',
-        {
-          id: item.id,
-          item: selectedAudio?.id,
-          title: item.title,
-          visibility: item.visibility,
-        },
-        {
-          headers: {
-            Authorization: 'Bearer ' + token,
-          },
-        },
-      );
+      const {data} = await client.patch('/playlist', {
+        id: item.id,
+        item: selectedAudio?.id,
+        title: item.title,
+        visibility: item.visibility,
+      });
       setSelectedAudio(undefined);
       setShowPlaylistModal(false);
 
