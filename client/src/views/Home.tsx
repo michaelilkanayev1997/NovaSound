@@ -128,6 +128,9 @@ const Home: FC<Props> = props => {
         onRequestClose={() => {
           setShowPlaylistForm(false);
         }}
+        onSubmit={value => {
+          console.log(value);
+        }}
       />
     </View>
   );
