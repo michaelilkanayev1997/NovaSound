@@ -31,9 +31,17 @@ const AudioListItem: FC<Props> = ({audio, onPress}) => {
 const styles = StyleSheet.create({
   listItem: {
     flexDirection: 'row',
-    backgroundColor: colors.OVERLAY,
+    backgroundColor: colors.PRIMARY_DARK1,
     marginBottom: 15,
     borderRadius: 5,
+    elevation: 10, // Android shadow
+    shadowColor: 'black', // iOS shadow
+    shadowOpacity: 0.2, // iOS shadow opacity
+    shadowRadius: 2, // iOS shadow radius
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    }, // iOS shadow offset
   },
   titleContainer: {
     flex: 1,
@@ -42,13 +50,14 @@ const styles = StyleSheet.create({
   poster: {
     width: 50,
     height: 50,
+    borderRadius: 5,
   },
   title: {
     color: colors.CONTRAST,
     fontWeight: '700',
   },
   owner: {
-    color: colors.SECONDARY,
+    color: colors.Info,
     fontWeight: '700',
   },
 });
