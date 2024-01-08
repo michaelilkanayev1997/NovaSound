@@ -13,6 +13,7 @@ import catchAsyncError from 'src/api/catchError';
 import {useDispatch} from 'react-redux';
 import PlaylistForm, {PlaylistInfo} from '@components/PlaylistForm';
 import PlayListModal from '@components/PlaylistModal';
+import {useFetchPlaylist} from 'src/hooks/query';
 
 interface Props {}
 
@@ -21,6 +22,8 @@ const Home: FC<Props> = props => {
   const [selectedAudio, setSelectedAudio] = useState<AudioData>();
   const [showPlaylistModal, setShowPlaylistModal] = useState(false);
   const [showPlaylistForm, setShowPlaylistForm] = useState(false);
+
+  const {data} = useFetchPlaylist();
 
   const dispatch = useDispatch();
 
@@ -141,7 +144,7 @@ const Home: FC<Props> = props => {
         onRequestClose={() => {
           setShowPlaylistModal(false);
         }}
-        list={[]}
+        list={data || []}
         onCreateNewPress={() => {
           setShowPlaylistModal(false);
           setShowPlaylistForm(true);
