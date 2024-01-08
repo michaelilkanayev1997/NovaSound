@@ -29,8 +29,9 @@ const Profile: FC<Props> = props => {
 };
 
 const styles = StyleSheet.create({
-  container: {flex: 1},
+  container: {flex: 1, padding: 10},
   tabbarStyle: {
+    marginBottom: 20,
     backgroundColor: 'transparent',
     elevation: 0,
     shadowRadius: 0,

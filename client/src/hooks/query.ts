@@ -58,7 +58,7 @@ export const useFetchPlaylist = () => {
   });
 };
 
-const FetchUploadsByProfile = async (): Promise<Playlist[]> => {
+const FetchUploadsByProfile = async (): Promise<AudioData[]> => {
   const client = await getClient();
 
   const {data} = await client('/profile/uploads');
@@ -69,6 +69,24 @@ export const useFetchUploadsByProfile = () => {
   const dispatch = useDispatch();
   return useQuery(['uploads-by-profile'], {
     queryFn: () => FetchUploadsByProfile(),
+    onError(err) {
+      const errorMessage = catchAsyncError(err);
+      dispatch(updateNotification({message: errorMessage, type: 'error'}));
+    },
+  });
+};
+
+const fetchFavorites = async (): Promise<AudioData[]> => {
+  const client = await getClient();
+
+  const {data} = await client('/favorite');
+  return data.audios;
+};
+
+export const useFetchFavorite = () => {
+  const dispatch = useDispatch();
+  return useQuery(['favorite'], {
+    queryFn: () => fetchFavorites(),
     onError(err) {
       const errorMessage = catchAsyncError(err);
       dispatch(updateNotification({message: errorMessage, type: 'error'}));
