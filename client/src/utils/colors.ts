@@ -1,6 +1,6 @@
 const PRIMARY = '#C5D4E8';
 const PRIMARY_DARK1 = '#A9BFD9';
-const PRIMARY_DARK2 = '#9AB0CD';
+const PRIMARY_DARK2 = '#7B8EAB';
 const SECONDARY = '#202444';
 const THIRD = '#26305C';
 const CONTRAST = '#202444';
