@@ -17,7 +17,7 @@ const RecommendedAudios: FC<Props> = ({onAudioPress, onAudioLongPress}) => {
   const {data = [], isLoading} = useFetchRecommendedAudios();
 
   const getPoster = (poster?: string) => {
-    return poster ? {uri: poster} : require('../assets/music.png');
+    return poster ? {uri: poster} : require('../assets/no_poster.jpg');
   };
 
   if (isLoading)
@@ -38,7 +38,7 @@ const RecommendedAudios: FC<Props> = ({onAudioPress, onAudioLongPress}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Latest Uploads</Text>
+      <Text style={styles.title}>Recommended</Text>
       <GridView
         col={3}
         data={data || []}
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 5,
   },
-  poster: {width: '100%', aspectRatio: 1, borderRadius: 7},
+  poster: {aspectRatio: 1, borderRadius: 7, height: 106},
   dummyTitleView: {
     height: 20,
     width: 150,

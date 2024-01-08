@@ -10,7 +10,7 @@ interface Props {
 }
 
 const AudioCard: FC<Props> = ({title, poster, onPress, onLongPress}) => {
-  const source = poster ? {uri: poster} : require('../assets/music.png');
+  const source = poster ? {uri: poster} : require('../assets/no_poster.jpg');
   return (
     <Pressable
       onPress={onPress}
