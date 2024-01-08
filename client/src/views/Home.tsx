@@ -12,6 +12,7 @@ import {updateNotification} from 'src/store/notification';
 import catchAsyncError from 'src/api/catchError';
 import {useDispatch} from 'react-redux';
 import PlaylistModal from '@components/PlaylistModal';
+import PlaylistForm from '@components/PlaylistForm';
 
 interface Props {}
 
@@ -100,13 +101,7 @@ const Home: FC<Props> = props => {
         }}
       />
 
-      <PlaylistModal
-        visible
-        list={[
-          {title: 'Playlist one', visibility: 'private', id: '1'},
-          {title: 'Playlist one', visibility: 'public', id: '2'},
-        ]}
-      />
+      <PlaylistForm />
     </View>
   );
 };
