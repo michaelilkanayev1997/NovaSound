@@ -58,7 +58,7 @@ export const useFetchPlaylist = () => {
   });
 };
 
-const FetchUploadsByProfile = async (): Promise<Playlist[]> => {
+const FetchUploadsByProfile = async (): Promise<AudioData[]> => {
   const client = await getClient();
 
   const {data} = await client('/profile/uploads');
