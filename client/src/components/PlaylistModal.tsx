@@ -10,23 +10,30 @@ interface Props {
   visible: boolean;
   onRequestClose(): void;
   list: Playlist[];
+  onCreateNewPress(): void;
 }
 
 interface ListItemProps {
   title: string;
   icon: ReactNode;
+  onPress?(): void;
 }
 
-const ListItem: FC<ListItemProps> = ({title, icon}) => {
+const ListItem: FC<ListItemProps> = ({title, icon, onPress}) => {
   return (
-    <Pressable style={styles.listItemContainer}>
+    <Pressable onPress={onPress} style={styles.listItemContainer}>
       {icon}
       <Text style={styles.listItemTitle}>{title}</Text>
     </Pressable>
   );
 };
 
-const PlayListModal: FC<Props> = ({list, visible, onRequestClose}) => {
+const PlayListModal: FC<Props> = ({
+  list,
+  visible,
+  onRequestClose,
+  onCreateNewPress,
+}) => {
   return (
     <BasicModalContainer visible={visible} onRequestClose={onRequestClose}>
       {/* render playlists */}
@@ -52,6 +59,7 @@ const PlayListModal: FC<Props> = ({list, visible, onRequestClose}) => {
       <ListItem
         icon={<AntDesign size={20} name="plus" color={colors.PRIMARY} />}
         title="Create New"
+        onPress={onCreateNewPress}
       />
     </BasicModalContainer>
   );

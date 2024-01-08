@@ -6,11 +6,13 @@ import MaterialComIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface Props {
   status: 'private';
+  visible: boolean;
+  onRequestClose(): void;
 }
 
-const PlaylistForm: FC<Props> = ({status}) => {
+const PlaylistForm: FC<Props> = ({status, visible, onRequestClose}) => {
   return (
-    <BasicModalContainer>
+    <BasicModalContainer visible={visible} onRequestClose={onRequestClose}>
       <View>
         <Text style={styles.title}>Create New Playlist</Text>
         <TextInput
