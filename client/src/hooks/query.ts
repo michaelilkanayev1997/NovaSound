@@ -1,4 +1,3 @@
-import {Keys, getFromAsyncStorage} from '@utils/asyncStorage';
 import {useQuery} from 'react-query';
 import {useDispatch} from 'react-redux';
 import {AudioData, Playlist} from 'src/@types/audio';
@@ -52,6 +51,24 @@ export const useFetchPlaylist = () => {
   const dispatch = useDispatch();
   return useQuery(['playlist'], {
     queryFn: () => fetchPlaylist(),
+    onError(err) {
+      const errorMessage = catchAsyncError(err);
+      dispatch(updateNotification({message: errorMessage, type: 'error'}));
+    },
+  });
+};
+
+const FetchUploadsByProfile = async (): Promise<Playlist[]> => {
+  const client = await getClient();
+
+  const {data} = await client('/profile/uploads');
+  return data.audios;
+};
+
+export const useFetchUploadsByProfile = () => {
+  const dispatch = useDispatch();
+  return useQuery(['uploads-by-profile'], {
+    queryFn: () => FetchUploadsByProfile(),
     onError(err) {
       const errorMessage = catchAsyncError(err);
       dispatch(updateNotification({message: errorMessage, type: 'error'}));
