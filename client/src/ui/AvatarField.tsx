@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.Info,
     alignItems: 'center',
     justifyContent: 'center',
-    borderColor: colors.PRIMARY_DARK1,
+
     elevation: 10,
   },
 });
