@@ -11,7 +11,7 @@ const avatarSize = 70;
 
 const AvatarField: FC<Props> = ({source}) => {
   return (
-    <View>
+    <View style={styles.avatarImageContainer}>
       {source ? (
         <Image source={{uri: source}} style={styles.avatarImage} />
       ) : (
@@ -24,6 +24,7 @@ const AvatarField: FC<Props> = ({source}) => {
 };
 
 const styles = StyleSheet.create({
+  avatarImageContainer: {elevation: 100},
   avatarImage: {
     width: avatarSize,
     height: avatarSize,
@@ -31,8 +32,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.Info,
     alignItems: 'center',
     justifyContent: 'center',
-
-    elevation: 10,
   },
 });
 

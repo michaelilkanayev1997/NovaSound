@@ -18,6 +18,8 @@ import {
   getAuthState,
 } from 'src/store/auth';
 import deepEqual from 'deep-equal';
+import ImagePicker from 'react-native-image-crop-picker';
+import {getPermissionToReadImages} from '@utils/helper';
 
 interface Props {}
 interface ProfileInfo {
@@ -64,6 +66,16 @@ const ProfileSettings: FC<Props> = props => {
         );
       const formData = new FormData();
       formData.append('name', userInfo.name);
+
+      // If there is avatar attach it to the formData
+      if (userInfo.avatar) {
+        formData.append('avatar', {
+          name: 'avatar',
+          type: 'image/jpeg',
+          uri: userInfo.avatar,
+        });
+      }
+
       const client = await getClient({'Content-Type': 'multipart/form-data;'});
       const {data} = await client.post('/auth/update-profile', formData);
 
@@ -81,6 +93,22 @@ const ProfileSettings: FC<Props> = props => {
     setBusy(false);
   };
 
+  const handleImageSelect = async () => {
+    try {
+      await getPermissionToReadImages();
+
+      const {path} = await ImagePicker.openPicker({
+        cropping: true,
+        width: 300,
+        height: 300,
+      });
+
+      setUserInfo({...userInfo, avatar: path});
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     if (profile) setUserInfo({name: profile.name, avatar: profile.avatar});
   }, [profile]);
@@ -96,7 +124,7 @@ const ProfileSettings: FC<Props> = props => {
       <View style={styles.settingOptionsContainer}>
         <View style={styles.avatarContainer}>
           <AvatarField source={userInfo.avatar} />
-          <Pressable style={styles.paddingLeft}>
+          <Pressable onPress={handleImageSelect} style={styles.paddingLeft}>
             <Text style={styles.linkText}>Update Profile Image</Text>
           </Pressable>
         </View>
