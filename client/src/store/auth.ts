@@ -12,7 +12,6 @@ export interface UserProfile {
 }
 
 interface AuthState {
-  notification: any;
   profile: UserProfile | null;
   loggedIn: boolean;
   busy: boolean;
