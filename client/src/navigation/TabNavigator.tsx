@@ -1,10 +1,10 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import colors from '@utils/colors';
 import Home from '@views/Home';
-import Profile from '@views/Profile';
 import Upload from '@views/Upload';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import ProfileNavigator from './ProfileNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -30,8 +30,8 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="ProfileScreen"
-        component={Profile}
+        name="ProfileNavigator"
+        component={ProfileNavigator}
         options={{
           tabBarIcon: props => {
             return (

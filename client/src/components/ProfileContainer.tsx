@@ -1,15 +1,20 @@
 import AvatarField from '@ui/AvatarField';
 import colors from '@utils/colors';
 import {FC} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, Pressable} from 'react-native';
 import {UserProfile} from 'src/store/auth';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {ProfileNavigatorStackParamList} from 'src/@types/navigation';
 
 interface Props {
   profile?: UserProfile | null;
 }
 
 const ProfileContainer: FC<Props> = ({profile}) => {
+  const {navigate} =
+    useNavigation<NavigationProp<ProfileNavigatorStackParamList>>();
   if (!profile) return null;
 
   return (
@@ -33,6 +38,12 @@ const ProfileContainer: FC<Props> = ({profile}) => {
           </Text>
         </View>
       </View>
+
+      <Pressable
+        onPress={() => navigate('ProfileSettings')}
+        style={styles.settingsBtn}>
+        <AntDesign name="setting" size={22} color={colors.CONTRAST} />
+      </Pressable>
     </View>
   );
 };
@@ -66,6 +77,12 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     margin: 5,
     borderRadius: 5,
+  },
+  settingsBtn: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignContent: 'center',
   },
 });
 

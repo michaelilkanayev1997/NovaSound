@@ -35,6 +35,7 @@ const AppNavigator: FC<Props> = props => {
       dispatch(updateBusyState(true));
       try {
         const token = await getFromAsyncStorage(Keys.AUTH_TOKEN);
+
         if (!token) {
           return dispatch(updateBusyState(false));
         }
