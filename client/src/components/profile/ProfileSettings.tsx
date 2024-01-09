@@ -20,6 +20,7 @@ import {
 import deepEqual from 'deep-equal';
 import ImagePicker from 'react-native-image-crop-picker';
 import {getPermissionToReadImages} from '@utils/helper';
+import ReVerificationLink from '@components/ReVerificationLink';
 
 interface Props {}
 interface ProfileInfo {
@@ -135,7 +136,11 @@ const ProfileSettings: FC<Props> = props => {
         />
         <View style={styles.emailConainer}>
           <Text style={styles.email}>{profile?.email}</Text>
-          <MaterialIcon name="verified" size={15} color={colors.SECONDARY} />
+          {profile?.verified ? (
+            <MaterialIcon name="verified" size={15} color={colors.SECONDARY} />
+          ) : (
+            <ReVerificationLink linkTitle="verify" activeAtFirst />
+          )}
         </View>
       </View>
 
