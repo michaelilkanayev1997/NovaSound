@@ -1,7 +1,7 @@
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import AppLink from '@ui/AppLink';
 import colors from '@utils/colors';
-import {FC, useEffect, useId, useState} from 'react';
+import {FC, useEffect, useState} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 import {useSelector} from 'react-redux';
 import {ProfileNavigatorStackParamList} from 'src/@types/navigation';
