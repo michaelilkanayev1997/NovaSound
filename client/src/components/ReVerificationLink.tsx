@@ -1,8 +1,10 @@
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import AppLink from '@ui/AppLink';
 import colors from '@utils/colors';
 import {FC, useEffect, useId, useState} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 import {useSelector} from 'react-redux';
+import {ProfileNavigatorStackParamList} from 'src/@types/navigation';
 import {getClient} from 'src/api/client';
 import {getAuthState} from 'src/store/auth';
 
@@ -23,6 +25,8 @@ const ReVerificationLink: FC<Props> = ({
   const [canSendNewOtpRequest, setCanSendNewOtpRequest] =
     useState(activeAtFirst);
   const {profile} = useSelector(getAuthState);
+  const {navigate} =
+    useNavigation<NavigationProp<ProfileNavigatorStackParamList>>();
 
   const requestForOTP = async () => {
     setCoundDown(60);
@@ -31,6 +35,14 @@ const ReVerificationLink: FC<Props> = ({
       const client = await getClient();
       await client.post('/auth/re-verify-email', {
         userId: userId || profile?.id,
+      });
+
+      navigate('Verification', {
+        userInfo: {
+          email: profile?.email || '',
+          name: profile?.name || '',
+          id: userId || profile?.id || '',
+        },
       });
     } catch (error) {
       console.log('Requesting for new otp: ', error);
