@@ -2,10 +2,10 @@ import {Keys, getFromAsyncStorage} from '@utils/asyncStorage';
 import axios, {CreateAxiosDefaults} from 'axios';
 
 const client = axios.create({
-  baseURL: 'http://10.0.0.13:8000',
+  baseURL: 'http://10.0.0.9:8000',
 });
 
-const baseURL = 'http://10.0.0.13:8000';
+const baseURL = 'http://10.0.0.9:8000';
 
 type headers = CreateAxiosDefaults<any>['headers'];
 
