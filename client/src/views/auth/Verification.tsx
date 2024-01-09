@@ -1,6 +1,5 @@
 import {FC, useEffect, useRef, useState} from 'react';
 import {StyleSheet, Text, TextInput, View} from 'react-native';
-import AppLink from '@ui/AppLink';
 import AuthFormContainer from '@components/AuthFormContainer';
 import OTPField from '@ui/OTPField';
 import AppButton from '@ui/AppButton';
@@ -16,6 +15,7 @@ import GradientBackground from '@components/GradientBackground';
 import catchAsyncError from 'src/api/catchError';
 import {updateNotification} from 'src/store/notification';
 import {useDispatch} from 'react-redux';
+import ReVerificationLink from '@components/ReVerificationLink';
 
 type Props = NativeStackScreenProps<
   AuthStackParamList | ProfileNavigatorStackParamList,
@@ -34,8 +34,6 @@ const Verification: FC<Props> = ({route}) => {
   const [otp, setOtp] = useState([...otpFields]);
   const [activeOtpIndex, setActiveOtpIndex] = useState(0);
   const [submitting, setSubmitting] = useState(false);
-  const [countDown, setCountDown] = useState(60);
-  const [canSendNewOtpRequest, setCanSendNewOtpRequest] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -98,41 +96,9 @@ const Verification: FC<Props> = ({route}) => {
     setSubmitting(false);
   };
 
-  const requestForOTP = async () => {
-    setCountDown(60);
-    setCanSendNewOtpRequest(false);
-    try {
-      await client.post('/auth/re-verify-email', {userId: userInfo.id});
-    } catch (error) {
-      const errorMessage = catchAsyncError(error);
-      dispatch(updateNotification({message: errorMessage, type: 'error'}));
-    }
-  };
-
   useEffect(() => {
     inputRef.current?.focus();
   }, [activeOtpIndex]);
-
-  useEffect(() => {
-    if (canSendNewOtpRequest) return;
-
-    const intervalId = setInterval(() => {
-      setCountDown(prev => {
-        if (prev <= 0) {
-          setCanSendNewOtpRequest(true);
-          clearInterval(intervalId);
-
-          return 0;
-        }
-
-        return prev - 1;
-      });
-    }, 1000); // run every 1 second
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [canSendNewOtpRequest]);
 
   return (
     <GradientBackground>
@@ -164,14 +130,7 @@ const Verification: FC<Props> = ({route}) => {
         </View>
 
         <View style={styles.linkContainer}>
-          {countDown > 0 ? (
-            <Text style={styles.countDown}>{countDown} sec</Text>
-          ) : null}
-          <AppLink
-            active={canSendNewOtpRequest}
-            title="Re-send OTP"
-            onPress={requestForOTP}
-          />
+          <ReVerificationLink linkTitle="Re-send OTP" userId={userInfo.id} />
         </View>
       </AuthFormContainer>
     </GradientBackground>
@@ -183,7 +142,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: '100%',
     justifyContent: 'flex-end',
-    flexDirection: 'row',
   },
   inputContainer: {
     width: '100%',
