@@ -2,14 +2,7 @@ import AppHeader from '@components/AppHeader';
 import AvatarField from '@ui/AvatarField';
 import colors from '@utils/colors';
 import {FC, useEffect, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Pressable,
-  TextInput,
-  PermissionsAndroid,
-} from 'react-native';
+import {View, StyleSheet, Text, Pressable, TextInput} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import AppButton from '@ui/AppButton';
@@ -26,6 +19,7 @@ import {
 } from 'src/store/auth';
 import deepEqual from 'deep-equal';
 import ImagePicker from 'react-native-image-crop-picker';
+import {getPermissionToReadImages} from '@utils/helper';
 
 interface Props {}
 interface ProfileInfo {
@@ -72,6 +66,16 @@ const ProfileSettings: FC<Props> = props => {
         );
       const formData = new FormData();
       formData.append('name', userInfo.name);
+
+      // If there is avatar attach it to the formData
+      if (userInfo.avatar) {
+        formData.append('avatar', {
+          name: 'avatar',
+          type: 'image/jpeg',
+          uri: userInfo.avatar,
+        });
+      }
+
       const client = await getClient({'Content-Type': 'multipart/form-data;'});
       const {data} = await client.post('/auth/update-profile', formData);
 
@@ -91,20 +95,15 @@ const ProfileSettings: FC<Props> = props => {
 
   const handleImageSelect = async () => {
     try {
-      const permissionRes = await PermissionsAndroid.requestMultiple([
-        PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES,
-        PermissionsAndroid.PERMISSIONS.CAMERA,
-      ]);
+      await getPermissionToReadImages();
 
-      console.log(permissionRes);
-
-      const res = await ImagePicker.openPicker({
+      const {path} = await ImagePicker.openPicker({
         cropping: true,
         width: 300,
         height: 300,
       });
 
-      console.log(res);
+      setUserInfo({...userInfo, avatar: path});
     } catch (error) {
       console.log(error);
     }
