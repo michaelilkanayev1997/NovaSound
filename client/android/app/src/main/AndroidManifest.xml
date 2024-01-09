@@ -5,6 +5,8 @@
      <!-- Vibration permission -->
     <uses-permission android:name="android.permission.VIBRATE" />
 
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+
     <application
       android:name=".MainApplication"
       android:label="@string/app_name"
