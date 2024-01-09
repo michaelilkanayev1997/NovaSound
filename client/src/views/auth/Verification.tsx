@@ -22,10 +22,15 @@ type Props = NativeStackScreenProps<
   'Verification'
 >;
 
+type PossibleScreens = {
+  ProfileSettings: undefined;
+  SignIn: undefined;
+};
+
 const otpFields = new Array(6).fill('');
 
 const Verification: FC<Props> = ({route}) => {
-  const navigation = useNavigation<NavigationProp<AuthStackParamList>>();
+  const navigation = useNavigation<NavigationProp<PossibleScreens>>();
   const [otp, setOtp] = useState([...otpFields]);
   const [activeOtpIndex, setActiveOtpIndex] = useState(0);
   const [submitting, setSubmitting] = useState(false);
@@ -75,8 +80,17 @@ const Verification: FC<Props> = ({route}) => {
 
       dispatch(updateNotification({message: data.message, type: 'success'}));
 
-      // navigate back to sign in page
-      navigation.navigate('SignIn');
+      const {routeNames} = navigation.getState();
+
+      if (routeNames.includes('SignIn')) {
+        // navigate back to Sign in page
+        navigation.navigate('SignIn');
+      }
+
+      if (routeNames.includes('ProfileSettings')) {
+        // navigate back to ProfileSettings page
+        navigation.navigate('ProfileSettings');
+      }
     } catch (error) {
       const errorMessage = catchAsyncError(error);
       dispatch(updateNotification({message: errorMessage, type: 'error'}));
