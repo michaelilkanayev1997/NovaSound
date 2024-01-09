@@ -6,10 +6,38 @@ import {View, StyleSheet, Text, Pressable, TextInput} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import AppButton from '@ui/AppButton';
+import {getClient} from 'src/api/client';
+import catchAsyncError from 'src/api/catchError';
+import {updateNotification} from 'src/store/notification';
+import {useDispatch} from 'react-redux';
+import {Keys, removeFromAsyncStorage} from '@utils/asyncStorage';
+import {
+  updateProfile,
+  updateLoggedInState,
+  updateBusyState,
+} from 'src/store/auth';
 
 interface Props {}
 
 const ProfileSettings: FC<Props> = props => {
+  const dispatch = useDispatch();
+
+  const handleLoggout = async (fromAll?: boolean) => {
+    dispatch(updateBusyState(true));
+    try {
+      const endpoint = '/auth/log-out?fromAll=' + (fromAll ? 'yes' : '');
+      const client = await getClient();
+      await client.post(endpoint);
+      await removeFromAsyncStorage(Keys.AUTH_TOKEN);
+      dispatch(updateProfile(null));
+      dispatch(updateLoggedInState(false));
+    } catch (error) {
+      const errorMessage = catchAsyncError(error);
+      dispatch(updateNotification({message: errorMessage, type: 'error'}));
+    }
+    dispatch(updateBusyState(false));
+  };
+
   return (
     <View style={styles.container}>
       <AppHeader title="Settings" />
@@ -38,10 +66,15 @@ const ProfileSettings: FC<Props> = props => {
 
       <View style={styles.settingOptionsContainer}>
         <Pressable style={styles.logoutBtn}>
-          <AntDesign name="logout" size={20} color={colors.CONTRAST} />
+          <AntDesign
+            onPress={() => handleLoggout(true)}
+            name="logout"
+            size={20}
+            color={colors.CONTRAST}
+          />
           <Text style={styles.logoutBtnTitle}>Logout From All</Text>
         </Pressable>
-        <Pressable style={styles.logoutBtn}>
+        <Pressable onPress={() => handleLoggout()} style={styles.logoutBtn}>
           <AntDesign name="logout" size={20} color={colors.CONTRAST} />
           <Text style={styles.logoutBtnTitle}>Logout</Text>
         </Pressable>
