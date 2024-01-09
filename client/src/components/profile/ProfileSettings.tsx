@@ -27,6 +27,7 @@ interface ProfileInfo {
 
 const ProfileSettings: FC<Props> = props => {
   const [userInfo, setUserInfo] = useState<ProfileInfo>({name: ''});
+  const [busy, setBusy] = useState(false);
   const dispatch = useDispatch();
   const {profile} = useSelector(getAuthState);
 
@@ -49,6 +50,35 @@ const ProfileSettings: FC<Props> = props => {
       dispatch(updateNotification({message: errorMessage, type: 'error'}));
     }
     dispatch(updateBusyState(false));
+  };
+
+  const handleSubmit = async () => {
+    setBusy(true);
+    try {
+      if (!userInfo.name.trim())
+        return dispatch(
+          updateNotification({
+            message: 'Profile name is required!',
+            type: 'error',
+          }),
+        );
+      const formData = new FormData();
+      formData.append('name', userInfo.name);
+      const client = await getClient({'Content-Type': 'multipart/form-data;'});
+      const {data} = await client.post('/auth/update-profile', formData);
+
+      dispatch(updateProfile(data.profile));
+      dispatch(
+        updateNotification({
+          message: 'Your Profile is Updated.',
+          type: 'success',
+        }),
+      );
+    } catch (error) {
+      const errorMessage = catchAsyncError(error);
+      dispatch(updateNotification({message: errorMessage, type: 'error'}));
+    }
+    setBusy(false);
   };
 
   useEffect(() => {
@@ -98,7 +128,12 @@ const ProfileSettings: FC<Props> = props => {
 
       {!isSame ? (
         <View style={styles.marginTop}>
-          <AppButton title="Update" borderRadius={7} />
+          <AppButton
+            onPress={handleSubmit}
+            title="Update"
+            borderRadius={7}
+            busy={busy}
+          />
         </View>
       ) : null}
     </View>
