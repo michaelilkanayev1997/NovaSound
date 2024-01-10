@@ -3,7 +3,7 @@
 <img src="https://github.com/michaelilkanayev1997/NovaSound/assets/93651794/2b5e6c0a-1a7e-4d2a-8869-ce237b01efea" alt="logo" width="95%" />
 
 ---
-<img src="https://github.com/michaelilkanayev1997/NovaSound/assets/93651794/d729d72b-fbbe-4ff7-a98f-3ecf4c88049e" alt="Date" width="50%" />
+<img src="https://github.com/michaelilkanayev1997/NovaSound/assets/93651794/d729d72b-fbbe-4ff7-a98f-3ecf4c88049e" alt="Date" width="40%" />
 
 
 ## Overview
