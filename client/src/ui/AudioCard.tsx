@@ -1,6 +1,6 @@
 import colors from '@utils/colors';
 import {FC} from 'react';
-import {View, StyleSheet, Pressable, Image, Text} from 'react-native';
+import {StyleSheet, Pressable, Image, Text} from 'react-native';
 
 interface Props {
   title: string;
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const AudioCard: FC<Props> = ({title, poster, onPress, onLongPress}) => {
-  const source = poster ? {uri: poster} : require('../assets/no_poster.jpg');
+  const source = poster ? {uri: poster} : require('../assets/no-poster.webp');
   return (
     <Pressable
       onPress={onPress}

@@ -7,7 +7,6 @@ import MaterialComIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from '@utils/colors';
 import {AudioData, Playlist} from 'src/@types/audio';
 import {getClient} from 'src/api/client';
-import {Keys, getFromAsyncStorage} from '@utils/asyncStorage';
 import {updateNotification} from 'src/store/notification';
 import catchAsyncError from 'src/api/catchError';
 import {useDispatch} from 'react-redux';

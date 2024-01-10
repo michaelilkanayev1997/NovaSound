@@ -17,7 +17,7 @@ const RecommendedAudios: FC<Props> = ({onAudioPress, onAudioLongPress}) => {
   const {data = [], isLoading} = useFetchRecommendedAudios();
 
   const getPoster = (poster?: string) => {
-    return poster ? {uri: poster} : require('../assets/no_poster.jpg');
+    return poster ? {uri: poster} : require('../assets/no-poster.webp');
   };
 
   if (isLoading)

@@ -10,7 +10,7 @@ interface Props {
 
 const AudioListItem: FC<Props> = ({audio, onPress}) => {
   const getSource = (poster?: string) => {
-    return poster ? {uri: poster} : require('../assets/no-poster.jpg');
+    return poster ? {uri: poster} : require('../assets/no-poster-small.webp');
   };
 
   return (
