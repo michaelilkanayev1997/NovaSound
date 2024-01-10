@@ -1,19 +1,26 @@
 import {FC} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, StyleProp, ViewStyle} from 'react-native';
 import LottieView from 'lottie-react-native';
 
-interface Props {}
+interface Props {
+  blackLoading?: boolean;
+  loaderStyle?: StyleProp<ViewStyle>;
+}
 
-const Loader: FC<Props> = props => {
+const Loader: FC<Props> = ({blackLoading = false, loaderStyle}) => {
   return (
     <View style={styles.container}>
       <LottieView
-        style={{width: 125, height: 125}}
+        style={[{width: 125, height: 125}, loaderStyle]}
         key="animation"
         autoPlay
         loop
         resizeMode="contain"
-        source={require('../assets/Loading.json')}
+        source={
+          blackLoading
+            ? require('../assets/blackLoading.json')
+            : require('../assets/Loading.json')
+        }
       />
     </View>
   );
