@@ -1,7 +1,7 @@
 import LatestUploads from '@components/LatestUploads';
 import OptionsModal from '@components/OptionsModal';
 import RecommendedAudios from '@components/RecommendedAudios';
-import {FC, useState} from 'react';
+import {FC, useEffect, useState} from 'react';
 import {View, StyleSheet, Pressable, Text} from 'react-native';
 import MaterialComIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from '@utils/colors';
@@ -14,6 +14,8 @@ import {useDispatch} from 'react-redux';
 import PlaylistForm, {PlaylistInfo} from '@components/PlaylistForm';
 import PlayListModal from '@components/PlaylistModal';
 import {useFetchPlaylist} from 'src/hooks/query';
+import TrackPlayer, {Track} from 'react-native-track-player';
+import useAudioController from 'src/hooks/useAudioController';
 
 interface Props {}
 
@@ -22,6 +24,8 @@ const Home: FC<Props> = props => {
   const [selectedAudio, setSelectedAudio] = useState<AudioData>();
   const [showPlaylistModal, setShowPlaylistModal] = useState(false);
   const [showPlaylistForm, setShowPlaylistForm] = useState(false);
+
+  const {onAudioPress} = useAudioController();
 
   const {data} = useFetchPlaylist();
 
@@ -102,18 +106,22 @@ const Home: FC<Props> = props => {
     }
   };
 
+  useEffect(() => {
+    const setupPlayer = async () => {
+      TrackPlayer.setupPlayer();
+    };
+
+    setupPlayer();
+  }, []);
+
   return (
     <View style={styles.container}>
       <LatestUploads
-        onAudioPress={item => {
-          console.log(item);
-        }}
+        onAudioPress={onAudioPress}
         onAudioLongPress={handleOnLongPress}
       />
       <RecommendedAudios
-        onAudioPress={item => {
-          console.log(item);
-        }}
+        onAudioPress={onAudioPress}
         onAudioLongPress={handleOnLongPress}
       />
       <OptionsModal
