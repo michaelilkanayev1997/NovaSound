@@ -31,6 +31,7 @@ const AudioCard: FC<Props> = ({
   const source = poster
     ? {uri: poster}
     : require('../assets/no-poster-300x300.webp');
+
   return (
     <Pressable
       onPress={onPress}

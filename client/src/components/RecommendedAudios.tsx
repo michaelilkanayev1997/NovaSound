@@ -50,7 +50,7 @@ const RecommendedAudios: FC<Props> = ({onAudioPress, onAudioLongPress}) => {
               poster={item.poster}
               onPress={() => onAudioPress(item, data)}
               onLongPress={() => onAudioLongPress(item, data)}
-              containerStyle={{height: '100%'}}
+              containerStyle={{width: '100%'}}
               playing={onGoingAudio?.id === item.id}
             />
           );
