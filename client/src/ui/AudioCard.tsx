@@ -24,7 +24,7 @@ const AudioCard: FC<Props> = ({
       onPress={onPress}
       onLongPress={onLongPress}
       style={styles.container}>
-      <View style={styles.imageContainer}>
+      <View>
         <Image source={source} style={styles.poster} />
         <PlayAnimation visible={playing} />
       </View>
@@ -44,9 +44,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 16,
     marginTop: 5,
-  },
-  imageContainer: {
-    elevation: 10,
   },
 });
 

@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.OVERLAY,
+    borderRadius: 7,
   },
   strokeContainer: {
     flexDirection: 'row',

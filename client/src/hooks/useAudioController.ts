@@ -1,3 +1,4 @@
+import deepEqual from 'deep-equal';
 import TrackPlayer, {
   State,
   Track,
@@ -5,7 +6,11 @@ import TrackPlayer, {
 } from 'react-native-track-player';
 import {useDispatch, useSelector} from 'react-redux';
 import {AudioData} from 'src/@types/audio';
-import {getPlayerState, updateOnGoingAudio} from 'src/store/player';
+import {
+  getPlayerState,
+  updateOnGoingAudio,
+  updateOnGoingList,
+} from 'src/store/player';
 
 const updateQueue = async (data: AudioData[]) => {
   const lists: Track[] = data.map(item => {
@@ -25,29 +30,50 @@ const updateQueue = async (data: AudioData[]) => {
 const useAudioController = () => {
   const {state: playbackState} = usePlaybackState() as {state?: State};
 
-  const {onGoingAudio} = useSelector(getPlayerState);
+  const {onGoingAudio, onGoingList} = useSelector(getPlayerState);
+
   const dispatch = useDispatch();
 
   const isPlayerReady = playbackState !== State.None;
 
   const onAudioPress = async (item: AudioData, data: AudioData[]) => {
     if (!isPlayerReady) {
+      console.log('Playing for the first time');
       // Playing Audio for the first time.
       await updateQueue(data);
       const index = data.findIndex(audio => audio.id === item.id);
       await TrackPlayer.skip(index);
       await TrackPlayer.play();
       dispatch(updateOnGoingAudio(item));
+      return dispatch(updateOnGoingList(data));
     }
 
     if (playbackState === State.Playing && onGoingAudio?.id === item.id) {
       // same audio is already playing (handle pause)
-      await TrackPlayer.pause();
+      return await TrackPlayer.pause();
     }
 
     if (playbackState === State.Paused && onGoingAudio?.id === item.id) {
       // same audio no need to load handle resume
+      return await TrackPlayer.play();
+    }
+
+    if (onGoingAudio?.id !== item.id) {
+      const fromSameList = deepEqual(onGoingList, data);
+
+      await TrackPlayer.pause();
+      const index = data.findIndex(audio => audio.id === item.id);
+
+      if (!fromSameList) {
+        // playing new audio from different list
+        await TrackPlayer.reset();
+        await updateQueue(data);
+        dispatch(updateOnGoingList(data));
+      }
+
+      await TrackPlayer.skip(index);
       await TrackPlayer.play();
+      dispatch(updateOnGoingAudio(item));
     }
   };
 
