@@ -58,11 +58,11 @@ const AppNavigator: FC<Props> = props => {
 
   return (
     <NavigationContainer theme={AppTheme}>
-      {false ? (
+      {busy ? (
         <View style={styles.loaderContainer}>
           <Loader />
         </View>
-      ) : true ? (
+      ) : loggedIn ? (
         <TabNavigator />
       ) : (
         <AuthNavigator />
