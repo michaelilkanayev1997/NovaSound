@@ -35,6 +35,7 @@ const useAudioController = () => {
   const dispatch = useDispatch();
 
   const isPlayerReady = playbackState !== State.None;
+  const isPlaying = playbackState === State.Playing;
 
   const onAudioPress = async (item: AudioData, data: AudioData[]) => {
     if (!isPlayerReady) {
@@ -77,7 +78,7 @@ const useAudioController = () => {
     }
   };
 
-  return {onAudioPress};
+  return {onAudioPress, isPlayerReady, isPlaying};
 };
 
 export default useAudioController;
