@@ -7,7 +7,7 @@ const updateQueue = async (data: AudioData[]) => {
       id: item.id,
       title: item.title,
       url: item.file,
-      artwork: item.poster || require('../assets/no-poster.jpg'),
+      artwork: item.poster || require('../assets/no-poster.webp'),
       artist: item.owner.name,
       genre: item.category,
       isLiveStream: true,
