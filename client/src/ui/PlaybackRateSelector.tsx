@@ -1,6 +1,13 @@
 import colors from '@utils/colors';
 import {FC, useState} from 'react';
-import {View, StyleSheet, Pressable, ViewStyle, StyleProp} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Pressable,
+  ViewStyle,
+  StyleProp,
+  Text,
+} from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -10,12 +17,18 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 interface Props {
   containerStyle?: StyleProp<ViewStyle>;
+  activeRate?: string;
+  onPress?(rate: number): void;
 }
 
 const speedRates = ['0.25', '0.5', '0.75', '1', '1.25', '1.5', '1.75', '2'];
 const selectorSize = 40;
 
-const PlaybackRateSelector: FC<Props> = ({containerStyle}) => {
+const PlaybackRateSelector: FC<Props> = ({
+  activeRate,
+  containerStyle,
+  onPress,
+}) => {
   const [showButton, setShowButton] = useState(true);
   const width = useSharedValue(0);
 
@@ -40,9 +53,12 @@ const PlaybackRateSelector: FC<Props> = ({containerStyle}) => {
       <Animated.View style={[styles.buttons, widthStyle]}>
         {speedRates.map(item => {
           return (
-            <Pressable
+            <Selector
+              value={item}
               key={item}
-              style={{width: selectorSize, height: selectorSize}}></Pressable>
+              active={activeRate === item}
+              onPress={() => onPress && onPress(+item)}
+            />
           );
         })}
       </Animated.View>
@@ -50,12 +66,42 @@ const PlaybackRateSelector: FC<Props> = ({containerStyle}) => {
   );
 };
 
+interface SelectorProps {
+  value: string;
+  active?: boolean;
+  onPress?(): void;
+}
+
+const Selector: FC<SelectorProps> = ({value, active, onPress}) => {
+  return (
+    <Pressable
+      onPress={onPress}
+      style={[
+        styles.selector,
+        active ? {backgroundColor: colors.PRIMARY_DARK2} : undefined,
+      ]}>
+      <Text style={styles.selectorText}>{value}</Text>
+    </Pressable>
+  );
+};
+
 const styles = StyleSheet.create({
   container: {},
   buttons: {
     flexDirection: 'row',
-    backgroundColor: colors.OVERLAY,
+    backgroundColor: colors.PRIMARY_DARK1,
     overflow: 'hidden',
+    alignSelf: 'center',
+  },
+  selector: {
+    width: selectorSize,
+    height: selectorSize,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  selectorText: {
+    color: colors.CONTRAST,
+    fontWeight: 'bold',
   },
 });
 

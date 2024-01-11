@@ -140,7 +140,11 @@ const AudioPlayer: FC<Props> = ({visible, onRequestClose}) => {
             </PlayerControler>
           </View>
 
-          <PlaybackRateSelector containerStyle={{marginTop: 20}} />
+          <PlaybackRateSelector
+            onPress={rate => console.log(rate)}
+            activeRate="0.25"
+            containerStyle={{marginTop: 20}}
+          />
         </View>
       </View>
     </AppModal>
