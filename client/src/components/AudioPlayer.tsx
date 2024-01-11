@@ -28,12 +28,27 @@ const fromattedDuration = (duration = 0) => {
 
 const AudioPlayer: FC<Props> = ({visible, onRequestClose}) => {
   const {onGoingAudio} = useSelector(getPlayerState);
-  const {isPlaying, isBusy, seekTo, skipTo, togglePlayPause} =
-    useAudioController();
+  const {
+    isPlaying,
+    isBusy,
+    onNextPress,
+    onPreviousPress,
+    seekTo,
+    skipTo,
+    togglePlayPause,
+  } = useAudioController();
   const poster = onGoingAudio?.poster;
   const source = poster ? {uri: poster} : require('../assets/no-poster.webp');
 
   const {duration, position} = useProgress();
+
+  const handleOnNextPress = async () => {
+    await onNextPress();
+  };
+
+  const handleOnPreviousPress = async () => {
+    await onPreviousPress();
+  };
 
   const updateSeek = async (value: number) => {
     await seekTo(value);
@@ -73,7 +88,7 @@ const AudioPlayer: FC<Props> = ({visible, onRequestClose}) => {
 
           <View style={styles.controles}>
             {/* Previous */}
-            <PlayerControler ignoreContainer>
+            <PlayerControler onPress={handleOnPreviousPress} ignoreContainer>
               <AntDesign
                 name="stepbackward"
                 size={24}
@@ -119,7 +134,7 @@ const AudioPlayer: FC<Props> = ({visible, onRequestClose}) => {
             </PlayerControler>
 
             {/* Next */}
-            <PlayerControler ignoreContainer>
+            <PlayerControler onPress={handleOnNextPress} ignoreContainer>
               <AntDesign name="stepforward" size={24} color={colors.CONTRAST} />
             </PlayerControler>
           </View>
