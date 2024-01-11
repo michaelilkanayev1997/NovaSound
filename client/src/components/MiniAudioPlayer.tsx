@@ -52,7 +52,7 @@ const MiniAudioPlayer: FC<Props> = props => {
           <AntDesign name="hearto" size={24} color={colors.CONTRAST} />
         </Pressable>
 
-        {true ? (
+        {isBusy ? (
           <Loader blackLoading loaderStyle={{width: 30, height: 30}} />
         ) : (
           <PlayPauseBtn playing={isPlaying} onPress={togglePlayPause} />
@@ -82,12 +82,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   title: {
-    color: colors.OVERLAY,
+    color: colors.SECONDARY,
     fontWeight: '700',
     paddingHorizontal: 5,
   },
   name: {
-    color: colors.SECONDARY,
+    color: colors.Info,
     fontWeight: '700',
     paddingHorizontal: 5,
   },
