@@ -90,10 +90,16 @@ const useAudioController = () => {
     await TrackPlayer.seekTo(position);
   };
 
+  const skipTo = async (sec: number) => {
+    const {position: currentPosition} = await TrackPlayer.getProgress();
+    await TrackPlayer.seekTo(currentPosition + sec);
+  };
+
   return {
     onAudioPress,
     seekTo,
     togglePlayPause,
+    skipTo,
     isBusy,
     isPlayerReady,
     isPlaying,

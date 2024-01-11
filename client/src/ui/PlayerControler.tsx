@@ -1,16 +1,23 @@
 import colors from '@utils/colors';
 import {FC, ReactNode} from 'react';
-import {View, StyleSheet, Pressable} from 'react-native';
+import {StyleSheet, Pressable} from 'react-native';
 
 interface Props {
   size?: number;
   children: ReactNode;
   ignoreContainer?: boolean;
+  onPress?(): void;
 }
 
-const PlayerControler: FC<Props> = ({size = 45, ignoreContainer, children}) => {
+const PlayerControler: FC<Props> = ({
+  size = 45,
+  ignoreContainer,
+  children,
+  onPress,
+}) => {
   return (
     <Pressable
+      onPress={onPress}
       style={{
         width: size,
         height: size,
