@@ -14,7 +14,7 @@ const HistoryTab: FC<Props> = props => {
   if (isLoading) return <AudioListLoadingUI />;
 
   if (!data || !data[0]?.audios.length)
-    return <EmptyRecords title="There is no histories available!" />;
+    return <EmptyRecords title="There is no history!" />;
 
   return (
     <ScrollView style={styles.container}>
