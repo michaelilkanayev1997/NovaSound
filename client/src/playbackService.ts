@@ -1,6 +1,31 @@
 import TrackPlayer, {Event} from 'react-native-track-player';
 import {getClient} from './api/client';
 
+let timeoutId: NodeJS.Timeout;
+
+const debounce = (fun: Function, delay: number) => {
+  return (...args: any) => {
+    if (timeoutId) clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(() => {
+      fun.apply(null, args);
+    }, delay);
+  };
+};
+interface StaleAudio {
+  audio: string;
+  progress: number;
+  date: Date;
+}
+const sendHistory = async (staleAudio: StaleAudio) => {
+  const client = await getClient();
+  await client
+    .post('/history', {
+      ...staleAudio,
+    })
+    .catch(err => console.log(err));
+};
+
 const playbackService = async () => {
   TrackPlayer.addEventListener(Event.RemotePlay, () => {
     TrackPlayer.play();
@@ -17,15 +42,14 @@ const playbackService = async () => {
   TrackPlayer.addEventListener(Event.PlaybackProgressUpdated, async e => {
     const lists = await TrackPlayer.getQueue();
     const audio = lists[e.track];
+    const staleAudio = {
+      audio: audio.id,
+      progress: e.position,
+      date: new Date(Date.now()),
+    };
 
-    const client = await getClient();
-    await client
-      .post('/history', {
-        audio: audio.id,
-        progress: e.position,
-        date: new Date(Date.now()),
-      })
-      .catch(err => console.log(err));
+    const debounceHistory = debounce(sendHistory, 100);
+    debounceHistory(staleAudio);
   });
 };
 
