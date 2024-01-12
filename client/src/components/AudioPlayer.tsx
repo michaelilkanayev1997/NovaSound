@@ -1,7 +1,7 @@
 import AppLink from '@ui/AppLink';
 import AppModal from '@ui/AppModal';
 import colors from '@utils/colors';
-import {FC} from 'react';
+import {FC, useState} from 'react';
 import {View, StyleSheet, Image, Text, Pressable} from 'react-native';
 import {useProgress} from 'react-native-track-player';
 import {useDispatch, useSelector} from 'react-redux';
@@ -15,6 +15,7 @@ import PlayPauseBtn from '@ui/PlayPauseBtn';
 import PlayerControler from '@ui/PlayerControler';
 import Loader from '@ui/Loader';
 import PlaybackRateSelector from '@ui/PlaybackRateSelector';
+import AudioInfoContainer from './AudioInfoContainer';
 
 interface Props {
   visible: boolean;
@@ -28,6 +29,7 @@ const fromattedDuration = (duration = 0) => {
 };
 
 const AudioPlayer: FC<Props> = ({visible, onRequestClose}) => {
+  const [showAudioInfo, setShowAudioInfo] = useState(false);
   const {onGoingAudio, playbackRate} = useSelector(getPlayerState);
   const {
     isPlaying,
@@ -70,6 +72,17 @@ const AudioPlayer: FC<Props> = ({visible, onRequestClose}) => {
   return (
     <AppModal animation visible={visible} onRequestClose={onRequestClose}>
       <View style={styles.container}>
+        <Pressable
+          onPress={() => setShowAudioInfo(true)}
+          style={styles.infoBtn}>
+          <AntDesign name="infocirlceo" color={colors.CONTRAST} size={24} />
+        </Pressable>
+
+        <AudioInfoContainer
+          visible={showAudioInfo}
+          closeHandler={setShowAudioInfo}
+        />
+
         <Image source={source} style={styles.poster} />
         <View style={styles.contentContainer}>
           <Text style={styles.title}>{onGoingAudio?.title}</Text>
@@ -197,6 +210,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 2,
     color: colors.CONTRAST,
+  },
+  infoBtn: {
+    position: 'absolute',
+    right: 10,
+    top: 10,
   },
 });
 
