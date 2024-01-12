@@ -2,7 +2,14 @@ import AppHeader from '@components/AppHeader';
 import AvatarField from '@ui/AvatarField';
 import colors from '@utils/colors';
 import {FC, useEffect, useState} from 'react';
-import {View, StyleSheet, Text, Pressable, TextInput} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Pressable,
+  TextInput,
+  Alert,
+} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import AppButton from '@ui/AppButton';
@@ -21,6 +28,7 @@ import deepEqual from 'deep-equal';
 import ImagePicker from 'react-native-image-crop-picker';
 import {getPermissionToReadImages} from '@utils/helper';
 import ReVerificationLink from '@components/ReVerificationLink';
+import MaterialComIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface Props {}
 interface ProfileInfo {
@@ -110,6 +118,33 @@ const ProfileSettings: FC<Props> = props => {
     }
   };
 
+  const clearHistory = () => {
+    console.log('clearing history...');
+  };
+
+  const handleOnHistoryClear = () => {
+    Alert.alert(
+      'Are you sure?',
+      'This action will clear out all the history!',
+      [
+        {
+          text: 'Clear',
+          style: 'destructive',
+          onPress: () => {
+            clearHistory();
+          },
+        },
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+      ],
+      {
+        cancelable: true,
+      },
+    );
+  };
+
   useEffect(() => {
     if (profile) setUserInfo({name: profile.name, avatar: profile.avatar});
   }, [profile]);
@@ -145,17 +180,34 @@ const ProfileSettings: FC<Props> = props => {
       </View>
 
       <View style={styles.titleContainer}>
+        <Text style={styles.title}>History</Text>
+      </View>
+
+      <View style={styles.settingOptionsContainer}>
+        <Pressable
+          onPress={handleOnHistoryClear}
+          style={styles.buttonContainer}>
+          <MaterialComIcon name="broom" size={20} color={colors.CONTRAST} />
+          <Text style={styles.buttonTitle}>Clear All</Text>
+        </Pressable>
+      </View>
+
+      <View style={styles.titleContainer}>
         <Text style={styles.title}>Logout</Text>
       </View>
 
       <View style={styles.settingOptionsContainer}>
-        <Pressable onPress={() => handleLoggout(true)} style={styles.logoutBtn}>
+        <Pressable
+          onPress={() => handleLoggout(true)}
+          style={styles.buttonContainer}>
           <AntDesign name="logout" size={20} color={colors.CONTRAST} />
-          <Text style={styles.logoutBtnTitle}>Logout From All</Text>
+          <Text style={styles.buttonTitle}>Logout From All</Text>
         </Pressable>
-        <Pressable onPress={() => handleLoggout()} style={styles.logoutBtn}>
+        <Pressable
+          onPress={() => handleLoggout()}
+          style={styles.buttonContainer}>
           <AntDesign name="logout" size={20} color={colors.CONTRAST} />
-          <Text style={styles.logoutBtnTitle}>Logout</Text>
+          <Text style={styles.buttonTitle}>Logout</Text>
         </Pressable>
       </View>
 
@@ -222,12 +274,12 @@ const styles = StyleSheet.create({
     color: colors.CONTRAST,
     marginRight: 10,
   },
-  logoutBtn: {
+  buttonContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 15,
   },
-  logoutBtnTitle: {
+  buttonTitle: {
     color: colors.CONTRAST,
     fontSize: 18,
     marginLeft: 5,
