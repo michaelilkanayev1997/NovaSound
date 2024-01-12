@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     }, // iOS shadow offset
+    overflow: 'hidden',
   },
   titleContainer: {
     flex: 1,
