@@ -18,7 +18,7 @@
 
 | Technologies Used               | Features                        |
 |--------------------------------|---------------------------------|
-| React Native CLI                | Cross-platform audio player     |
+| React Native CLI                | Background audio player         |
 | Redux Toolkit                   | Seamless audio streaming        |
 | Node.js                         | Playback controls and options   |
 | Express                         | Intuitive user interface        |
@@ -29,7 +29,7 @@
 | Android Studio                  | Email Verification              |
 | Aggregation                     | Audio file upload with poster   |
 | Cloudinary                      | Profile handling with           |
-| JSON Web Token (JWT)            | Profile picture file upload     |
+| JSON Web Token (JWT)            | Audio histories                 |
 
 
 ---
