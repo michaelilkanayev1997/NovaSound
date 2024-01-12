@@ -106,14 +106,6 @@ const Home: FC<Props> = props => {
     }
   };
 
-  useEffect(() => {
-    const setupPlayer = async () => {
-      TrackPlayer.setupPlayer();
-    };
-
-    setupPlayer();
-  }, []);
-
   return (
     <AppView>
       <ScrollView contentContainerStyle={styles.container}>
