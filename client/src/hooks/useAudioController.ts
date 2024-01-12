@@ -127,12 +127,17 @@ const useAudioController = () => {
     }
   };
 
+  const setPlaybackRate = async (rate: number) => {
+    await TrackPlayer.setRate(rate);
+  };
+
   return {
     onAudioPress,
     onNextPress,
     onPreviousPress,
     seekTo,
     togglePlayPause,
+    setPlaybackRate,
     skipTo,
     isBusy,
     isPlayerReady,
