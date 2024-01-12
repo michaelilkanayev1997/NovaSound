@@ -16,10 +16,12 @@ import PlayerControler from '@ui/PlayerControler';
 import Loader from '@ui/Loader';
 import PlaybackRateSelector from '@ui/PlaybackRateSelector';
 import AudioInfoContainer from './AudioInfoContainer';
+import MaterialComIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface Props {
   visible: boolean;
   onRequestClose(): void;
+  onListOptionPress?(): void;
 }
 
 const fromattedDuration = (duration = 0) => {
@@ -28,7 +30,11 @@ const fromattedDuration = (duration = 0) => {
   });
 };
 
-const AudioPlayer: FC<Props> = ({visible, onRequestClose}) => {
+const AudioPlayer: FC<Props> = ({
+  visible,
+  onRequestClose,
+  onListOptionPress,
+}) => {
   const [showAudioInfo, setShowAudioInfo] = useState(false);
   const {onGoingAudio, playbackRate} = useSelector(getPlayerState);
   const {
@@ -165,6 +171,16 @@ const AudioPlayer: FC<Props> = ({visible, onRequestClose}) => {
             activeRate={playbackRate.toString()}
             containerStyle={{marginTop: 20}}
           />
+
+          <View style={styles.listOptionBtnContainer}>
+            <PlayerControler onPress={onListOptionPress} ignoreContainer>
+              <MaterialComIcon
+                name="playlist-music"
+                size={24}
+                color={colors.CONTRAST}
+              />
+            </PlayerControler>
+          </View>
         </View>
       </View>
     </AppModal>
@@ -215,6 +231,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 10,
     top: 10,
+  },
+  listOptionBtnContainer: {
+    alignItems: 'flex-end',
   },
 });
 
