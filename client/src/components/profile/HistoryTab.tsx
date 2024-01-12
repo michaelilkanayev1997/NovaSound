@@ -1,13 +1,14 @@
 import AudioListLoadingUI from '@ui/AudioListLoadingUI';
 import EmptyRecords from '@ui/EmptyRecords';
 import colors from '@utils/colors';
-import {FC, useState} from 'react';
+import {FC, useEffect, useState} from 'react';
 import {View, StyleSheet, Text, ScrollView, Pressable} from 'react-native';
 import {useFetchHistories} from 'src/hooks/query';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {getClient} from 'src/api/client';
 import {useQueryClient} from 'react-query';
 import {historyAudio} from 'src/@types/audio';
+import {useNavigation} from '@react-navigation/native';
 
 interface Props {}
 
@@ -15,6 +16,8 @@ const HistoryTab: FC<Props> = props => {
   const {data, isLoading} = useFetchHistories();
   const queryClient = useQueryClient();
   const [selectedHistories, setSelectedHistories] = useState<string[]>([]);
+
+  const navigation = useNavigation();
 
   const removeHistories = async (histories: string[]) => {
     const client = await getClient();
@@ -44,6 +47,18 @@ const HistoryTab: FC<Props> = props => {
     setSelectedHistories([]);
     await removeHistories([...selectedHistories]);
   };
+
+  useEffect(() => {
+    const unselecHistories = () => {
+      setSelectedHistories([]);
+    };
+    navigation.addListener('blur', unselecHistories);
+
+    return () => {
+      // Remove the listener
+      navigation.removeListener('blur', unselecHistories);
+    };
+  }, []);
 
   if (isLoading) return <AudioListLoadingUI />;
 
