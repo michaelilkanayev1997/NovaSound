@@ -47,13 +47,12 @@ const useAudioController = () => {
 
   const onAudioPress = async (item: AudioData, data: AudioData[]) => {
     if (!isPlayerReady) {
-      console.log('Playing for the first time');
       // Playing Audio for the first time.
       await updateQueue(data);
+      dispatch(updateOnGoingAudio(item));
       const index = data.findIndex(audio => audio.id === item.id);
       await TrackPlayer.skip(index);
       await TrackPlayer.play();
-      dispatch(updateOnGoingAudio(item));
       return dispatch(updateOnGoingList(data));
     }
 

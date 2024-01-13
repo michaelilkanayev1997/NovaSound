@@ -127,7 +127,6 @@ const Upload: FC<Props> = props => {
 
   return (
     <AppView>
-      {' '}
       <ScrollView style={styles.container}>
         <View style={styles.fileSelectorContainer}>
           <FileSelector
