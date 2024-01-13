@@ -129,3 +129,21 @@ export const useFetchRecentlyPlayed = () => {
     },
   });
 };
+
+const fetchRecommendedPlaylist = async (): Promise<Playlist[]> => {
+  const client = await getClient();
+
+  const {data} = await client('/profile/auto-generated-playlist');
+  return data.playlist;
+};
+
+export const useFetchRecommendedPlaylist = () => {
+  const dispatch = useDispatch();
+  return useQuery(['recently-played'], {
+    queryFn: () => fetchRecommendedPlaylist(),
+    onError(err) {
+      const errorMessage = catchAsyncError(err);
+      dispatch(updateNotification({message: errorMessage, type: 'error'}));
+    },
+  });
+};

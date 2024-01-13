@@ -24,7 +24,7 @@ const RecentlyPlayedCard: FC<Props> = ({title, poster, onPress}) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.PRIMARY_DARK2,
+    backgroundColor: colors.PRIMARY_DARK1,
     width: '100%',
     borderRadius: 5,
     overflow: 'hidden',
