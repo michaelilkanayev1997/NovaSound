@@ -111,18 +111,27 @@ const Home: FC<Props> = props => {
   return (
     <AppView>
       <ScrollView contentContainerStyle={styles.container}>
-        <RecentlyPlayed />
-        <LatestUploads
-          onAudioPress={onAudioPress}
-          onAudioLongPress={handleOnLongPress}
-        />
+        <View style={styles.space}>
+          <RecentlyPlayed />
+        </View>
 
-        <RecommendedAudios
-          onAudioPress={onAudioPress}
-          onAudioLongPress={handleOnLongPress}
-        />
+        <View style={styles.space}>
+          <LatestUploads
+            onAudioPress={onAudioPress}
+            onAudioLongPress={handleOnLongPress}
+          />
+        </View>
 
-        <RecommendedPlaylist />
+        <View style={styles.space}>
+          <RecommendedAudios
+            onAudioPress={onAudioPress}
+            onAudioLongPress={handleOnLongPress}
+          />
+        </View>
+
+        <View style={styles.space}>
+          <RecommendedPlaylist />
+        </View>
 
         <OptionsModal
           visible={showOptions}
@@ -183,6 +192,9 @@ const Home: FC<Props> = props => {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
+  },
+  space: {
+    marginBottom: 15,
   },
   optionContainer: {
     flexDirection: 'row',

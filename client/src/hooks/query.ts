@@ -139,7 +139,7 @@ const fetchRecommendedPlaylist = async (): Promise<Playlist[]> => {
 
 export const useFetchRecommendedPlaylist = () => {
   const dispatch = useDispatch();
-  return useQuery(['auto-generated'], {
+  return useQuery(['recommended-playlist'], {
     queryFn: () => fetchRecommendedPlaylist(),
     onError(err) {
       const errorMessage = catchAsyncError(err);
