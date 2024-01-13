@@ -11,6 +11,7 @@ import {mapRange} from '@utils/math';
 import {useProgress} from 'react-native-track-player';
 import AudioPlayer from './AudioPlayer';
 import CurrentAudioList from './CurrentAudioList';
+import {useFetchIsFavorite} from 'src/hooks/query';
 
 interface Props {}
 
@@ -22,6 +23,8 @@ const MiniAudioPlayer: FC<Props> = props => {
   const progress = useProgress();
   const [playerVisibility, setPlayerVisibility] = useState(false);
   const [showCurrentList, setShowCurrentList] = useState(false);
+
+  const {data: isFav} = useFetchIsFavorite(onGoingAudio?.id || '');
 
   const poster = onGoingAudio?.poster;
 
@@ -70,7 +73,11 @@ const MiniAudioPlayer: FC<Props> = props => {
         </Pressable>
 
         <Pressable style={{paddingHorizontal: 10}}>
-          <AntDesign name="hearto" size={24} color={colors.CONTRAST} />
+          <AntDesign
+            name={isFav ? 'heart' : 'hearto'}
+            size={24}
+            color={colors.CONTRAST}
+          />
         </Pressable>
 
         {isBusy ? (

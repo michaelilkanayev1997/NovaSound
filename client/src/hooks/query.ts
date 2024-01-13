@@ -147,3 +147,22 @@ export const useFetchRecommendedPlaylist = () => {
     },
   });
 };
+
+const fetchIsFavorite = async (id: string): Promise<boolean[]> => {
+  const client = await getClient();
+
+  const {data} = await client('/favorite/is-fav?audioId=' + id);
+  return data.result;
+};
+
+export const useFetchIsFavorite = (id: string) => {
+  const dispatch = useDispatch();
+  return useQuery(['favorite', id], {
+    queryFn: () => fetchIsFavorite(id),
+    onError(err) {
+      const errorMessage = catchAsyncError(err);
+      dispatch(updateNotification({message: errorMessage, type: 'error'}));
+    },
+    enabled: id ? true : false,
+  });
+};
