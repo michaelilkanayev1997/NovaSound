@@ -27,7 +27,7 @@ const HistoryTab: FC<Props> = props => {
 
   const navigation = useNavigation();
 
-  const removeMutate = useMutation({
+  const removeMutation = useMutation({
     // For Slow Networks (Update UI)
     mutationFn: async histories => removeHistories(histories),
     onMutate: (histories: string[]) => {
@@ -56,7 +56,7 @@ const HistoryTab: FC<Props> = props => {
   };
 
   const handleSingleHistoryRemove = async (history: historyAudio) => {
-    removeMutate.mutate([history.id]);
+    removeMutation.mutate([history.id]);
   };
 
   const handleOnLongPress = (history: historyAudio) => {
@@ -65,7 +65,7 @@ const HistoryTab: FC<Props> = props => {
 
   const handleMultipleHistoryRemove = async () => {
     setSelectedHistories([]);
-    removeMutate.mutate([...selectedHistories]);
+    removeMutation.mutate([...selectedHistories]);
   };
 
   const handleOnPress = (history: historyAudio) => {
