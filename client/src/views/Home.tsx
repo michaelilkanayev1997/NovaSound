@@ -16,6 +16,7 @@ import {useFetchPlaylist} from 'src/hooks/query';
 import TrackPlayer from 'react-native-track-player';
 import useAudioController from 'src/hooks/useAudioController';
 import AppView from '@components/AppView';
+import RecentlyPlayed from '@components/RecentlyPlayed';
 
 interface Props {}
 
@@ -109,6 +110,7 @@ const Home: FC<Props> = props => {
   return (
     <AppView>
       <ScrollView contentContainerStyle={styles.container}>
+        <RecentlyPlayed />
         <LatestUploads
           onAudioPress={onAudioPress}
           onAudioLongPress={handleOnLongPress}
