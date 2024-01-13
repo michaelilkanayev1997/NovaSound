@@ -12,6 +12,8 @@ import {useProgress} from 'react-native-track-player';
 import AudioPlayer from './AudioPlayer';
 import CurrentAudioList from './CurrentAudioList';
 import {useFetchIsFavorite} from 'src/hooks/query';
+import {useMutation, useQueryClient} from 'react-query';
+import {getClient} from 'src/api/client';
 
 interface Props {}
 
@@ -31,6 +33,25 @@ const MiniAudioPlayer: FC<Props> = props => {
   const source = poster
     ? {uri: poster}
     : require('../assets/no-poster-300x300.webp');
+
+  const queryClient = useQueryClient();
+
+  const toggleIsFav = async (id: string) => {
+    if (!id) return;
+    const client = await getClient();
+    await client.post('/favorite?audioId=' + id);
+  };
+
+  const favoriteMutation = useMutation({
+    // For Slow Networks (Update UI)
+    mutationFn: async id => toggleIsFav(id),
+    onMutate: (id: string) => {
+      queryClient.setQueryData<boolean>(
+        ['favorite', onGoingAudio?.id],
+        oldData => !oldData,
+      );
+    },
+  });
 
   const showPlayerModal = () => {
     setPlayerVisibility(true);
@@ -72,7 +93,9 @@ const MiniAudioPlayer: FC<Props> = props => {
           <Text style={styles.name}>{onGoingAudio?.owner.name}</Text>
         </Pressable>
 
-        <Pressable style={{paddingHorizontal: 10}}>
+        <Pressable
+          onPress={() => favoriteMutation.mutate(onGoingAudio?.id || '')}
+          style={{paddingHorizontal: 10}}>
           <AntDesign
             name={isFav ? 'heart' : 'hearto'}
             size={24}
