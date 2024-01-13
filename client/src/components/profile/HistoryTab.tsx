@@ -1,13 +1,14 @@
 import AudioListLoadingUI from '@ui/AudioListLoadingUI';
 import EmptyRecords from '@ui/EmptyRecords';
 import colors from '@utils/colors';
-import {FC, useState} from 'react';
+import {FC, useEffect, useState} from 'react';
 import {View, StyleSheet, Text, ScrollView, Pressable} from 'react-native';
 import {useFetchHistories} from 'src/hooks/query';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {getClient} from 'src/api/client';
-import {useQueryClient} from 'react-query';
-import {historyAudio} from 'src/@types/audio';
+import {useMutation, useQueryClient} from 'react-query';
+import {History, historyAudio} from 'src/@types/audio';
+import {useNavigation} from '@react-navigation/native';
 
 interface Props {}
 
@@ -16,6 +17,30 @@ const HistoryTab: FC<Props> = props => {
   const queryClient = useQueryClient();
   const [selectedHistories, setSelectedHistories] = useState<string[]>([]);
 
+  const navigation = useNavigation();
+
+  const removeMutate = useMutation({
+    // For Slow Networks (Update UI)
+    mutationFn: async histories => removeHistories(histories),
+    onMutate: (histories: string[]) => {
+      queryClient.setQueryData<History[]>(['histories'], oldData => {
+        let newData: History[] = [];
+        if (!oldData) return newData;
+
+        for (let data of oldData) {
+          const filteredData = data.audios.filter(
+            item => !histories.includes(item.id),
+          );
+          if (filteredData.length) {
+            newData.push({date: data.date, audios: filteredData});
+          }
+        }
+
+        return newData;
+      });
+    },
+  });
+
   const removeHistories = async (histories: string[]) => {
     const client = await getClient();
     client.delete('/history?histories=' + JSON.stringify(histories));
@@ -23,11 +48,16 @@ const HistoryTab: FC<Props> = props => {
   };
 
   const handleSingleHistoryRemove = async (history: historyAudio) => {
-    await removeHistories([history.id]);
+    removeMutate.mutate([history.id]);
   };
 
   const handleOnLongPress = (history: historyAudio) => {
     setSelectedHistories([history.id]);
+  };
+
+  const handleMultipleHistoryRemove = async () => {
+    setSelectedHistories([]);
+    removeMutate.mutate([...selectedHistories]);
   };
 
   const handleOnPress = (history: historyAudio) => {
@@ -40,10 +70,17 @@ const HistoryTab: FC<Props> = props => {
     });
   };
 
-  const handleMultipleHistoryRemove = async () => {
-    setSelectedHistories([]);
-    await removeHistories([...selectedHistories]);
-  };
+  useEffect(() => {
+    const unselecHistories = () => {
+      setSelectedHistories([]);
+    };
+    navigation.addListener('blur', unselecHistories);
+
+    return () => {
+      // Remove the listener
+      navigation.removeListener('blur', unselecHistories);
+    };
+  }, []);
 
   if (isLoading) return <AudioListLoadingUI />;
 
