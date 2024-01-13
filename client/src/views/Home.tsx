@@ -17,6 +17,7 @@ import TrackPlayer from 'react-native-track-player';
 import useAudioController from 'src/hooks/useAudioController';
 import AppView from '@components/AppView';
 import RecentlyPlayed from '@components/RecentlyPlayed';
+import RecommendedPlaylist from '@components/RecommendedPlaylist';
 
 interface Props {}
 
@@ -115,10 +116,14 @@ const Home: FC<Props> = props => {
           onAudioPress={onAudioPress}
           onAudioLongPress={handleOnLongPress}
         />
+
         <RecommendedAudios
           onAudioPress={onAudioPress}
           onAudioLongPress={handleOnLongPress}
         />
+
+        <RecommendedPlaylist />
+
         <OptionsModal
           visible={showOptions}
           onRequestClose={() => {
