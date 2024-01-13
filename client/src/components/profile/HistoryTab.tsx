@@ -2,7 +2,14 @@ import AudioListLoadingUI from '@ui/AudioListLoadingUI';
 import EmptyRecords from '@ui/EmptyRecords';
 import colors from '@utils/colors';
 import {FC, useEffect, useState} from 'react';
-import {View, StyleSheet, Text, ScrollView, Pressable} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  ScrollView,
+  Pressable,
+  RefreshControl,
+} from 'react-native';
 import {useFetchHistories} from 'src/hooks/query';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {getClient} from 'src/api/client';
@@ -13,9 +20,10 @@ import {useNavigation} from '@react-navigation/native';
 interface Props {}
 
 const HistoryTab: FC<Props> = props => {
-  const {data, isLoading} = useFetchHistories();
+  const {data, isLoading, isFetching} = useFetchHistories();
   const queryClient = useQueryClient();
   const [selectedHistories, setSelectedHistories] = useState<string[]>([]);
+  const noData = !data?.length;
 
   const navigation = useNavigation();
 
@@ -70,6 +78,10 @@ const HistoryTab: FC<Props> = props => {
     });
   };
 
+  const handleOnRefresh = () => {
+    queryClient.invalidateQueries({queryKey: ['histories']}); // refetch histories
+  };
+
   useEffect(() => {
     const unselecHistories = () => {
       setSelectedHistories([]);
@@ -84,9 +96,6 @@ const HistoryTab: FC<Props> = props => {
 
   if (isLoading) return <AudioListLoadingUI />;
 
-  if (!data || !data[0]?.audios.length)
-    return <EmptyRecords title="There is no history!" />;
-
   return (
     <>
       {selectedHistories.length ? (
@@ -96,8 +105,17 @@ const HistoryTab: FC<Props> = props => {
           <Text style={styles.removeBtnText}>Remove </Text>
         </Pressable>
       ) : null}
-      <ScrollView style={styles.container}>
-        {data.map((item, mainIndex) => {
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={isFetching}
+            onRefresh={handleOnRefresh}
+            tintColor={colors.CONTRAST}
+          />
+        }
+        style={styles.container}>
+        {noData ? <EmptyRecords title="There is no history!" /> : null}
+        {data?.map((item, mainIndex) => {
           return (
             <View key={item.date + mainIndex}>
               <Text style={styles.date}>{item.date}</Text>
