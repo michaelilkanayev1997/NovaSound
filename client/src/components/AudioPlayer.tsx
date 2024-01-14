@@ -22,6 +22,7 @@ interface Props {
   visible: boolean;
   onRequestClose(): void;
   onListOptionPress?(): void;
+  onProfileLinkPress?(): void;
 }
 
 const fromattedDuration = (duration = 0) => {
@@ -34,6 +35,7 @@ const AudioPlayer: FC<Props> = ({
   visible,
   onRequestClose,
   onListOptionPress,
+  onProfileLinkPress,
 }) => {
   const [showAudioInfo, setShowAudioInfo] = useState(false);
   const {onGoingAudio, playbackRate} = useSelector(getPlayerState);
@@ -93,7 +95,10 @@ const AudioPlayer: FC<Props> = ({
         <View style={styles.contentContainer}>
           <Text style={styles.title}>{onGoingAudio?.title}</Text>
 
-          <AppLink title={onGoingAudio?.owner.name || ''} />
+          <AppLink
+            onPress={onProfileLinkPress}
+            title={onGoingAudio?.owner.name || ''}
+          />
 
           <View style={styles.durationContainer}>
             <Text style={styles.duration}>
