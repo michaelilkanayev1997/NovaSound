@@ -148,7 +148,7 @@ export const useFetchRecommendedPlaylist = () => {
   });
 };
 
-const fetchIsFavorite = async (id: string): Promise<boolean[]> => {
+const fetchIsFavorite = async (id: string): Promise<boolean> => {
   const client = await getClient();
 
   const {data} = await client('/favorite/is-fav?audioId=' + id);
@@ -159,6 +159,25 @@ export const useFetchIsFavorite = (id: string) => {
   const dispatch = useDispatch();
   return useQuery(['favorite', id], {
     queryFn: () => fetchIsFavorite(id),
+    onError(err) {
+      const errorMessage = catchAsyncError(err);
+      dispatch(updateNotification({message: errorMessage, type: 'error'}));
+    },
+    enabled: id ? true : false,
+  });
+};
+
+const fetchPublicProfile = async (id: string): Promise<PublicProfile> => {
+  const client = await getClient();
+
+  const {data} = await client('/profile/info/' + id);
+  return data.profile;
+};
+
+export const useFetchPublicProfile = (id: string) => {
+  const dispatch = useDispatch();
+  return useQuery(['profile', id], {
+    queryFn: () => fetchPublicProfile(id),
     onError(err) {
       const errorMessage = catchAsyncError(err);
       dispatch(updateNotification({message: errorMessage, type: 'error'}));

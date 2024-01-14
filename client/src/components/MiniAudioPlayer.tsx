@@ -77,7 +77,7 @@ const MiniAudioPlayer: FC<Props> = props => {
 
   const handleOnProfileLinkPress = () => {
     closePlayerModal();
-    navigate('PublicProfile', {profileId: onGoingAudio?.id || ''});
+    navigate('PublicProfile', {profileId: onGoingAudio?.owner.id || ''});
   };
 
   return (

@@ -3,6 +3,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {FC} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 import {HomeNavigatorStackParamList} from 'src/@types/navigation';
+import {useFetchPublicProfile} from 'src/hooks/query';
 
 type Props = NativeStackScreenProps<
   HomeNavigatorStackParamList,
@@ -11,7 +12,10 @@ type Props = NativeStackScreenProps<
 
 const PublicProfile: FC<Props> = ({route}) => {
   const {profileId} = route.params;
-  console.log(profileId);
+
+  const {data} = useFetchPublicProfile(profileId);
+  console.log(data);
+
   return (
     <AppView>
       <View style={styles.container}>
