@@ -1,10 +1,10 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import colors from '@utils/colors';
-import Home from '@views/Home';
 import Upload from '@views/Upload';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ProfileNavigator from './ProfileNavigator';
+import HomeNavigator from './HomeNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -18,8 +18,8 @@ const TabNavigator = () => {
         },
       }}>
       <Tab.Screen
-        name="HomeScreen"
-        component={Home}
+        name="HomeNavigator"
+        component={HomeNavigator}
         options={{
           tabBarIcon: props => {
             return (
