@@ -185,3 +185,22 @@ export const useFetchPublicProfile = (id: string) => {
     enabled: id ? true : false,
   });
 };
+
+const fetchPublicUploads = async (id: string): Promise<AudioData[]> => {
+  const client = await getClient();
+
+  const {data} = await client('/profile/uploads/' + id);
+  return data.audios;
+};
+
+export const useFetchPublicUploads = (id: string) => {
+  const dispatch = useDispatch();
+  return useQuery(['uploads', id], {
+    queryFn: () => fetchPublicUploads(id),
+    onError(err) {
+      const errorMessage = catchAsyncError(err);
+      dispatch(updateNotification({message: errorMessage, type: 'error'}));
+    },
+    enabled: id ? true : false,
+  });
+};

@@ -36,11 +36,13 @@ const PublicProfile: FC<Props> = ({route}) => {
             name="PublicUploads"
             component={PublicUploadsTab}
             options={{tabBarLabel: 'Uploads'}}
+            initialParams={{profileId}}
           />
           <Tab.Screen
             name="PublicPlaylist"
             component={PublicPlaylistTab}
             options={{tabBarLabel: 'Playlist'}}
+            initialParams={{profileId}}
           />
         </Tab.Navigator>
       </View>
