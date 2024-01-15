@@ -2,7 +2,12 @@ import AvatarField from '@ui/AvatarField';
 import colors from '@utils/colors';
 import {FC} from 'react';
 import {View, StyleSheet, Text, Pressable} from 'react-native';
+import {useMutation, QueryClient, useQueryClient} from 'react-query';
+import {useDispatch} from 'react-redux';
+import catchAsyncError from 'src/api/catchError';
+import {getClient} from 'src/api/client';
 import {useFetchIsFollowing} from 'src/hooks/query';
+import {updateNotification} from 'src/store/notification';
 
 interface Props {
   profile?: PublicProfile;
@@ -10,6 +15,31 @@ interface Props {
 
 const PublicProfileContainer: FC<Props> = ({profile}) => {
   const {data: isFollowing} = useFetchIsFollowing(profile?.id || '');
+  const dispatch = useDispatch();
+  const queryClient = useQueryClient();
+
+  const followingMutation = useMutation({
+    mutationFn: async id => toggleFollowing(id),
+    onMutate: (id: string) => {
+      queryClient.setQueryData<boolean>(
+        ['is-following', id],
+        oldData => !oldData,
+      );
+    },
+  });
+
+  const toggleFollowing = async (id: string) => {
+    try {
+      if (!id) return;
+
+      const client = await getClient();
+      await client.post('/profile/update-follower/' + id);
+      queryClient.invalidateQueries({queryKey: ['profile', id]}); // Refresh Followerts Count
+    } catch (error) {
+      const errorMessage = catchAsyncError(error);
+      dispatch(updateNotification({message: errorMessage, type: 'error'}));
+    }
+  };
 
   if (!profile) return null;
 
@@ -22,7 +52,9 @@ const PublicProfileContainer: FC<Props> = ({profile}) => {
 
         <Text style={styles.followerText}>{profile.followers} Followers</Text>
 
-        <Pressable style={styles.flexRow}>
+        <Pressable
+          onPress={() => followingMutation.mutate(profile.id)}
+          style={styles.flexRow}>
           <Text style={styles.profileActionLink}>
             {isFollowing ? 'Unfollow' : 'Follow'}
           </Text>
