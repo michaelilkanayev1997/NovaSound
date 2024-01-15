@@ -1,14 +1,22 @@
 import {useState} from 'react';
-import {StyleSheet, Pressable, Text, Vibration} from 'react-native';
+import {
+  StyleSheet,
+  Pressable,
+  Text,
+  Vibration,
+  StyleProp,
+  TextStyle,
+} from 'react-native';
 import colors from '@utils/colors';
 
 interface Props {
   title: string;
   onPress?(): void;
   active?: boolean;
+  style?: StyleProp<TextStyle>;
 }
 
-const AppLink: React.FC<Props> = ({title, active = true, onPress}) => {
+const AppLink: React.FC<Props> = ({title, active = true, onPress, style}) => {
   const [isPressed, setIsPressed] = useState(false);
 
   const handlePressIn = () => {
@@ -27,7 +35,12 @@ const AppLink: React.FC<Props> = ({title, active = true, onPress}) => {
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
       style={{opacity: active ? 1 : 0.4}}>
-      <Text style={[styles.title, active && isPressed && styles.titlePressed]}>
+      <Text
+        style={[
+          styles.title,
+          style,
+          active && isPressed && styles.titlePressed,
+        ]}>
         {title}
       </Text>
     </Pressable>

@@ -8,7 +8,9 @@ import {useFetchPublicUploads} from 'src/hooks/query';
 import useAudioController from 'src/hooks/useAudioController';
 import {getPlayerState} from 'src/store/player';
 
-interface Props {}
+interface Props {
+  route: any;
+}
 
 const PublicUploadsTab: FC<Props> = props => {
   const {data, isLoading} = useFetchPublicUploads(props.route.params.profileId);
