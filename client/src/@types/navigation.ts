@@ -12,13 +12,14 @@ export type AuthStackParamList = {
 };
 
 export type ProfileNavigatorStackParamList = {
-  profile: undefined;
+  Profile: undefined;
   ProfileSettings: undefined;
   Verification: {userInfo: NewUserResponse};
 };
 
 export type HomeNavigatorStackParamList = {
   PublicProfile: {profileId: string};
+  Profile: undefined;
   Home: undefined;
 };
 

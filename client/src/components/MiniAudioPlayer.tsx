@@ -16,6 +16,7 @@ import {useMutation, useQueryClient} from 'react-query';
 import {getClient} from 'src/api/client';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {HomeNavigatorStackParamList} from 'src/@types/navigation';
+import {getAuthState} from 'src/store/auth';
 
 interface Props {}
 
@@ -23,6 +24,7 @@ const MiniPlayerHeight = 60;
 
 const MiniAudioPlayer: FC<Props> = props => {
   const {onGoingAudio} = useSelector(getPlayerState);
+  const {profile} = useSelector(getAuthState);
   const {isPlaying, isBusy, togglePlayPause} = useAudioController();
   const progress = useProgress();
   const [playerVisibility, setPlayerVisibility] = useState(false);
@@ -77,7 +79,11 @@ const MiniAudioPlayer: FC<Props> = props => {
 
   const handleOnProfileLinkPress = () => {
     closePlayerModal();
-    navigate('PublicProfile', {profileId: onGoingAudio?.owner.id || ''});
+    if (profile?.id === onGoingAudio?.owner.id) {
+      navigate('Profile');
+    } else {
+      navigate('PublicProfile', {profileId: onGoingAudio?.owner.id || ''});
+    }
   };
 
   return (
