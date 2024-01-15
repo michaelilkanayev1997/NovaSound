@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 5,
   },
-  poster: {aspectRatio: 1, borderRadius: 7, height: 106},
+  poster: {width: '100%', aspectRatio: 1, borderRadius: 7},
   dummyTitleView: {
     height: 20,
     width: 150,
