@@ -98,6 +98,11 @@ const AudioPlayer: FC<Props> = ({
           <AppLink
             onPress={onProfileLinkPress}
             title={onGoingAudio?.owner.name || ''}
+            style={{
+              color: colors.Info,
+              fontSize: 16,
+              fontWeight: 'bold',
+            }}
           />
 
           <View style={styles.durationContainer}>
