@@ -83,7 +83,10 @@ const Home: FC<Props> = props => {
         title: value.title,
         visibility: value.private ? 'private' : 'public',
       });
-      console.log(data);
+
+      dispatch(
+        updateNotification({message: 'New Playlist added.', type: 'success'}),
+      );
     } catch (error) {
       const errorMessage = catchAsyncError(error);
       dispatch(updateNotification({message: errorMessage, type: 'error'}));

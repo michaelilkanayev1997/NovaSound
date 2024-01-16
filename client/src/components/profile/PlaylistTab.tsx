@@ -1,21 +1,35 @@
+import OptionsModal from '@components/OptionsModal';
 import EmptyRecords from '@ui/EmptyRecords';
+import PaginatedList from '@ui/PaginatedList';
 import PlaylistItem from '@ui/PlaylistItem';
-import {FC} from 'react';
-import {StyleSheet, ScrollView} from 'react-native';
+import colors from '@utils/colors';
+import {FC, useState} from 'react';
+import {StyleSheet} from 'react-native';
+import {useQueryClient} from 'react-query';
 import {useDispatch} from 'react-redux';
 import {Playlist} from 'src/@types/audio';
-import {useFetchPlaylist} from 'src/hooks/query';
+import catchAsyncError from 'src/api/catchError';
+import {fetchPlaylist, useFetchPlaylist} from 'src/hooks/query';
+import {updateNotification} from 'src/store/notification';
 import {
   updateIsPlaylistPrivate,
   updatePlaylistVisbility,
   updateSelectedListId,
 } from 'src/store/playlistModal';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import OptionSelector from '@ui/OptionSelector';
 
 interface Props {}
 
+let pageNo = 0;
+
 const PlaylistTab: FC<Props> = props => {
-  const {data, isLoading} = useFetchPlaylist();
+  const {data, isFetching} = useFetchPlaylist();
   const dispatch = useDispatch();
+  const [hasMore, setHasMore] = useState(true);
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
+  const [showOptions, setShowOptions] = useState(false);
+  const queryClient = useQueryClient();
 
   const handleOnListPress = (playlist: Playlist) => {
     dispatch(updateIsPlaylistPrivate(playlist.visibility === 'private'));
@@ -23,19 +37,91 @@ const PlaylistTab: FC<Props> = props => {
     dispatch(updatePlaylistVisbility(true));
   };
 
+  const handleOnEndReached = async () => {
+    setIsFetchingMore(true);
+    try {
+      if (!data) return;
+      pageNo += 1;
+      const playlist = await fetchPlaylist(pageNo);
+      if (!playlist || !playlist.length) {
+        setHasMore(false);
+      }
+
+      const newList = [...data, ...playlist];
+      queryClient.setQueryData(['playlist'], newList);
+    } catch (error) {
+      const errorMessage = catchAsyncError(error);
+      dispatch(updateNotification({message: errorMessage, type: 'error'}));
+    }
+    setIsFetchingMore(false);
+  };
+
+  const handleOnRefresh = () => {
+    pageNo = 0;
+    setHasMore(true);
+    queryClient.invalidateQueries(['playlist']);
+  };
+
+  const handleOnLongPress = (playlist: Playlist) => {
+    console.log(playlist);
+    setShowOptions(true);
+  };
+
+  const handleOnEditPress = () => {};
+  const handleOnDeletePress = () => {};
+
   return (
-    <ScrollView style={styles.container}>
-      {!data?.length ? <EmptyRecords title="There is no Playlist." /> : null}
-      {data?.map(playlist => {
-        return (
-          <PlaylistItem
-            onPress={() => handleOnListPress(playlist)}
-            key={playlist.id}
-            playlist={playlist}
-          />
-        );
-      })}
-    </ScrollView>
+    <>
+      <PaginatedList
+        data={data}
+        hasMore={hasMore}
+        isFetching={isFetchingMore}
+        onEndReached={handleOnEndReached}
+        onRefresh={handleOnRefresh}
+        refreshing={isFetching}
+        ListEmptyComponent={<EmptyRecords title="There is no playlist!" />}
+        renderItem={({item, index}) => {
+          return (
+            <PlaylistItem
+              onPress={() => handleOnListPress(item)}
+              key={item.id}
+              playlist={item}
+              onLongPress={() => handleOnLongPress(item)}
+            />
+          );
+        }}
+      />
+
+      <OptionsModal
+        visible={showOptions}
+        onRequestClose={() => {
+          setShowOptions(false);
+        }}
+        options={[
+          {
+            title: 'Edit',
+            icon: 'edit',
+            onPress: handleOnEditPress,
+          },
+          {
+            title: 'Delete',
+            icon: 'delete',
+            onPress: handleOnDeletePress,
+          },
+        ]}
+        renderItem={item => {
+          return (
+            <OptionSelector
+              onPress={item.onPress}
+              label={item.title}
+              icon={
+                <AntDesign size={24} color={colors.PRIMARY} name={item.icon} />
+              }
+            />
+          );
+        }}
+      />
+    </>
   );
 };
 

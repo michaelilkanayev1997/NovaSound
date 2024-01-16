@@ -13,6 +13,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import colors from '@utils/colors';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ProfileNavigatorStackParamList} from 'src/@types/navigation';
+import OptionSelector from '@ui/OptionSelector';
 
 interface Props {}
 
@@ -69,10 +70,13 @@ const UploadsTab: FC<Props> = props => {
         ]}
         renderItem={item => {
           return (
-            <Pressable onPress={item.onPress} style={styles.optionContainer}>
-              <AntDesign size={24} color={colors.PRIMARY} name={item.icon} />
-              <Text style={styles.optionLabel}>{item.title}</Text>
-            </Pressable>
+            <OptionSelector
+              icon={
+                <AntDesign size={24} color={colors.PRIMARY} name={item.icon} />
+              }
+              label={item.title}
+              onPress={item.onPress}
+            />
           );
         }}
       />
@@ -82,12 +86,6 @@ const UploadsTab: FC<Props> = props => {
 
 const styles = StyleSheet.create({
   container: {},
-  optionContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 10,
-  },
-  optionLabel: {color: colors.PRIMARY, fontSize: 16, marginLeft: 5},
 });
 
 export default UploadsTab;

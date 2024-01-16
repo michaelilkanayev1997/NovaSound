@@ -8,13 +8,17 @@ import colors from '@utils/colors';
 interface Props {
   playlist: Playlist;
   onPress?(): void;
+  onLongPress?(): void;
 }
 
-const PlaylistItem: FC<Props> = ({playlist, onPress}) => {
+const PlaylistItem: FC<Props> = ({playlist, onPress, onLongPress}) => {
   const {id, itemsCount, title, visibility} = playlist;
 
   return (
-    <Pressable onPress={onPress} style={styles.container}>
+    <Pressable
+      onLongPress={onLongPress}
+      onPress={onPress}
+      style={styles.container}>
       <View style={styles.posterContainer}>
         <MaterialComIcon
           name="playlist-music"
