@@ -1,5 +1,8 @@
 # Ignore node_modules directory in both server and client
 node_modules/
+dist/
+build/
+out/
 
 # Ignore environment-specific files
 .env

@@ -1,7 +1,6 @@
 import nodemailer from "nodemailer";
 import path from "path";
 
-import EmailVerificationToken from "#/models/emailVerificationToken";
 import {
   MAILTRAP_PASS,
   MAILTRAP_USER,
@@ -51,12 +50,12 @@ export const sendVerificationMail = async (token: string, profile: Profile) => {
     attachments: [
       {
         filename: "logo.png",
-        path: path.join(__dirname, "../mail/logo.png"),
+        path: path.join(__dirname, "../mail/images/logo.png"),
         cid: "logo",
       },
       {
         filename: "welcome.png",
-        path: path.join(__dirname, "../mail/welcome.png"),
+        path: path.join(__dirname, "../mail/images/welcome.png"),
         cid: "welcome",
       },
     ],
