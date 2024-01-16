@@ -56,19 +56,20 @@ const AppModal: FC<Props> = ({
     });
 
   useEffect(() => {
-    if (visible)
-      translateY.value = withTiming(0, {duration: animation ? 200 : 0});
+    if (visible) translateY.value = withTiming(0);
   }, [visible, animation]);
 
   return (
     <Modal onRequestClose={handleClose} visible={visible} transparent>
       <GestureHandlerRootView style={{flex: 1}}>
         <Pressable onResponderEnd={handleClose} style={styles.backdrop} />
-        <GestureDetector gesture={gesture}>
-          <Animated.View style={[styles.modal, translateStyle]}>
-            {children}
-          </Animated.View>
-        </GestureDetector>
+
+        <Animated.View style={[styles.modal, translateStyle]}>
+          <GestureDetector gesture={gesture}>
+            <Animated.View style={styles.handle} />
+          </GestureDetector>
+          {children}
+        </Animated.View>
       </GestureHandlerRootView>
     </Modal>
   );
@@ -89,7 +90,14 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 10,
     borderTopStartRadius: 10,
     overflow: 'hidden',
-    zIndex: 9999,
+  },
+  handle: {
+    width: '100%',
+    height: 45,
+    backgroundColor: 'transparent',
+    position: 'absolute',
+    top: 0,
+    zIndex: 1,
   },
 });
 

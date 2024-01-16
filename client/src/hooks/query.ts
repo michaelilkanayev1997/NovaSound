@@ -224,17 +224,22 @@ export const useFetchPublicPlaylist = (id: string) => {
   });
 };
 
-const fetchPlaylistAudios = async (id: string): Promise<CompletePlaylist> => {
+const fetchPlaylistAudios = async (
+  id: string,
+  isPrivate: boolean,
+): Promise<CompletePlaylist> => {
+  const endpoint = isPrivate
+    ? '/profile/private-playlist-audios/' + id
+    : '/profile/playlist-audios/' + id;
   const client = await getClient();
-
-  const {data} = await client('/profile/playlist-audios/' + id);
+  const {data} = await client(endpoint);
   return data.list;
 };
 
-export const useFetchPlaylistAudios = (id: string) => {
+export const useFetchPlaylistAudios = (id: string, isPrivate: boolean) => {
   const dispatch = useDispatch();
   return useQuery(['playlist-audios', id], {
-    queryFn: () => fetchPlaylistAudios(id),
+    queryFn: () => fetchPlaylistAudios(id, isPrivate),
     onError(err) {
       const errorMessage = catchAsyncError(err);
       dispatch(updateNotification({message: errorMessage, type: 'error'}));
