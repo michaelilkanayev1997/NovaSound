@@ -14,6 +14,7 @@ export type AuthStackParamList = {
 export type ProfileNavigatorStackParamList = {
   Profile: undefined;
   ProfileSettings: undefined;
+  UpdateAudio: undefined;
   Verification: {userInfo: NewUserResponse};
 };
 
