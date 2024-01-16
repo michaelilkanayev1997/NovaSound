@@ -1,5 +1,5 @@
 import {FC} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import UploadsTab from '@components/profile/UploadsTab';
 import PlaylistTab from '@components/profile/PlaylistTab';
@@ -50,7 +50,8 @@ const styles = StyleSheet.create({
   },
   tabbarLabelStyle: {
     color: colors.CONTRAST,
-    fontSize: 12,
+    fontSize: 10,
+    fontWeight: 'bold',
   },
 });
 
