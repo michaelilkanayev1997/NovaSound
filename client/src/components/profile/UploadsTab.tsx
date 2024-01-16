@@ -21,16 +21,18 @@ const UploadsTab: FC<Props> = props => {
   const {data, isLoading} = useFetchUploadsByProfile();
   const {onAudioPress} = useAudioController();
   const [showOptions, setShowOptions] = useState(false);
+  const [selectedAudio, setSelectedAudio] = useState<AudioData>();
   const {navigate} =
     useNavigation<NavigationProp<ProfileNavigatorStackParamList>>();
 
   const handleOnLongPress = (audio: AudioData) => {
+    setSelectedAudio(audio);
     setShowOptions(true);
   };
 
   const handleOnEditPress = () => {
     setShowOptions(false);
-    navigate('UpdateAudio');
+    if (selectedAudio) navigate('UpdateAudio', {audio: selectedAudio});
   };
 
   if (isLoading) return <AudioListLoadingUI />;
