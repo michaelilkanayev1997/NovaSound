@@ -28,25 +28,23 @@ const PlaylistAudioModal: FC<Props> = props => {
   };
 
   return (
-    <AppModal animation visible={visible} onRequestClose={handleClose}>
+    <AppModal visible={visible} onRequestClose={handleClose}>
       <View style={styles.container}>
         {isLoading ? (
-          <View style={styles.container}>
-            <AudioListLoadingUI />
-          </View>
+          <AudioListLoadingUI />
         ) : (
           <>
             <Text style={styles.title}>{data?.title}</Text>
             <FlatList
-              contentContainerStyle={styles.container}
+              contentContainerStyle={styles.flatlist}
               data={data?.audios}
               keyExtractor={item => item.id}
               renderItem={({item}) => {
                 return (
                   <AudioListItem
                     onPress={() => onAudioPress(item, data?.audios || [])}
-                    isPlaying={onGoingAudio?.id === item.id}
                     audio={item}
+                    isPlaying={onGoingAudio?.id === item.id}
                   />
                 );
               }}
@@ -62,6 +60,9 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
     flex: 1,
+  },
+  flatlist: {
+    paddingBottom: 50,
   },
   title: {
     color: colors.CONTRAST,
