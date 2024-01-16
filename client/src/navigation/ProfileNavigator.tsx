@@ -5,6 +5,7 @@ import Profile from '@views/Profile';
 import ProfileSettings from '@components/profile/ProfileSettings';
 import Verification from '@views/auth/Verification';
 import {ProfileNavigatorStackParamList} from 'src/@types/navigation';
+import UpdateAudio from '@components/profile/UpdateAudio';
 
 const Stack = createNativeStackNavigator<ProfileNavigatorStackParamList>();
 
@@ -16,6 +17,7 @@ const ProfileNavigator: FC<Props> = props => {
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="ProfileSettings" component={ProfileSettings} />
       <Stack.Screen name="Verification" component={Verification} />
+      <Stack.Screen name="UpdateAudio" component={UpdateAudio} />
     </Stack.Navigator>
   );
 };
