@@ -3,9 +3,8 @@ import AudioListItem from '@ui/AudioListItem';
 import AudioListLoadingUI from '@ui/AudioListLoadingUI';
 import colors from '@utils/colors';
 import {FC} from 'react';
-import {Text} from 'react-native';
-import {View, StyleSheet, FlatList} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
+import {View, StyleSheet, FlatList, Text} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import {useFetchPlaylistAudios} from 'src/hooks/query';
 import useAudioController from 'src/hooks/useAudioController';
 import {getPlayerState} from 'src/store/player';
@@ -33,7 +32,7 @@ const PlaylistAudioModal: FC<Props> = props => {
   };
 
   return (
-    <AppModal visible={visible} onRequestClose={handleClose}>
+    <AppModal animation visible={visible} onRequestClose={handleClose}>
       <View style={styles.container}>
         {isLoading ? (
           <AudioListLoadingUI />
@@ -63,8 +62,8 @@ const PlaylistAudioModal: FC<Props> = props => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
     flex: 1,
+    padding: 20,
   },
   flatlist: {
     paddingBottom: 50,

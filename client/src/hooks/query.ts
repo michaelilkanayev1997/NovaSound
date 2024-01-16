@@ -40,10 +40,10 @@ export const useFetchRecommendedAudios = () => {
   });
 };
 
-const fetchPlaylist = async (): Promise<Playlist[]> => {
+export const fetchPlaylist = async (pageNo = 0): Promise<Playlist[]> => {
   const client = await getClient();
 
-  const {data} = await client('/playlist/by-profile');
+  const {data} = await client('/playlist/by-profile?limit=10&pageNo=' + pageNo);
   return data.playlist;
 };
 

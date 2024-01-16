@@ -1,6 +1,6 @@
 import BasicModalContainer from '@ui/BasicModalContainer';
 import colors from '@utils/colors';
-import {FC, useState} from 'react';
+import {FC, useEffect, useState} from 'react';
 import {View, StyleSheet, TextInput, Pressable, Text} from 'react-native';
 import MaterialComIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -11,11 +11,18 @@ export interface PlaylistInfo {
 
 interface Props {
   visible: boolean;
+  initialValue?: PlaylistInfo;
   onRequestClose(): void;
   onSubmit(value: PlaylistInfo): void;
 }
 
-const PlaylistForm: FC<Props> = ({visible, onSubmit, onRequestClose}) => {
+const PlaylistForm: FC<Props> = ({
+  visible,
+  initialValue,
+  onSubmit,
+  onRequestClose,
+}) => {
+  const [isForUpdate, setIsForUpdate] = useState(false);
   const [playlistInfo, setPlaylistInfo] = useState({
     title: '',
     private: false,
@@ -31,6 +38,13 @@ const PlaylistForm: FC<Props> = ({visible, onSubmit, onRequestClose}) => {
     onRequestClose();
   };
 
+  useEffect(() => {
+    if (initialValue) {
+      setPlaylistInfo({...initialValue});
+      setIsForUpdate(true);
+    }
+  }, [initialValue]);
+
   return (
     <BasicModalContainer visible={visible} onRequestClose={handleClose}>
       <View>
@@ -40,7 +54,6 @@ const PlaylistForm: FC<Props> = ({visible, onSubmit, onRequestClose}) => {
             setPlaylistInfo({...playlistInfo, title: text});
           }}
           placeholder="Title"
-          placeholderTextColor={colors.PRIMARY}
           style={styles.input}
           value={playlistInfo.title}
         />
@@ -59,13 +72,14 @@ const PlaylistForm: FC<Props> = ({visible, onSubmit, onRequestClose}) => {
         </Pressable>
 
         <Pressable onPress={handleSubmit} style={styles.submitBtn}>
-          <Text style={styles.submitBtnText}>Create</Text>
+          <Text style={styles.submitBtnText}>
+            {isForUpdate ? 'Update' : 'Create'}
+          </Text>
         </Pressable>
       </View>
     </BasicModalContainer>
   );
 };
-
 const styles = StyleSheet.create({
   title: {
     fontSize: 18,

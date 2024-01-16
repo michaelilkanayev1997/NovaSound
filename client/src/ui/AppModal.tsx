@@ -1,6 +1,6 @@
 import colors from '@utils/colors';
 import {FC, ReactNode, useEffect} from 'react';
-import {View, StyleSheet, Modal, Pressable, Dimensions} from 'react-native';
+import {StyleSheet, Modal, Pressable, Dimensions} from 'react-native';
 import {
   Gesture,
   GestureDetector,
