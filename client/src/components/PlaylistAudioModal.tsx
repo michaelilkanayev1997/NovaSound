@@ -17,11 +17,16 @@ import {
 interface Props {}
 
 const PlaylistAudioModal: FC<Props> = props => {
-  const {visible, selectedListId} = useSelector(getPlaylistModalState);
+  const {visible, selectedListId, isPrivate} = useSelector(
+    getPlaylistModalState,
+  );
   const {onGoingAudio} = useSelector(getPlayerState);
   const {onAudioPress} = useAudioController();
   const dispatch = useDispatch();
-  const {data, isLoading} = useFetchPlaylistAudios(selectedListId || '');
+  const {data, isLoading} = useFetchPlaylistAudios(
+    selectedListId || '',
+    isPrivate || false,
+  );
 
   const handleClose = () => {
     dispatch(updatePlaylistVisbility(false));

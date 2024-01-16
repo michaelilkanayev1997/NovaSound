@@ -6,6 +6,7 @@ import {useDispatch} from 'react-redux';
 import {Playlist} from 'src/@types/audio';
 import {useFetchPlaylist} from 'src/hooks/query';
 import {
+  updateIsPlaylistPrivate,
   updatePlaylistVisbility,
   updateSelectedListId,
 } from 'src/store/playlistModal';
@@ -17,6 +18,7 @@ const PlaylistTab: FC<Props> = props => {
   const dispatch = useDispatch();
 
   const handleOnListPress = (playlist: Playlist) => {
+    dispatch(updateIsPlaylistPrivate(playlist.visibility === 'private'));
     dispatch(updateSelectedListId(playlist.id));
     dispatch(updatePlaylistVisbility(true));
   };

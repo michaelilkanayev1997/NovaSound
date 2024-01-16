@@ -4,6 +4,7 @@ import {RootState} from '.';
 interface PlaylistModal {
   visible: boolean;
   selectedListId?: string;
+  isPrivate?: boolean;
 }
 
 const initialState: PlaylistModal = {
@@ -20,6 +21,9 @@ const slice = createSlice({
     updateSelectedListId(playerState, {payload}: PayloadAction<string>) {
       playerState.selectedListId = payload;
     },
+    updateIsPlaylistPrivate(playerState, {payload}: PayloadAction<boolean>) {
+      playerState.isPrivate = payload;
+    },
   },
 });
 
@@ -28,6 +32,10 @@ export const getPlaylistModalState = createSelector(
   ({playlistModal}) => playlistModal,
 );
 
-export const {updatePlaylistVisbility, updateSelectedListId} = slice.actions;
+export const {
+  updatePlaylistVisbility,
+  updateSelectedListId,
+  updateIsPlaylistPrivate,
+} = slice.actions;
 
 export default slice.reducer;
