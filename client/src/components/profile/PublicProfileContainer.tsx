@@ -2,7 +2,7 @@ import AvatarField from '@ui/AvatarField';
 import colors from '@utils/colors';
 import {FC} from 'react';
 import {View, StyleSheet, Text, Pressable} from 'react-native';
-import {useMutation, QueryClient, useQueryClient} from 'react-query';
+import {useMutation, useQueryClient} from 'react-query';
 import {useDispatch} from 'react-redux';
 import catchAsyncError from 'src/api/catchError';
 import {getClient} from 'src/api/client';
