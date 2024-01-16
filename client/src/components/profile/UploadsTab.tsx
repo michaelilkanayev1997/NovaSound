@@ -3,7 +3,13 @@ import AudioListItem from '@ui/AudioListItem';
 import AudioListLoadingUI from '@ui/AudioListLoadingUI';
 import EmptyRecords from '@ui/EmptyRecords';
 import {FC, useState} from 'react';
-import {StyleSheet, ScrollView, Pressable, Text} from 'react-native';
+import {
+  StyleSheet,
+  ScrollView,
+  Pressable,
+  Text,
+  RefreshControl,
+} from 'react-native';
 import {useSelector} from 'react-redux';
 import {AudioData} from 'src/@types/audio';
 import {useFetchUploadsByProfile} from 'src/hooks/query';
@@ -14,15 +20,22 @@ import colors from '@utils/colors';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {ProfileNavigatorStackParamList} from 'src/@types/navigation';
 import OptionSelector from '@ui/OptionSelector';
+import {useQueryClient} from 'react-query';
 
 interface Props {}
 
 const UploadsTab: FC<Props> = props => {
   const {onGoingAudio} = useSelector(getPlayerState);
-  const {data, isLoading} = useFetchUploadsByProfile();
+  const {data, isLoading, isFetching} = useFetchUploadsByProfile();
   const {onAudioPress} = useAudioController();
   const [showOptions, setShowOptions] = useState(false);
   const [selectedAudio, setSelectedAudio] = useState<AudioData>();
+  const queryClient = useQueryClient();
+
+  const handleOnRefresh = () => {
+    queryClient.invalidateQueries({queryKey: ['uploads-by-profile']}); // refetch uploads
+  };
+
   const {navigate} =
     useNavigation<NavigationProp<ProfileNavigatorStackParamList>>();
 
@@ -42,7 +55,15 @@ const UploadsTab: FC<Props> = props => {
 
   return (
     <>
-      <ScrollView style={styles.container}>
+      <ScrollView
+        style={styles.container}
+        refreshControl={
+          <RefreshControl
+            refreshing={isFetching}
+            onRefresh={handleOnRefresh}
+            tintColor={colors.CONTRAST}
+          />
+        }>
         {data?.map(item => {
           return (
             <AudioListItem
