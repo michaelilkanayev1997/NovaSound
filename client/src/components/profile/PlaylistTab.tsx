@@ -18,6 +18,9 @@ import {
 } from 'src/store/playlistModal';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import OptionSelector from '@ui/OptionSelector';
+import PlaylistForm, {PlaylistInfo} from '@components/PlaylistForm';
+import {getClient} from 'src/api/client';
+import deepEqual from 'deep-equal';
 
 interface Props {}
 
@@ -29,6 +32,8 @@ const PlaylistTab: FC<Props> = props => {
   const [hasMore, setHasMore] = useState(true);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
+  const [showUpdateForm, setShowUpdateForm] = useState(false);
+  const [selectedPlaylist, setSelectedPlaylist] = useState<Playlist>();
   const queryClient = useQueryClient();
 
   const handleOnListPress = (playlist: Playlist) => {
@@ -62,12 +67,42 @@ const PlaylistTab: FC<Props> = props => {
     queryClient.invalidateQueries(['playlist']);
   };
 
+  const updatePlaylist = async (item: Playlist) => {
+    try {
+      const client = await getClient();
+      closeUpdateForm();
+      await client.patch('/playlist', item);
+      queryClient.invalidateQueries(['playlist']);
+
+      dispatch(
+        updateNotification({message: 'Playlist updated', type: 'success'}),
+      );
+    } catch (error) {
+      const errorMessage = catchAsyncError(error);
+      dispatch(updateNotification({message: errorMessage, type: 'error'}));
+    }
+  };
+
   const handleOnLongPress = (playlist: Playlist) => {
-    console.log(playlist);
+    setSelectedPlaylist({
+      ...playlist,
+    });
     setShowOptions(true);
   };
 
-  const handleOnEditPress = () => {};
+  const closeOptions = () => {
+    setShowOptions(false);
+  };
+
+  const closeUpdateForm = () => {
+    setShowUpdateForm(false);
+  };
+
+  const handleOnEditPress = () => {
+    closeOptions();
+    setShowUpdateForm(true);
+  };
+
   const handleOnDeletePress = () => {};
 
   return (
@@ -94,9 +129,7 @@ const PlaylistTab: FC<Props> = props => {
 
       <OptionsModal
         visible={showOptions}
-        onRequestClose={() => {
-          setShowOptions(false);
-        }}
+        onRequestClose={closeOptions}
         options={[
           {
             title: 'Edit',
@@ -119,6 +152,28 @@ const PlaylistTab: FC<Props> = props => {
               }
             />
           );
+        }}
+      />
+
+      <PlaylistForm
+        visible={showUpdateForm}
+        onRequestClose={closeUpdateForm}
+        onSubmit={value => {
+          const isSame = deepEqual(value, {
+            title: selectedPlaylist?.title,
+            private: selectedPlaylist?.visibility === 'private',
+          });
+          if (isSame || !selectedPlaylist) return;
+
+          updatePlaylist({
+            ...selectedPlaylist,
+            title: value.title,
+            visibility: value.private ? 'private' : 'public',
+          });
+        }}
+        initialValue={{
+          title: selectedPlaylist?.title || '',
+          private: selectedPlaylist?.visibility === 'private',
         }}
       />
     </>
