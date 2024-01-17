@@ -3,10 +3,11 @@ import colors from '@utils/colors';
 import {FC} from 'react';
 import {View, StyleSheet, Text, Pressable} from 'react-native';
 import {useMutation, useQueryClient} from 'react-query';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import catchAsyncError from 'src/api/catchError';
 import {getClient} from 'src/api/client';
 import {useFetchIsFollowing} from 'src/hooks/query';
+import {UserProfile, getAuthState, updateProfile} from 'src/store/auth';
 import {updateNotification} from 'src/store/notification';
 
 interface Props {
@@ -17,6 +18,7 @@ const PublicProfileContainer: FC<Props> = ({profile}) => {
   const {data: isFollowing} = useFetchIsFollowing(profile?.id || '');
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
+  const {profile: user} = useSelector(getAuthState);
 
   const followingMutation = useMutation({
     mutationFn: async id => toggleFollowing(id),
@@ -33,8 +35,24 @@ const PublicProfileContainer: FC<Props> = ({profile}) => {
       if (!id) return;
 
       const client = await getClient();
-      await client.post('/profile/update-follower/' + id);
+      const {data} = await client.post('/profile/update-follower/' + id);
       queryClient.invalidateQueries({queryKey: ['profile', id]}); // Refresh Followerts Count
+
+      if (data.status === 'added') {
+        dispatch(
+          updateProfile({
+            ...(user as UserProfile),
+            followings: (user?.followings || 0) + 1,
+          }),
+        );
+      } else {
+        dispatch(
+          updateProfile({
+            ...(user as UserProfile),
+            followings: (user?.followings || 0) - 1,
+          }),
+        );
+      }
     } catch (error) {
       const errorMessage = catchAsyncError(error);
       dispatch(updateNotification({message: errorMessage, type: 'error'}));
