@@ -103,7 +103,23 @@ const PlaylistTab: FC<Props> = props => {
     setShowUpdateForm(true);
   };
 
-  const handleOnDeletePress = () => {};
+  const handleOnDeletePress = async () => {
+    try {
+      const client = await getClient();
+      closeOptions();
+      await client.delete(
+        '/playlist?all=yes&playlistId=' + selectedPlaylist?.id,
+      );
+      queryClient.invalidateQueries(['playlist']);
+
+      dispatch(
+        updateNotification({message: 'Playlist removed.', type: 'success'}),
+      );
+    } catch (error) {
+      const errorMessage = catchAsyncError(error);
+      dispatch(updateNotification({message: errorMessage, type: 'error'}));
+    }
+  };
 
   return (
     <>
