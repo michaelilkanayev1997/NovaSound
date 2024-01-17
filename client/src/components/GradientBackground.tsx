@@ -4,20 +4,34 @@ import LinearGradient from 'react-native-linear-gradient';
 
 interface GradientBackgroundProps {
   children: ReactNode; // Accepts any kind of children
+  loading?: boolean;
 }
 
-const GradientBackground: React.FC<GradientBackgroundProps> = ({children}) => {
+const GradientBackground: React.FC<GradientBackgroundProps> = ({
+  children,
+  loading,
+}) => {
   return (
     <LinearGradient
       colors={['#C5D4E8', '#A9CCE3', '#192f6a']}
       style={styles.container}>
-      <ImageBackground
-        source={require('../assets/flag.webp')}
-        resizeMode="contain"
-        style={{flex: 1}}
-        imageStyle={{opacity: 0.08, top: '-35%'}}>
-        <View style={styles.childContainer}>{children}</View>
-      </ImageBackground>
+      {loading ? (
+        <ImageBackground
+          source={require('../assets/flag.webp')}
+          resizeMode="contain"
+          style={{flex: 1}}
+          imageStyle={{opacity: 0.15, top: '-55%'}}>
+          <View style={styles.childContainer}>{children}</View>
+        </ImageBackground>
+      ) : (
+        <ImageBackground
+          source={require('../assets/flag.webp')}
+          resizeMode="contain"
+          style={{flex: 1}}
+          imageStyle={{opacity: 0.1, top: '-55%'}}>
+          <View style={styles.childContainer}>{children}</View>
+        </ImageBackground>
+      )}
     </LinearGradient>
   );
 };

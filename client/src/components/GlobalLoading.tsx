@@ -9,7 +9,7 @@ interface Props {}
 
 const GlobalLoading: FC<Props> = props => {
   return (
-    <GradientBackground>
+    <GradientBackground loading>
       <View style={styles.animationWrapper}>
         <LottieView
           style={{flex: 1}}
