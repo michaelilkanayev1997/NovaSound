@@ -1,6 +1,7 @@
 import AppModal from '@ui/AppModal';
 import AudioListItem from '@ui/AudioListItem';
 import AudioListLoadingUI from '@ui/AudioListLoadingUI';
+import EmptyRecords from '@ui/EmptyRecords';
 import colors from '@utils/colors';
 import {FC, useState} from 'react';
 import {
@@ -12,8 +13,10 @@ import {
   Animated,
 } from 'react-native';
 import {RectButton, Swipeable} from 'react-native-gesture-handler';
+import {useMutation, QueryClient, useQueryClient} from 'react-query';
 import {useDispatch, useSelector} from 'react-redux';
-import {AudioData} from 'src/@types/audio';
+import {AudioData, CompletePlaylist} from 'src/@types/audio';
+import {getClient} from 'src/api/client';
 import {useFetchPlaylistAudios} from 'src/hooks/query';
 import useAudioController from 'src/hooks/useAudioController';
 import {getPlayerState} from 'src/store/player';
@@ -35,7 +38,35 @@ const PlaylistAudioModal: FC<Props> = props => {
     selectedListId || '',
     isPrivate || false,
   );
+
+  const queryClient = useQueryClient();
   const [removing, setRemoving] = useState(false);
+
+  const removeAudioFromPlaylist = async (id: string, playlistId: string) => {
+    const client = await getClient();
+    client.delete(`/playlist?playlistId=${playlistId}&resId=${id}`);
+  };
+
+  const deleteMutation = useMutation({
+    mutationFn: async ({id, playlistId}) =>
+      removeAudioFromPlaylist(id, playlistId),
+    onMutate: (variable: {id: string; playlistId: string}) => {
+      queryClient.setQueryData<CompletePlaylist>(
+        ['playlist-audios', selectedListId],
+        oldData => {
+          let finalData: CompletePlaylist = {title: '', id: '', audios: []};
+
+          if (!oldData) return finalData;
+
+          const audios = oldData?.audios.filter(
+            item => item.id !== variable.id,
+          );
+
+          return {...oldData, audios};
+        },
+      );
+    },
+  });
 
   const handleClose = () => {
     dispatch(updatePlaylistVisbility(false));
@@ -65,6 +96,10 @@ const PlaylistAudioModal: FC<Props> = props => {
     return (
       <Swipeable
         onSwipeableOpen={() => {
+          deleteMutation.mutate({
+            id: item.id,
+            playlistId: selectedListId || '',
+          });
           setRemoving(false);
         }}
         onSwipeableWillOpen={() => {
@@ -95,6 +130,7 @@ const PlaylistAudioModal: FC<Props> = props => {
               data={data?.audios}
               keyExtractor={item => item.id}
               renderItem={renderItem}
+              ListEmptyComponent={<EmptyRecords title="No audios!" />}
             />
           </>
         )}
