@@ -33,6 +33,7 @@ const AppButton: FC<Props> = ({title, busy, onPress, borderRadius}) => {
       }
       style={{borderRadius: borderRadius || 25}}>
       <Pressable
+        disabled={busy}
         onPress={onPress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}

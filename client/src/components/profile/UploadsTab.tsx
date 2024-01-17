@@ -27,7 +27,7 @@ const UploadsTab: FC<Props> = props => {
   const queryClient = useQueryClient();
 
   const handleOnRefresh = () => {
-    queryClient.invalidateQueries({queryKey: ['uploads-by-profile']}); // refetch uploads
+    queryClient.invalidateQueries({queryKey: ['uploads-by-profile']}); // refetch Uploads
   };
 
   const {navigate} =
@@ -45,8 +45,6 @@ const UploadsTab: FC<Props> = props => {
 
   if (isLoading) return <AudioListLoadingUI />;
 
-  if (!data?.length) return <EmptyRecords title="There is no audio." />;
-
   return (
     <>
       <ScrollView
@@ -58,6 +56,7 @@ const UploadsTab: FC<Props> = props => {
             tintColor={colors.CONTRAST}
           />
         }>
+        {!data?.length ? <EmptyRecords title="There is no audio." /> : null}
         {data?.map(item => {
           return (
             <AudioListItem
