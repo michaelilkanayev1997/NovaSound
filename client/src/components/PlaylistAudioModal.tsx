@@ -28,9 +28,8 @@ import {
 interface Props {}
 
 const PlaylistAudioModal: FC<Props> = props => {
-  const {visible, selectedListId, isPrivate} = useSelector(
-    getPlaylistModalState,
-  );
+  const {visible, selectedListId, isPrivate, allowPlaylistAudioRemove} =
+    useSelector(getPlaylistModalState);
   const {onGoingAudio} = useSelector(getPlayerState);
   const {onAudioPress} = useAudioController();
   const dispatch = useDispatch();
@@ -93,28 +92,37 @@ const PlaylistAudioModal: FC<Props> = props => {
   };
 
   const renderItem: ListRenderItem<AudioData> = ({item}) => {
-    return (
-      <Swipeable
-        onSwipeableOpen={() => {
-          deleteMutation.mutate({
-            id: item.id,
-            playlistId: selectedListId || '',
-          });
-          setRemoving(false);
-        }}
-        onSwipeableWillOpen={() => {
-          setRemoving(true);
-        }}
-        renderRightActions={renderRightActions}>
-        <RectButton onPress={() => onAudioPress(item, data?.audios || [])}>
-          <AudioListItem
-            onPress={() => onAudioPress(item, data?.audios || [])}
-            audio={item}
-            isPlaying={onGoingAudio?.id === item.id}
-          />
-        </RectButton>
-      </Swipeable>
-    );
+    if (allowPlaylistAudioRemove) {
+      return (
+        <Swipeable
+          onSwipeableOpen={() => {
+            deleteMutation.mutate({
+              id: item.id,
+              playlistId: selectedListId || '',
+            });
+            setRemoving(false);
+          }}
+          onSwipeableWillOpen={() => {
+            setRemoving(true);
+          }}
+          renderRightActions={renderRightActions}>
+          <RectButton onPress={() => onAudioPress(item, data?.audios || [])}>
+            <AudioListItem
+              audio={item}
+              isPlaying={onGoingAudio?.id === item.id}
+            />
+          </RectButton>
+        </Swipeable>
+      );
+    } else {
+      return (
+        <AudioListItem
+          onPress={() => onAudioPress(item, data?.audios || [])}
+          audio={item}
+          isPlaying={onGoingAudio?.id === item.id}
+        />
+      );
+    }
   };
 
   return (

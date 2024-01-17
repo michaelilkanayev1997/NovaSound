@@ -7,6 +7,8 @@ import {Playlist} from 'src/@types/audio';
 import {PublicProfileTabParamsList} from 'src/@types/navigation';
 import {useFetchPublicPlaylist} from 'src/hooks/query';
 import {
+  updateAllowPlaylistAudioRemove,
+  updateIsPlaylistPrivate,
   updatePlaylistVisbility,
   updateSelectedListId,
 } from 'src/store/playlistModal';
@@ -21,8 +23,10 @@ const PublicPlaylistTab: FC<Props> = props => {
   const dispatch = useDispatch();
 
   const handleOnListPress = (playlist: Playlist) => {
+    dispatch(updateAllowPlaylistAudioRemove(false));
     dispatch(updateSelectedListId(playlist.id));
     dispatch(updatePlaylistVisbility(true));
+    dispatch(updateIsPlaylistPrivate(playlist.visibility === 'private'));
   };
 
   return (
