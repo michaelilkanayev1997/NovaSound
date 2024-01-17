@@ -1,7 +1,7 @@
 import LatestUploads from '@components/LatestUploads';
 import OptionsModal from '@components/OptionsModal';
 import RecommendedAudios from '@components/RecommendedAudios';
-import {FC, useEffect, useState} from 'react';
+import {FC, useState} from 'react';
 import {View, StyleSheet, Pressable, Text, ScrollView} from 'react-native';
 import MaterialComIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from '@utils/colors';
@@ -13,7 +13,7 @@ import {useDispatch} from 'react-redux';
 import PlaylistForm, {PlaylistInfo} from '@components/PlaylistForm';
 import PlayListModal from '@components/PlaylistModal';
 import {useFetchPlaylist} from 'src/hooks/query';
-import TrackPlayer from 'react-native-track-player';
+
 import useAudioController from 'src/hooks/useAudioController';
 import AppView from '@components/AppView';
 import RecentlyPlayed from '@components/RecentlyPlayed';

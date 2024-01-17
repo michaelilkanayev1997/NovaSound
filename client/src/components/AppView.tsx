@@ -1,7 +1,6 @@
 import {FC, ReactNode} from 'react';
 import {View, StyleSheet} from 'react-native';
 import MiniAudioPlayer from './MiniAudioPlayer';
-//import useAudioController from 'src/hooks/useAudioController';
 import {useSelector} from 'react-redux';
 import {getPlayerState} from 'src/store/player';
 import PlaylistAudioModal from './PlaylistAudioModal';
@@ -11,7 +10,6 @@ interface Props {
 }
 
 const AppView: FC<Props> = ({children}) => {
-  //const {isPlayerReady} = useAudioController();
   const {onGoingAudio} = useSelector(getPlayerState);
 
   return (

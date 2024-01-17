@@ -32,7 +32,7 @@ const PlaylistAudioModal: FC<Props> = props => {
   };
 
   return (
-    <AppModal animation visible={visible} onRequestClose={handleClose}>
+    <AppModal visible={visible} onRequestClose={handleClose}>
       <View style={styles.container}>
         {isLoading ? (
           <AudioListLoadingUI />

@@ -1,5 +1,4 @@
 import BasicModalContainer from '@ui/BasicModalContainer';
-import {FC} from 'react';
 import {View, StyleSheet} from 'react-native';
 
 interface Props<T> {

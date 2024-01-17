@@ -1,5 +1,4 @@
 import AudioForm from '@components/form/AudioForm';
-import colors from '@utils/colors';
 import {mapRange} from '@utils/math';
 import {FC, useState} from 'react';
 import {StyleSheet} from 'react-native';

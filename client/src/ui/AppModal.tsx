@@ -17,19 +17,13 @@ interface Props {
   children: ReactNode;
   visible: boolean;
   onRequestClose(): void;
-  animation?: boolean;
 }
 
 const {height} = Dimensions.get('window');
 
 const modalHeight = height - 150;
 
-const AppModal: FC<Props> = ({
-  children,
-  visible,
-  animation,
-  onRequestClose,
-}) => {
+const AppModal: FC<Props> = ({children, visible, onRequestClose}) => {
   const translateY = useSharedValue(modalHeight);
 
   const translateStyle = useAnimatedStyle(() => ({
@@ -57,7 +51,7 @@ const AppModal: FC<Props> = ({
 
   useEffect(() => {
     if (visible) translateY.value = withTiming(0);
-  }, [visible, animation]);
+  }, [visible]);
 
   return (
     <Modal onRequestClose={handleClose} visible={visible} transparent>
