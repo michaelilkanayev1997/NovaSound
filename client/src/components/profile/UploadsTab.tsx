@@ -3,13 +3,7 @@ import AudioListItem from '@ui/AudioListItem';
 import AudioListLoadingUI from '@ui/AudioListLoadingUI';
 import EmptyRecords from '@ui/EmptyRecords';
 import {FC, useState} from 'react';
-import {
-  StyleSheet,
-  ScrollView,
-  Pressable,
-  Text,
-  RefreshControl,
-} from 'react-native';
+import {StyleSheet, ScrollView, RefreshControl} from 'react-native';
 import {useSelector} from 'react-redux';
 import {AudioData} from 'src/@types/audio';
 import {useFetchUploadsByProfile} from 'src/hooks/query';

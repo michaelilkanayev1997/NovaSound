@@ -1,6 +1,6 @@
 import colors from '@utils/colors';
 import {FC} from 'react';
-import {View, StyleSheet, Pressable} from 'react-native';
+import {StyleSheet, Pressable} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 interface Props {

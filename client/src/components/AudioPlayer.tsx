@@ -78,7 +78,7 @@ const AudioPlayer: FC<Props> = ({
   };
 
   return (
-    <AppModal animation visible={visible} onRequestClose={onRequestClose}>
+    <AppModal visible={visible} onRequestClose={onRequestClose}>
       <View style={styles.container}>
         <Pressable
           onPress={() => setShowAudioInfo(true)}

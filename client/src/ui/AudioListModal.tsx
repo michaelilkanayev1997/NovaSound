@@ -22,7 +22,6 @@ const AudioListModal: FC<Props> = ({
   loading,
   data,
   visible,
-
   onItemPress,
   onRequestClose,
 }) => {

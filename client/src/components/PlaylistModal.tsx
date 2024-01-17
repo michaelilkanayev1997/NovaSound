@@ -1,7 +1,7 @@
 import BasicModalContainer from '@ui/BasicModalContainer';
 import colors from '@utils/colors';
 import {FC, ReactNode} from 'react';
-import {View, StyleSheet, ScrollView, Text, Pressable} from 'react-native';
+import {StyleSheet, ScrollView, Text, Pressable} from 'react-native';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Playlist} from 'src/@types/audio';

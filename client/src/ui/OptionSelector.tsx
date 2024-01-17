@@ -1,6 +1,6 @@
 import colors from '@utils/colors';
 import {FC, ReactNode} from 'react';
-import {View, StyleSheet, Pressable, Text} from 'react-native';
+import {StyleSheet, Pressable, Text} from 'react-native';
 
 interface Props {
   icon?: ReactNode;
