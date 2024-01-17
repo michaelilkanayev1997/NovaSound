@@ -2,9 +2,18 @@ import AppModal from '@ui/AppModal';
 import AudioListItem from '@ui/AudioListItem';
 import AudioListLoadingUI from '@ui/AudioListLoadingUI';
 import colors from '@utils/colors';
-import {FC} from 'react';
-import {View, StyleSheet, FlatList, Text} from 'react-native';
+import {FC, useState} from 'react';
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  Text,
+  ListRenderItem,
+  Animated,
+} from 'react-native';
+import {RectButton, Swipeable} from 'react-native-gesture-handler';
 import {useDispatch, useSelector} from 'react-redux';
+import {AudioData} from 'src/@types/audio';
 import {useFetchPlaylistAudios} from 'src/hooks/query';
 import useAudioController from 'src/hooks/useAudioController';
 import {getPlayerState} from 'src/store/player';
@@ -26,9 +35,51 @@ const PlaylistAudioModal: FC<Props> = props => {
     selectedListId || '',
     isPrivate || false,
   );
+  const [removing, setRemoving] = useState(false);
 
   const handleClose = () => {
     dispatch(updatePlaylistVisbility(false));
+  };
+
+  const renderRightActions = (
+    progress: Animated.AnimatedInterpolation<number>,
+    dragX: Animated.AnimatedInterpolation<number>,
+  ) => {
+    const scale = dragX.interpolate({
+      inputRange: [-150, 0],
+      outputRange: [1, 0],
+      extrapolate: 'clamp',
+    });
+    return (
+      <View style={styles.swipeableContainer}>
+        <Animated.View style={{transform: [{scale}]}}>
+          <Text style={{color: colors.CONTRAST}}>
+            {removing ? 'Removing...' : 'Removed'}
+          </Text>
+        </Animated.View>
+      </View>
+    );
+  };
+
+  const renderItem: ListRenderItem<AudioData> = ({item}) => {
+    return (
+      <Swipeable
+        onSwipeableOpen={() => {
+          setRemoving(false);
+        }}
+        onSwipeableWillOpen={() => {
+          setRemoving(true);
+        }}
+        renderRightActions={renderRightActions}>
+        <RectButton onPress={() => onAudioPress(item, data?.audios || [])}>
+          <AudioListItem
+            onPress={() => onAudioPress(item, data?.audios || [])}
+            audio={item}
+            isPlaying={onGoingAudio?.id === item.id}
+          />
+        </RectButton>
+      </Swipeable>
+    );
   };
 
   return (
@@ -43,15 +94,7 @@ const PlaylistAudioModal: FC<Props> = props => {
               contentContainerStyle={styles.flatlist}
               data={data?.audios}
               keyExtractor={item => item.id}
-              renderItem={({item}) => {
-                return (
-                  <AudioListItem
-                    onPress={() => onAudioPress(item, data?.audios || [])}
-                    audio={item}
-                    isPlaying={onGoingAudio?.id === item.id}
-                  />
-                );
-              }}
+              renderItem={renderItem}
             />
           </>
         )}
@@ -62,7 +105,6 @@ const PlaylistAudioModal: FC<Props> = props => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     padding: 20,
   },
   flatlist: {
@@ -73,6 +115,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 18,
     padding: 10,
+  },
+  swipeableContainer: {
+    flex: 1,
+    height: 50,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
   },
 });
 
