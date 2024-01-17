@@ -12,6 +12,7 @@ import catchAsyncError from 'src/api/catchError';
 import {fetchPlaylist, useFetchPlaylist} from 'src/hooks/query';
 import {updateNotification} from 'src/store/notification';
 import {
+  updateAllowPlaylistAudioRemove,
   updateIsPlaylistPrivate,
   updatePlaylistVisbility,
   updateSelectedListId,
@@ -37,6 +38,7 @@ const PlaylistTab: FC<Props> = props => {
   const queryClient = useQueryClient();
 
   const handleOnListPress = (playlist: Playlist) => {
+    dispatch(updateAllowPlaylistAudioRemove(true));
     dispatch(updateIsPlaylistPrivate(playlist.visibility === 'private'));
     dispatch(updateSelectedListId(playlist.id));
     dispatch(updatePlaylistVisbility(true));

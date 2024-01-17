@@ -5,6 +5,7 @@ interface PlaylistModal {
   visible: boolean;
   selectedListId?: string;
   isPrivate?: boolean;
+  allowPlaylistAudioRemove?: boolean;
 }
 
 const initialState: PlaylistModal = {
@@ -24,6 +25,12 @@ const slice = createSlice({
     updateIsPlaylistPrivate(playerState, {payload}: PayloadAction<boolean>) {
       playerState.isPrivate = payload;
     },
+    updateAllowPlaylistAudioRemove(
+      playerState,
+      {payload}: PayloadAction<boolean>,
+    ) {
+      playerState.allowPlaylistAudioRemove = payload;
+    },
   },
 });
 
@@ -36,6 +43,7 @@ export const {
   updatePlaylistVisbility,
   updateSelectedListId,
   updateIsPlaylistPrivate,
+  updateAllowPlaylistAudioRemove,
 } = slice.actions;
 
 export default slice.reducer;

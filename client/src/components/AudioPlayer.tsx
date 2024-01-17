@@ -241,6 +241,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 10,
     top: 10,
+    zIndex: 2,
   },
   listOptionBtnContainer: {
     alignItems: 'flex-end',

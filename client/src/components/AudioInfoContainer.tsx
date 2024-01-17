@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: colors.PRIMARY,
-    zIndex: 1,
+    zIndex: 3,
     padding: 10,
   },
   closeBtn: {
