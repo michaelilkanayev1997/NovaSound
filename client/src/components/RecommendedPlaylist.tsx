@@ -1,4 +1,5 @@
 import colors from '@utils/colors';
+import deepEqual from 'deep-equal';
 import {FC} from 'react';
 import {View, StyleSheet, Text, Pressable, Image, FlatList} from 'react-native';
 import {Playlist} from 'src/@types/audio';
@@ -10,6 +11,10 @@ interface Props {
 
 const RecommendedPlaylist: FC<Props> = ({onListPress}) => {
   const {data} = useFetchRecommendedPlaylist();
+
+  const sameData = deepEqual(data, [{}]);
+
+  if (sameData) return null;
 
   return (
     <View>
