@@ -520,7 +520,7 @@ export const generateTemplate = (options: Options) => {
                                               display: block;
                                               height: auto;
                                               border: 0;
-                                              width: 300px;
+                                              width: 200px;                                                                        
                                               max-width: 100%;
                                             "
                                             title="Resetting Password"

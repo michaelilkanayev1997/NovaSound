@@ -10,9 +10,13 @@ interface Props {
 }
 
 const RecommendedPlaylist: FC<Props> = ({onListPress}) => {
-  const {data} = useFetchRecommendedPlaylist();
+  const {data = []} = useFetchRecommendedPlaylist();
 
-  const sameData = deepEqual(data, [{}]);
+  let sameData;
+  data?.forEach(element => {
+    sameData = deepEqual(element, {});
+    if (sameData) return;
+  });
 
   if (sameData) return null;
 
