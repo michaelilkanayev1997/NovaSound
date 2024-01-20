@@ -37,6 +37,31 @@
 
 **This project is primarily focused on the Android platform due to development constraints arising from not having access to a Mac computer, necessary for iOS app development with CLI.**
 
+## Pictures:
+
+### `App:`
+<div align="center">
+  <img src="ReadMe_Images/novasound0.jpg" width="180" height="380" alt="mobile0" />
+  <img src="ReadMe_Images/novasound1.jpg" width="180" height="380" alt="mobile1" />
+  <img src="ReadMe_Images/novasound2.jpg" width="180" height="380" alt="mobile2" />
+  <img src="ReadMe_Images/novasound3.jpg" width="180" height="380" alt="mobile3" />
+  <img src="ReadMe_Images/novasound4.jpg" width="180" height="380" alt="mobile4" />
+  <img src="ReadMe_Images/novasound5.jpg" width="180" height="380" alt="mobile5" />
+  <img src="ReadMe_Images/novasound6.jpg" width="180" height="380" alt="mobile6" />
+  <img src="ReadMe_Images/novasound7.jpg" width="180" height="380" alt="mobile7" />
+  <img src="ReadMe_Images/novasound8.jpg" width="180" height="380" alt="mobile8" />
+  <img src="ReadMe_Images/novasound9.jpg" width="180" height="380" alt="mobile9" />
+  <img src="ReadMe_Images/novasound10.jpg" width="180" height="380" alt="mobile10" />
+  <img src="ReadMe_Images/novasound11.jpg" width="180" height="380" alt="mobile11" />
+  <img src="ReadMe_Images/novasound12.jpg" width="180" height="380" alt="mobile12" />
+
+### `Mail Trap:`
+  <img src="ReadMe_Images/novasound13.png" width="350" height="250" alt="mobile13" />
+  <img src="ReadMe_Images/novasound14.png" width="350" height="250" alt="mobile14" />
+</div> 
+
+
+
 ## License :
 
 *This project is licensed under the [MIT License](LICENSE).*
