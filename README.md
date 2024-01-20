@@ -14,6 +14,9 @@
 
 **Throughout this project I delved into advanced concepts, enriching my expertise while intertwining modern technology with heartfelt remembrance. Beyond its core purpose, NovaSound represents the fusion of sophisticated audio sharing within a robust application, aspiring to immortalize the spirit of the party and honor the individuals whose presence was cherished but tragically cut short.**
 
+## Video Showcase
+[Watch a Video Demonstration of the App](https://www.youtube.com/watch?v=oHhNUf1BDEE)
+
 ---
 
 | Technologies Used               | Features                        |
